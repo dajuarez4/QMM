@@ -1,0 +1,549 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{hyperref}
+
+\title{QMM Complete Workflow Manual}
+\author{Diego Juarez and Codex}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Purpose}
+
+This document explains the workflow implemented in \texttt{QMM}.  The goal is
+to keep the physics, numerical methods, code organization, and JSON interface
+in one clean place.
+
+The package is designed to support two use cases:
+
+\begin{itemize}
+\item production runs for the models already implemented in
+\texttt{src/qmm/models.py}
+\item extension to a new real-gas model with a new mean field and/or a new
+excluded-volume prescription
+\end{itemize}
+
+\section{QMM Organization}
+
+The main directories are:
+
+\begin{itemize}
+\item \texttt{src/qmm/}: source code
+\item \texttt{examples/}: JSON inputs, including a blank generalized template
+\item \texttt{notebooks/QMM\_workflow.ipynb}: single overview notebook
+\item \texttt{docs/qmm\_complete\_workflow\_manual.tex}: this manual
+\item \texttt{results/}: local reference outputs used by the notebook
+\end{itemize}
+
+The main solver modules are:
+
+\begin{itemize}
+\item \texttt{models.py}: interaction models and repulsive mappings
+\item \texttt{fermi\_gas.py}: relativistic ideal Fermi gas
+\item \texttt{ground\_state.py}: symmetric zero-temperature fit
+\item \texttt{quantum.py}: finite-temperature liquid critical point
+\item \texttt{quarkyonic.py}: symmetric and asymmetric quarkyonic matter
+\item \texttt{sound\_speed.py}: sound-speed reconstruction
+\item \texttt{asymmetry.py}: asymmetric hadronic couplings
+\item \texttt{neutron\_star.py}: beta-equilibrium EOS preparation and TOV solver
+\item \texttt{runner.py}: top-level workflow orchestration
+\item \texttt{config.py}: JSON loading and typed configuration
+\end{itemize}
+
+\section{What The JSON File Controls}
+
+The workflow is driven by a single JSON input file.  The blank template is:
+
+\begin{center}
+\texttt{examples/qmm\_blank\_template.json}
+\end{center}
+
+The richer single-file design template is:
+
+\begin{center}
+\texttt{examples/qmm\_all\_in\_one\_template.json}
+\end{center}
+
+The JSON file can decide:
+
+\begin{itemize}
+\item which registered model is used
+\item whether an extra model parameter is fixed or solved from a target
+incompressibility
+\item whether to compute the symmetric ground-state point
+\item whether to compute the liquid critical point
+\item whether to compute a dense pure-hadronic EOS table
+\item whether to compute symmetric quarkyonic matter
+\item whether to compute asymmetric couplings
+\item whether to compute asymmetric fixed-$y$ quarkyonic matter
+\item whether to include leptons through beta equilibrium
+\item whether to compute neutron stars
+\item whether CSV, JSON, and plot outputs are written
+\end{itemize}
+
+\subsection{Documentation Blocks Inside The Same JSON}
+
+The all-in-one template also contains descriptive blocks such as:
+
+\begin{itemize}
+\item \texttt{documentation.mean\_field\_latex}
+\item \texttt{documentation.excluded\_volume\_latex}
+\item \texttt{documentation.ideal\_density\_map\_latex}
+\item \texttt{documentation.pressure\_prefactor\_latex}
+\item \texttt{requested\_calculations.*}
+\end{itemize}
+
+These fields are intentionally not executable physics inputs.  They are there
+so one JSON file can also serve as a human-readable model record.  The
+\texttt{QMM} loader ignores these extra descriptive keys.
+
+\subsection{What The JSON Cannot Do By Itself}
+
+The JSON file does not encode new analytic physics functions.  In particular,
+it cannot by itself define:
+
+\begin{itemize}
+\item a new mean field $U(n)$
+\item a new derivative $dU/dn$
+\item a new density mapping $n \leftrightarrow n_{\mathrm{id}}$
+\item a new excluded-volume fraction
+\item a new pressure prefactor
+\end{itemize}
+
+Those must be implemented once in \texttt{src/qmm/models.py}.  After the model
+is registered there, the same JSON interface can drive it.
+
+\section{Units and Default Physical Inputs}
+
+The code uses MeV--fm units for the nuclear-matter solvers and converts to cgs
+only when solving the TOV equations.
+
+The default physical constants are:
+
+\begin{align}
+\hbar c &= 197.3269804~\mathrm{MeV\,fm}, \\
+m_N &= 938.0~\mathrm{MeV}, \\
+n_0 &= 0.16~\mathrm{fm}^{-3}, \\
+E/A - m_N &= -16~\mathrm{MeV}, \\
+J &= 32.5~\mathrm{MeV}, \\
+L &= 58.9~\mathrm{MeV}.
+\end{align}
+
+\section{Interaction Models}
+
+Each model is represented by one \texttt{InteractionModel} entry in
+\texttt{models.py}.  The definition requires the following ingredients:
+
+\begin{itemize}
+\item attractive function $U(n,b,\mathrm{parameter})$
+\item derivative $dU/dn$
+\item map $n \mapsto n_{\mathrm{id}}$
+\item inverse map $n_{\mathrm{id}} \mapsto n$
+\item total volume fraction
+\item species-level volume fraction
+\item pressure prefactor
+\item capability flags for each workflow branch
+\end{itemize}
+
+\subsection{Attractive Mean Fields}
+
+The attractive sectors implemented in \texttt{QMM} are:
+
+\begin{align}
+U_{\mathrm{vdW}}(n) &= -n, \\
+U_{\mathrm{RKS}}(n) &= -\frac{1}{b}\ln(1 + bn), \\
+U_{\mathrm{PR}}(n) &=
+-\frac{1}{2\sqrt{2}\,b}
+\ln \left[
+\frac{1 + (1+\sqrt{2})bn}{1 + (1-\sqrt{2})bn}
+\right], \\
+U_{\mathrm{Clausius}}(n) &= -\frac{n}{1 + cn}, \\
+U_{\mathrm{Dieterici}}(n) &= -\frac{n^{\alpha - 1}}{\alpha - 1}.
+\end{align}
+
+For the \texttt{cs} and \texttt{tvm} models, the attractive sector remains the
+van der Waals form $U(n)=-n$, while the repulsive sector is modified through
+the excluded-volume mapping.  The hybrid models \texttt{clausius\_cs} and
+\texttt{clausius\_tvm} keep the Clausius attractive sector and only replace
+the repulsive mapping.
+
+\subsection{Excluded-Volume Prescriptions}
+
+The repulsive sector in \texttt{QMM} is encoded through:
+
+\begin{itemize}
+\item a volume fraction $f(n,b)$
+\item an ideal-density map $n \mapsto n_{\mathrm{id}}$
+\item a pressure prefactor $\Pi(n,b)$
+\end{itemize}
+
+\subsubsection{vdW / Standard Excluded Volume}
+
+The standard excluded-volume prescription used by
+\texttt{vdw}, \texttt{rks}, \texttt{pr}, \texttt{clausius}, and
+\texttt{dieterici} is:
+
+\begin{align}
+f_{\mathrm{EV}}(n) &= 1 - bn, \\
+n_{\mathrm{id}} &= \frac{n}{1 - bn}, \\
+\Pi_{\mathrm{EV}}(n,b) &= 1.
+\end{align}
+
+\subsubsection{Carnahan--Starling Excluded Volume}
+
+For the \texttt{cs} model, and also for the hybrid \texttt{clausius\_cs},
+define $x = bn$.  The excluded-volume fraction is:
+
+\begin{align}
+f_{\mathrm{CS}}(x) &=
+\exp\left[
+-\frac{3x}{4-x} - \frac{4x}{(4-x)^2}
+\right], \\
+n_{\mathrm{id}} &= \frac{n}{f_{\mathrm{CS}}(x)}.
+\end{align}
+
+The pressure prefactor is:
+
+\begin{equation}
+\Pi_{\mathrm{CS}}(n,b) =
+f_{\mathrm{CS}}(n,b) - n \frac{d f_{\mathrm{CS}}(n,b)}{dn}.
+\end{equation}
+
+\subsubsection{TVM Excluded Volume}
+
+For the \texttt{tvm} model, and also for the hybrid \texttt{clausius\_tvm}
+model, define again $x = bn$.  The TVM excluded-volume fraction is:
+
+\begin{align}
+f_{\mathrm{TVM}}(x) &= \exp\left(-x - \frac{x^2}{2}\right), \\
+n_{\mathrm{id}} &= \frac{n}{f_{\mathrm{TVM}}(x)}.
+\end{align}
+
+The pressure prefactor is:
+
+\begin{equation}
+\Pi_{\mathrm{TVM}}(n,b) =
+f_{\mathrm{TVM}}(n,b) - n \frac{d f_{\mathrm{TVM}}(n,b)}{dn}.
+\end{equation}
+
+\subsubsection{Species-Level Excluded Volume in Asymmetric Matter}
+
+For asymmetric matter, the code uses the species-dependent arguments
+
+\begin{align}
+x_p &= b_n n_p + b_{pn} n_n, \\
+x_n &= b_{pn} n_p + b_n n_n,
+\end{align}
+
+and then evaluates the species volume fraction with the corresponding model
+rule: $1-x$ for standard excluded volume, $f_{\mathrm{CS}}(x)$ for
+Carnahan--Starling, or $f_{\mathrm{TVM}}(x)$ for TVM.
+
+\subsection{Examples Already Implemented}
+
+The package already contains the following models:
+
+\begin{itemize}
+\item \texttt{vdw}
+\item \texttt{rks}
+\item \texttt{pr}
+\item \texttt{clausius}
+\item \texttt{clausius\_cs}
+\item \texttt{clausius\_tvm}
+\item \texttt{dieterici}
+\item \texttt{cs}
+\item \texttt{tvm}
+\end{itemize}
+
+The hybrid model \texttt{clausius\_cs} combines the Clausius attractive sector
+with the Carnahan--Starling excluded-volume mapping, while
+\texttt{clausius\_tvm} combines the same Clausius attraction with the TVM
+repulsive mapping.  Because these are not the original pure Clausius model,
+the practical search window for the parameter $c$ may differ from the usual
+pure-Clausius reference range.  In the included scan examples, the search
+interval is widened to reach low-$K_0$ targets such as
+$K_0=240~\mathrm{MeV}$.
+
+\section{Workflow 1: Symmetric Zero-Temperature Ground State}
+
+At saturation density the code solves for the couplings $a$ and $b$ using:
+
+\begin{align}
+P(n_0) &= 0, \\
+\frac{\epsilon(n_0)}{n_0} - m_N &= -16~\mathrm{MeV}.
+\end{align}
+
+After solving $a$ and $b$, the incompressibility is evaluated as
+\begin{equation}
+K_0 = 9 \left. \frac{dP}{dn_B} \right|_{n_0}.
+\end{equation}
+
+The symmetric energy density and pressure use the model-dependent ideal-density
+map and mean field:
+\begin{align}
+\epsilon(n) &= f(n,b)\,\epsilon_{\mathrm{id}}(n_{\mathrm{id}}) + n\,a\,U(n), \\
+P(n) &= \Pi(n,b)\,P_{\mathrm{id}}(n_{\mathrm{id}}) + n^2 a \frac{dU}{dn}.
+\end{align}
+
+\section{Workflow 2: Finite-Temperature Liquid Critical Point}
+
+The finite-temperature critical point is obtained from the interacting pressure
+surface by solving:
+\begin{align}
+\left(\frac{\partial P}{\partial n_B}\right)_T &= 0, \\
+\left(\frac{\partial^2 P}{\partial n_B^2}\right)_T &= 0.
+\end{align}
+
+The code first inverts the finite-temperature ideal-gas density to obtain the
+effective chemical potential $\mu^\ast$, then reconstructs the interacting
+pressure.  The outputs are:
+
+\begin{itemize}
+\item $T_c$
+\item $n_c$
+\item $P_c$
+\end{itemize}
+
+\section{Workflow 3: Symmetric Quarkyonic Matter}
+
+At fixed baryon density $n_B$, the code minimizes the zero-temperature energy
+density with respect to the quark fraction $f_Q$:
+\begin{equation}
+\epsilon = \epsilon(n_B, f_Q).
+\end{equation}
+
+The quarkyonic shell scale is controlled by the JSON entry
+\texttt{quarkyonic.lambda\_momentum\_mev}.  This is the main place where the
+CS/TVM versus other-model choices can differ in practice.
+
+\subsection{Sound Speed}
+
+Once the minimum-energy curve $\epsilon(n_B)$ has been generated, the code
+reconstructs:
+\begin{align}
+\mu_B &= \frac{d\epsilon}{dn_B}, \\
+P &= n_B \mu_B - \epsilon, \\
+v_s^2 &= \frac{dP/dn_B}{\mu_B}.
+\end{align}
+
+In the current design, if the quarkyonic profile is requested, sound speed is
+reconstructed automatically as part of the workflow.
+
+\section{Workflow 3A: Pure Hadronic EOS Table}
+
+The workflow can also write a dense zero-temperature hadronic EOS table before
+the quarkyonic construction is applied.  This is controlled by:
+
+\begin{center}
+\texttt{workflows.hadronic\_eos\_table = true}
+\end{center}
+
+The density range and derivative-reconstruction settings are controlled by the
+\texttt{hadronic\_eos} block.  The output table contains:
+
+\begin{itemize}
+\item $n$
+\item $n/n_0$
+\item raw and smoothed $\epsilon(n)$
+\item $E/A - m_N$
+\item $\mu_B$
+\item $P$
+\item $dP/dn_B$
+\item $d^2 \epsilon / dn_B^2$
+\item $v_s^2$
+\end{itemize}
+
+This provides a direct hadronic EOS and sound-speed diagnostic without turning
+on the quarkyonic branch.
+
+\section{Workflow 4: Asymmetric Hadronic Matter}
+
+The asymmetric hadronic sector is fitted from the five constraints used in this
+project:
+
+\begin{itemize}
+\item binding energy
+\item saturation density
+\item symmetry energy $J$
+\item symmetry-energy slope $L$
+\item incompressibility $K_0$
+\end{itemize}
+
+The asymmetric couplings are:
+\begin{equation}
+(a_n, a_{pn}, b_n, b_{pn}).
+\end{equation}
+
+The code currently supports two branches:
+
+\begin{itemize}
+\item \texttt{equal\_b}: $b_{pn} = b_n$
+\item \texttt{target\_l}: $b_{pn} \neq b_n$, chosen to reproduce $L$
+\end{itemize}
+
+\section{Workflow 5: Asymmetric Quarkyonic Matter}
+
+Once the asymmetric couplings are known, the code can compute:
+
+\begin{itemize}
+\item fixed-$y$ profiles for user-selected proton fractions
+\item beta-equilibrium matter with leptons
+\end{itemize}
+
+The proton-fraction grid is selected in:
+\begin{center}
+\texttt{asymmetric.proton\_fraction\_values}
+\end{center}
+
+Leptons are controlled by:
+\begin{center}
+\texttt{asymmetric.beta\_equilibrium}
+\end{center}
+
+If \texttt{beta\_equilibrium=false}, the code computes only fixed-$y$ matter.
+If \texttt{beta\_equilibrium=true}, the code solves for charge neutrality with
+electrons and muons and constructs the beta-equilibrium EOS.
+
+\section{Workflow 6: Neutron Stars}
+
+The neutron-star branch uses the beta-equilibrium EOS and integrates the
+Tolman--Oppenheimer--Volkoff equations with an RK4 solver.
+
+The top-level switch is:
+\begin{center}
+\texttt{workflows.neutron\_star}
+\end{center}
+
+The main numerical controls are:
+
+\begin{itemize}
+\item number of central-pressure points
+\item pressure range
+\item radial step size
+\item maximum radius
+\end{itemize}
+
+\section{How To Read The Workflow Flags}
+
+\subsection{Minimal Symmetric Calibration}
+
+If you only want to solve the symmetric ground-state point and obtain
+$(a,b,K_0)$, set:
+\begin{itemize}
+\item \texttt{ground\_state=true}
+\item everything else in \texttt{workflows} to \texttt{false}
+\end{itemize}
+
+\subsection{Add The Liquid Critical Point}
+
+Set:
+\begin{itemize}
+\item \texttt{quantum\_critical=true}
+\end{itemize}
+
+\subsection{Add Symmetric Quarkyonic Matter}
+
+Set:
+\begin{itemize}
+\item \texttt{symmetric\_quarkyonic=true}
+\end{itemize}
+
+\subsection{Add A Pure Hadronic EOS Table}
+
+Set:
+\begin{itemize}
+\item \texttt{hadronic\_eos\_table=true}
+\end{itemize}
+
+\subsection{Add Asymmetric Matter Without Leptons}
+
+Set:
+\begin{itemize}
+\item \texttt{asymmetric\_fit=true}
+\item \texttt{asymmetric\_quarkyonic=true}
+\item \texttt{asymmetric.beta\_equilibrium=false}
+\end{itemize}
+
+\subsection{Add Leptons}
+
+Set:
+\begin{itemize}
+\item \texttt{asymmetric\_fit=true}
+\item \texttt{asymmetric\_quarkyonic=true}
+\item \texttt{asymmetric.beta\_equilibrium=true}
+\end{itemize}
+
+\subsection{Add Neutron Stars}
+
+Set:
+\begin{itemize}
+\item \texttt{neutron\_star=true}
+\end{itemize}
+
+\section{How To Add A New Model}
+
+For a new real-gas model, implement the model in \texttt{src/qmm/models.py}:
+
+\begin{enumerate}
+\item define the attractive sector $U(n)$ and $dU/dn$
+\item define the excluded-volume mapping
+\item define the inverse density mapping
+\item define the volume fraction
+\item define the pressure prefactor
+\item register a new \texttt{InteractionModel}
+\item set the capability flags for supported workflow branches
+\end{enumerate}
+
+After that, put the registered name into:
+\begin{center}
+\texttt{model.name}
+\end{center}
+
+inside a JSON file based on either \texttt{qmm\_blank\_template.json} or
+\texttt{qmm\_all\_in\_one\_template.json}.
+
+\section{Output Controls}
+
+The \texttt{output} block controls what is written:
+
+\begin{itemize}
+\item \texttt{write\_csv}: write EOS tables and summaries
+\item \texttt{write\_json}: write the run summary
+\item \texttt{write\_plots}: write figures
+\item \texttt{plot\_formats}: choose \texttt{png}, \texttt{pdf}, or both
+\end{itemize}
+
+\section{Practical Limitation}
+
+In the current implementation, sound-speed reconstruction is tied to the
+quarkyonic profile generation.  Therefore:
+
+\begin{itemize}
+\item if you request a quarkyonic branch, $v_s^2$ is reconstructed
+\item if you do not want that branch, switch it off in \texttt{workflows}
+\item if you want the branch but do not want saved files, switch off
+\texttt{output.write\_csv} and/or \texttt{output.write\_plots}
+\end{itemize}
+
+\section{Main Files To Use}
+
+For normal use, the main files are:
+
+\begin{itemize}
+\item \texttt{examples/qmm\_blank\_template.json}
+\item \texttt{examples/qmm\_all\_in\_one\_template.json}
+\item \texttt{notebooks/QMM\_workflow.ipynb}
+\item \texttt{src/qmm/models.py}
+\item \texttt{src/qmm/config.py}
+\item \texttt{src/qmm/runner.py}
+\end{itemize}
+
+\end{document}

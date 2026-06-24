@@ -1,0 +1,79 @@
+{
+  "asymmetric_fit": {
+    "J": 32.50000000143177,
+    "K0": 279.9999987268542,
+    "L": 58.899999954428495,
+    "a_avg": 449.772374208352,
+    "a_n": 248.92805673314862,
+    "a_pn": 650.6166916835554,
+    "b_avg": 2.3383296026999485,
+    "b_n": 1.6184204206752497,
+    "b_pn": 3.0582387847246473,
+    "binding": -16.00000000002467,
+    "branch_mode": "target_l",
+    "j_residual": 1.4317720342660323e-09,
+    "k0_residual": 0.0,
+    "l_residual": -4.557150390382958e-08,
+    "model": "clausius_cs",
+    "n_sat": 0.15999997361210014,
+    "p_sat": -8.209566857431128e-07,
+    "parameter_name": "c",
+    "parameter_value": 3.7849755674600614,
+    "ratio_a_pn_over_a_n": 2.613673606029142,
+    "ratio_b_pn_over_b_n": 1.8896442146031904,
+    "target_k0": null
+  },
+  "ground_state": {
+    "K0": 279.9999987268542,
+    "a": 449.772374208352,
+    "b": 2.3383296026999485,
+    "binding": -16.00000000002467,
+    "e_per_particle_minus_m_at_sat": -16.00000000002501,
+    "eps_id": 236.2323252282464,
+    "kf": 1.5350699256642026,
+    "model": "clausius_cs",
+    "n_id": 0.24433939006458325,
+    "n_sat": 0.15999997361210014,
+    "p_id": 4.612318737557092,
+    "p_sat": -8.209566857431128e-07,
+    "parameter_name": "c",
+    "parameter_value": 3.7849755674600614
+  },
+  "hadronic_eos_table": {
+    "K0": 279.9999987268542,
+    "a": 449.772374208352,
+    "b": 2.3383296026999485,
+    "model": "clausius_cs",
+    "parameter_name": "c",
+    "parameter_value": 3.7849755674600614,
+    "points": 160
+  },
+  "model": {
+    "name": "clausius_cs",
+    "parameter_search": {
+      "enabled": true,
+      "parameter_max": 6.0,
+      "parameter_min": 0.0,
+      "scan_steps": 121,
+      "target_k0": 280.0,
+      "tol": 1e-08
+    },
+    "parameter_value": null
+  },
+  "outputs": {
+    "asymmetric_fit_csv": "/Users/dajuarez4/Documents/QuarkMatt/QMM/results/generated/_clausius_cs_validation/clausius_cs_hybrid_asymmetric_fit.csv",
+    "ground_state_csv": "/Users/dajuarez4/Documents/QuarkMatt/QMM/results/generated/_clausius_cs_validation/clausius_cs_hybrid_ground_state.csv",
+    "hadronic_eos_csv": "/Users/dajuarez4/Documents/QuarkMatt/QMM/results/generated/_clausius_cs_validation/clausius_cs_hybrid_hadronic_eos.csv",
+    "summary_json": "/Users/dajuarez4/Documents/QuarkMatt/QMM/results/generated/_clausius_cs_validation/clausius_cs_hybrid_summary.json"
+  },
+  "run_name": "clausius_cs_hybrid",
+  "workflows": {
+    "asymmetric_fit": true,
+    "asymmetric_quarkyonic": false,
+    "ground_state": true,
+    "hadronic_eos_table": true,
+    "neutron_star": false,
+    "quantum_critical": false,
+    "symmetric_quarkyonic": false
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "run_name": "name_of_the_simulation",
+  "documentation": {
+    "model_label": "short human-readable model name",
+    "mean_field_latex": "U(n) = ...",
+    "excluded_volume_latex": "f(n) = ...",
+    "ideal_density_map_latex": "n_{id} = ...",
+    "inverse_density_map_latex": "n = ...",
+    "pressure_prefactor_latex": "\\Pi(n) = ...",
+    "parameter_symbol_latex": "c, \\alpha, ... or null",
+    "notes": "This block is documentation only. QMM ignores it at runtime."
+  },
+  "requested_calculations": {
+    "matter_mode": "symmetric_or_asymmetric_or_both",
+    "compute_ground_state_ab": true,
+    "compute_incompressibility_k0": true,
+    "compute_liquid_critical_point": false,
+    "compute_eos": true,
+    "compute_speed_of_sound": true,
+    "compute_hadronic_eos_table": false,
+    "include_leptons": false,
+    "compute_neutron_star": false,
+    "save_csv": true,
+    "save_plots": true,
+    "save_summary_json": true,
+    "notes": "This block is a human-readable summary. The executable switches are given below in workflows, asymmetric, neutron_star, and output."
+  },
+  "model": {
+    "name": "registered_model_name",
+    "parameter_name": "optional_extra_parameter_name_like_c_or_alpha",
+    "parameter_mode": "fixed_value_or_solve_from_target_k0",
+    "parameter_value": null,
+    "parameter_search": {
+      "enabled": false,
+      "target_k0": null,
+      "parameter_min": null,
+      "parameter_max": null,
+      "scan_steps": 121,
+      "tol": 1.0e-8
+    }
+  },
+  "workflows": {
+    "ground_state": true,
+    "quantum_critical": false,
+    "hadronic_eos_table": false,
+    "symmetric_quarkyonic": false,
+    "asymmetric_fit": false,
+    "asymmetric_quarkyonic": false,
+    "neutron_star": false
+  },
+  "physical": {
+    "hbarc": 197.3269804,
+    "m_nucleon": 938.0,
+    "degeneracy_symmetric": 4.0,
+    "degeneracy_species": 2.0,
+    "n0": 0.16,
+    "binding_energy": -16.0,
+    "symmetry_energy_j": 32.5,
+    "symmetry_slope_l": 58.9
+  },
+  "ground_state": {
+    "b_min": 1.0e-6,
+    "b_max": 6.0,
+    "b_scan_steps": 5000,
+    "n_integral_points": 4000,
+    "saturation_left": 0.05,
+    "saturation_right": 0.30,
+    "derivative_step": 1.0e-6
+  },
+  "quantum": {
+    "quick": false,
+    "n_k_fd": 400,
+    "k_max_fd": 20.0,
+    "mu_min": -200.0,
+    "mu_max": 1200.0,
+    "mu_scf_tol": 1.0e-8,
+    "mu_scf_max_iter": 80,
+    "mu_scf_damping": 0.70,
+    "mu_delta": 0.25,
+    "t_min_cp": 10.0,
+    "t_max_cp": 22.0,
+    "n_min_cp": 0.045,
+    "n_max_cp": 0.075,
+    "coarse_t_count": 17,
+    "coarse_n_count": 17,
+    "h_n": 2.0e-4,
+    "h_t": 2.0e-2,
+    "outer_tol_dPdn": 1.0e-5,
+    "outer_tol_d2Pdn2": 1.0e-4,
+    "outer_max_iter": 35,
+    "outer_damping_t": 0.70,
+    "outer_damping_n": 0.70,
+    "outer_max_step_t": 0.75,
+    "outer_max_step_n": 0.004,
+    "outer_min_lambda": 1.0e-3,
+    "cache_round_digits": 8
+  },
+  "hadronic_eos": {
+    "n_min_ratio": 0.2,
+    "n_max_ratio": 5.0,
+    "n_points": 160,
+    "smoothing_window": 9,
+    "smoothing_degree": 3,
+    "derivative_floor": 1.0e-10
+  },
+  "quarkyonic": {
+    "quick": false,
+    "n_min_ratio": 0.000001,
+    "n_max_ratio": 5.0,
+    "n_points": 120,
+    "fq_scan_points": 121,
+    "fq_min_shift": 1.0e-5,
+    "refine_tol": 1.0e-6,
+    "refine_max_iter": 400,
+    "shell_integral_points": 300,
+    "quark_integral_points": 300,
+    "smoothing_window": 9,
+    "smoothing_degree": 3,
+    "derivative_floor": 1.0e-10,
+    "nc": 3,
+    "quark_degeneracy": 4.0,
+    "lambda_momentum_mev": 200.0
+  },
+  "asymmetric": {
+    "enabled": false,
+    "branch_mode": "equal_b_or_target_l",
+    "target_j": 32.5,
+    "target_l": 58.9,
+    "target_k0": null,
+    "delta_scan_steps": 401,
+    "derivative_step_l": 1.0e-4,
+    "proton_fraction_values": [0.0, 0.1, 0.2, 0.3, 0.4, 0.5],
+    "beta_equilibrium": false
+  },
+  "neutron_star": {
+    "sequence_points": 48,
+    "central_pressure_min_mev_fm3": 0.10,
+    "central_pressure_max_fraction": 0.995,
+    "surface_pressure_mev_fm3": 0.05,
+    "start_radius_cm": 1.0,
+    "step_cm": 2500.0,
+    "max_radius_cm": 4000000.0
+  },
+  "output": {
+    "directory": "results/generated/name_of_output_folder",
+    "write_json": true,
+    "write_csv": true,
+    "write_plots": true,
+    "plot_formats": ["png", "pdf"],
+    "collection_search_root": null,
+    "collection_output_directory": null
+  }
+}

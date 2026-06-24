@@ -1,0 +1,7 @@
+model,target_k0,y,status
+tvm,,0.000,no_solution_in_window
+tvm,,0.100,converged
+tvm,,0.200,converged
+tvm,,0.300,converged
+tvm,,0.400,converged
+tvm,,0.500,converged

@@ -1,0 +1,3 @@
+model,parameter_name,parameter_value,points,max_mass_msun,radius_at_max_mass_km,central_pressure_at_max_mass_mev_fm3,central_energy_density_at_max_mass_mev_fm3,max_mass_at_upper_eos_boundary
+cs,,,48,2.6802407476952936,13.275323668228463,262.9630925130696,828.8106730988004,False
+tvm,,,48,2.621854140832697,13.03720994059648,270.226926871849,821.3025101455221,False

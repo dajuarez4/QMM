@@ -1,0 +1,38 @@
+{
+  "run_name": "clausius_reference",
+  "model": {
+    "name": "clausius",
+    "parameter_search": {
+      "enabled": true,
+      "target_k0": 280.0,
+      "parameter_min": 0.0,
+      "parameter_max": 4.74,
+      "scan_steps": 81
+    }
+  },
+  "workflows": {
+    "ground_state": true,
+    "quantum_critical": true,
+    "symmetric_quarkyonic": true,
+    "asymmetric_fit": true,
+    "asymmetric_quarkyonic": true
+  },
+  "quantum": {
+    "quick": true
+  },
+  "quarkyonic": {
+    "quick": true
+  },
+  "asymmetric": {
+    "enabled": true,
+    "branch_mode": "target_l",
+    "target_j": 32.5,
+    "target_l": 58.9,
+    "target_k0": 280.0,
+    "proton_fraction_values": [0.0, 0.1, 0.2, 0.3, 0.4, 0.5],
+    "beta_equilibrium": true
+  },
+  "output": {
+    "directory": "results/generated/clausius_reference"
+  }
+}

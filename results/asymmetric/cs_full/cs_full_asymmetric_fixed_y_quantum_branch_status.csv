@@ -1,0 +1,7 @@
+model,target_k0,y,status
+cs,,0.000,no_solution_in_window
+cs,,0.100,converged
+cs,,0.200,converged
+cs,,0.300,converged
+cs,,0.400,converged
+cs,,0.500,converged
