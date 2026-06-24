@@ -43,7 +43,7 @@
     "quark_integral_points": 300,
     "smoothing_window": 9,
     "smoothing_degree": 3,
-    "lambda_momentum_mev": 300.0
+    "lambda_momentum_mev": 200.0
   },
   "asymmetric": {
     "enabled": true,

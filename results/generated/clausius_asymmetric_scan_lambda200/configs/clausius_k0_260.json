@@ -1,0 +1,71 @@
+{
+  "run_name": "clausius_k0_260",
+  "model": {
+    "name": "clausius",
+    "parameter_search": {
+      "enabled": true,
+      "target_k0": 260.0,
+      "parameter_min": 0.0,
+      "parameter_max": 4.74,
+      "scan_steps": 121,
+      "tol": 1e-08
+    }
+  },
+  "workflows": {
+    "ground_state": true,
+    "quantum_critical": false,
+    "hadronic_eos_table": true,
+    "symmetric_quarkyonic": false,
+    "asymmetric_fit": true,
+    "asymmetric_quarkyonic": true,
+    "neutron_star": true
+  },
+  "physical": {
+    "n0": 0.16,
+    "binding_energy": -16.0,
+    "symmetry_energy_j": 32.5,
+    "symmetry_slope_l": 58.9
+  },
+  "hadronic_eos": {
+    "n_min_ratio": 0.2,
+    "n_max_ratio": 5.0,
+    "n_points": 160,
+    "smoothing_window": 9,
+    "smoothing_degree": 3,
+    "derivative_floor": 1e-10
+  },
+  "quarkyonic": {
+    "n_min_ratio": 1e-06,
+    "n_max_ratio": 5.0,
+    "n_points": 20,
+    "fq_scan_points": 21,
+    "shell_integral_points": 80,
+    "quark_integral_points": 80,
+    "smoothing_window": 9,
+    "smoothing_degree": 3,
+    "lambda_momentum_mev": 200.0
+  },
+  "asymmetric": {
+    "enabled": true,
+    "branch_mode": "target_l",
+    "target_j": 32.5,
+    "target_l": 58.9,
+    "target_k0": 260.0,
+    "proton_fraction_values": [
+      0.0,
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5
+    ],
+    "beta_equilibrium": true
+  },
+  "neutron_star": {
+    "sequence_points": 8
+  },
+  "output": {
+    "directory": "/Users/dajuarez4/Documents/QuarkMatt/QMM/results/generated/clausius_asymmetric_scan_lambda200/K0_260",
+    "write_plots": false
+  }
+}
