@@ -331,6 +331,62 @@ The quarkyonic shell scale is controlled by the JSON entry
 \texttt{quarkyonic.lambda\_momentum\_mev}.  This is the main place where the
 CS/TVM versus other-model choices can differ in practice.
 
+\subsection{Energy Minimization, Golden Section, and Momentum Modes}
+
+The symmetric solver does not assume a fixed quark fraction.  Instead, at each
+chosen density $n_B$ it solves
+\begin{equation}
+\epsilon_{\min}(n_B) = \min_{f_Q \in [f_{Q,\min},1]} \epsilon(n_B,f_Q).
+\end{equation}
+
+Computationally, this is done in two stages:
+\begin{enumerate}
+\item build a coarse scan in $f_Q$ using the JSON value
+\texttt{quarkyonic.fq\_scan\_points}
+\item identify candidate local minima and refine each candidate bracket with a
+golden-section minimizer until the tolerance
+\texttt{quarkyonic.refine\_tol} is reached
+\end{enumerate}
+
+The final state is the one with the smallest refined energy density.  This is
+the quantity written later as the raw curve $\epsilon_{\mathrm{raw}}(n_B)$.
+
+The quark integrals use the infrared regulator
+\begin{equation}
+\kappa = \frac{\lambda}{\hbar c},
+\qquad
+\lambda = \texttt{quarkyonic.lambda\_momentum\_mev},
+\end{equation}
+and, in the current implementation,
+\begin{align}
+n_Q(k) &=
+\frac{g_Q}{2\pi^2}
+\int_0^{k/N_c} q \sqrt{q^2 + \kappa^2}\, dq,
+\\
+\epsilon_Q(k) &=
+\frac{N_c g_Q}{2\pi^2}
+\int_0^{k/N_c}
+q \sqrt{q^2 + \kappa^2}
+\sqrt{(\hbar c\,q)^2 + m_q^2}\, dq,
+\end{align}
+with $m_q = m_N/N_c$ in the notebook and source-code workflow used here.
+
+Two momentum-space realizations are supported:
+\begin{itemize}
+\item \textbf{quarkyonic mode}: quarks occupy the inner Fermi sea up to
+$k_{bu}$ and baryons fill the outer shell $k_{bu} < k < k_F$
+\item \textbf{baryquark mode}: baryons occupy the inner Fermi sea up to $k_F$
+and quarks occupy the shell $k_F < k < k_{bu}$
+\end{itemize}
+
+The new symmetric comparison notebook added in this update uses
+\begin{itemize}
+\item $\lambda = 200~\mathrm{MeV}$ for the quarkyonic curves
+\item $\lambda = 0$ for the baryquark curves
+\end{itemize}
+so that the baryquark comparison can be inspected without the extra infrared
+regulator broadening in that branch.
+
 \subsection{Sound Speed}
 
 Once the minimum-energy curve $\epsilon(n_B)$ has been generated, the code
@@ -343,6 +399,22 @@ v_s^2 &= \frac{dP/dn_B}{\mu_B}.
 
 In the current design, if the quarkyonic profile is requested, sound speed is
 reconstructed automatically as part of the workflow.
+
+For this workflow the code stores both the raw minimum-energy curve
+$\epsilon_{\mathrm{raw}}(n_B)$ and a locally smoothed curve
+$\epsilon(n_B)$.  The production sound speed is reconstructed from the smoothed
+curve using a local polynomial regression before taking first and second
+derivatives.  This improves numerical stability of
+\begin{equation}
+v_s^2 = \frac{n_B\, d^2\epsilon/dn_B^2}{d\epsilon/dn_B}.
+\end{equation}
+
+For the new baryquark/quarkyonic comparison notebook, the baryquark
+$v_s^2$ panel may also be plotted from a direct discrete-gradient diagnostic
+applied to $\epsilon_{\mathrm{raw}}(n_B)$.  That diagnostic is useful when one
+wants to preserve the narrow peak structure in the visualization, but the
+smoothed reconstruction remains the default production method written by the
+main workflow.
 
 \section{Workflow 3A: Pure Hadronic EOS Table}
 
@@ -548,6 +620,9 @@ For normal use, the main files are:
 \item \texttt{examples/qmm\_blank\_template.json}
 \item \texttt{examples/qmm\_all\_in\_one\_template.json}
 \item \texttt{notebooks/QMM\_workflow.ipynb}
+\item \texttt{notebooks/baryquark\_quarkyonic.ipynb}
+\item \texttt{examples/baryquark\_quarkyonic\_*.json}
+\item \texttt{scripts/compute\_vdw\_excluded\_volume\_only.py}
 \item \texttt{src/qmm/models.py}
 \item \texttt{src/qmm/config.py}
 \item \texttt{src/qmm/runner.py}
