@@ -34,6 +34,7 @@
       "y_0.500"
     ],
     "model": "clausius",
+    "momentum_mode": "quarkyonic",
     "parameter_name": "c",
     "parameter_value": 3.929255287110805
   },
@@ -86,18 +87,26 @@
     "radius_at_max_mass_km": 13.001344863160822
   },
   "outputs": {
-    "asymmetric_beta_csv": "/Users/dajuarez4/Documents/QuarkMatt/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_asymmetric_beta.csv",
-    "asymmetric_fit_csv": "/Users/dajuarez4/Documents/QuarkMatt/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_asymmetric_fit.csv",
-    "asymmetric_y_0.000_csv": "/Users/dajuarez4/Documents/QuarkMatt/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_asymmetric_y_0.000.csv",
-    "asymmetric_y_0.100_csv": "/Users/dajuarez4/Documents/QuarkMatt/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_asymmetric_y_0.100.csv",
-    "asymmetric_y_0.200_csv": "/Users/dajuarez4/Documents/QuarkMatt/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_asymmetric_y_0.200.csv",
-    "asymmetric_y_0.300_csv": "/Users/dajuarez4/Documents/QuarkMatt/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_asymmetric_y_0.300.csv",
-    "asymmetric_y_0.400_csv": "/Users/dajuarez4/Documents/QuarkMatt/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_asymmetric_y_0.400.csv",
-    "asymmetric_y_0.500_csv": "/Users/dajuarez4/Documents/QuarkMatt/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_asymmetric_y_0.500.csv",
-    "ground_state_csv": "/Users/dajuarez4/Documents/QuarkMatt/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_ground_state.csv",
-    "hadronic_eos_csv": "/Users/dajuarez4/Documents/QuarkMatt/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_hadronic_eos.csv",
-    "neutron_star_sequence_csv": "/Users/dajuarez4/Documents/QuarkMatt/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_neutron_star_sequence.csv",
-    "summary_json": "/Users/dajuarez4/Documents/QuarkMatt/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_summary.json"
+    "asymmetric_beta_csv": "/Users/dajuarez4/Documents/QuarkMatt/good_repo/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_asymmetric_beta.csv",
+    "asymmetric_fit_csv": "/Users/dajuarez4/Documents/QuarkMatt/good_repo/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_asymmetric_fit.csv",
+    "asymmetric_y_0.000_csv": "/Users/dajuarez4/Documents/QuarkMatt/good_repo/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_asymmetric_y_0.000.csv",
+    "asymmetric_y_0.100_csv": "/Users/dajuarez4/Documents/QuarkMatt/good_repo/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_asymmetric_y_0.100.csv",
+    "asymmetric_y_0.200_csv": "/Users/dajuarez4/Documents/QuarkMatt/good_repo/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_asymmetric_y_0.200.csv",
+    "asymmetric_y_0.300_csv": "/Users/dajuarez4/Documents/QuarkMatt/good_repo/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_asymmetric_y_0.300.csv",
+    "asymmetric_y_0.400_csv": "/Users/dajuarez4/Documents/QuarkMatt/good_repo/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_asymmetric_y_0.400.csv",
+    "asymmetric_y_0.500_csv": "/Users/dajuarez4/Documents/QuarkMatt/good_repo/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_asymmetric_y_0.500.csv",
+    "clausius_k0_290_asymmetric_quarkyonic_pdf": "/Users/dajuarez4/Documents/QuarkMatt/good_repo/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_asymmetric_quarkyonic.pdf",
+    "clausius_k0_290_asymmetric_quarkyonic_png": "/Users/dajuarez4/Documents/QuarkMatt/good_repo/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_asymmetric_quarkyonic.png",
+    "clausius_k0_290_beta_equilibrium_observables_pdf": "/Users/dajuarez4/Documents/QuarkMatt/good_repo/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_beta_equilibrium_observables.pdf",
+    "clausius_k0_290_beta_equilibrium_observables_png": "/Users/dajuarez4/Documents/QuarkMatt/good_repo/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_beta_equilibrium_observables.png",
+    "clausius_k0_290_ground_state_eos_pdf": "/Users/dajuarez4/Documents/QuarkMatt/good_repo/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_ground_state_eos.pdf",
+    "clausius_k0_290_ground_state_eos_png": "/Users/dajuarez4/Documents/QuarkMatt/good_repo/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_ground_state_eos.png",
+    "clausius_k0_290_neutron_star_sequence_pdf": "/Users/dajuarez4/Documents/QuarkMatt/good_repo/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_neutron_star_sequence.pdf",
+    "clausius_k0_290_neutron_star_sequence_png": "/Users/dajuarez4/Documents/QuarkMatt/good_repo/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_neutron_star_sequence.png",
+    "ground_state_csv": "/Users/dajuarez4/Documents/QuarkMatt/good_repo/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_ground_state.csv",
+    "hadronic_eos_csv": "/Users/dajuarez4/Documents/QuarkMatt/good_repo/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_hadronic_eos.csv",
+    "neutron_star_sequence_csv": "/Users/dajuarez4/Documents/QuarkMatt/good_repo/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_neutron_star_sequence.csv",
+    "summary_json": "/Users/dajuarez4/Documents/QuarkMatt/good_repo/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290/clausius_k0_290_summary.json"
   },
   "run_name": "clausius_k0_290",
   "workflows": {

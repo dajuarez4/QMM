@@ -32,9 +32,9 @@ The JSON file decides which physics blocks are executed and which outputs are wr
 | `neutron_star` | TOV grid settings | Control the mass-radius sequence |
 | `output` | output flags | Decide whether CSV, JSON, and plots are written |
 
-The executable blank template is [examples/qmm_blank_template.json](/Users/dajuarez4/Documents/QuarkMatt/QMM/examples/qmm_blank_template.json).
+The executable blank template is [examples/qmm_blank_template.json](examples/qmm_blank_template.json).
 
-The richer all-in-one template is [examples/qmm_all_in_one_template.json](/Users/dajuarez4/Documents/QuarkMatt/QMM/examples/qmm_all_in_one_template.json). It includes:
+The richer all-in-one template is [examples/qmm_all_in_one_template.json](examples/qmm_all_in_one_template.json). It includes:
 
 - LaTeX fields for the mean field and excluded-volume equations
 - a human-readable calculation summary
@@ -72,7 +72,7 @@ The JSON file cannot, by itself:
 - define a brand-new excluded-volume map
 - add a symbolic new model without one code registration step
 
-For a genuinely new model, you must first register the physics in [src/qmm/models.py](/Users/dajuarez4/Documents/QuarkMatt/QMM/src/qmm/models.py). After that, the same JSON interface works for it.
+For a genuinely new model, you must first register the physics in [src/qmm/models.py](src/qmm/models.py). After that, the same JSON interface works for it.
 
 ## Quarkyonic Versus Baryquark Momentum Modes
 
@@ -162,13 +162,13 @@ PYTHONPATH=src /opt/homebrew/bin/python3.12 -m qmm examples/cs_full.json
 
 The fully general blank template is:
 
-- [examples/qmm_blank_template.json](/Users/dajuarez4/Documents/QuarkMatt/QMM/examples/qmm_blank_template.json)
-- [examples/qmm_all_in_one_template.json](/Users/dajuarez4/Documents/QuarkMatt/QMM/examples/qmm_all_in_one_template.json)
-- [examples/clausius_asymmetric_base.json](/Users/dajuarez4/Documents/QuarkMatt/QMM/examples/clausius_asymmetric_base.json)
-- [examples/clausius_baryquark_demo.json](/Users/dajuarez4/Documents/QuarkMatt/QMM/examples/clausius_baryquark_demo.json)
-- [examples/clausius_equal_b_base.json](/Users/dajuarez4/Documents/QuarkMatt/QMM/examples/clausius_equal_b_base.json)
-- [examples/clausius_cs_hybrid_base.json](/Users/dajuarez4/Documents/QuarkMatt/QMM/examples/clausius_cs_hybrid_base.json)
-- [examples/clausius_tvm_hybrid_base.json](/Users/dajuarez4/Documents/QuarkMatt/QMM/examples/clausius_tvm_hybrid_base.json)
+- [examples/qmm_blank_template.json](examples/qmm_blank_template.json)
+- [examples/qmm_all_in_one_template.json](examples/qmm_all_in_one_template.json)
+- [examples/clausius_asymmetric_base.json](examples/clausius_asymmetric_base.json)
+- [examples/clausius_baryquark_demo.json](examples/clausius_baryquark_demo.json)
+- [examples/clausius_equal_b_base.json](examples/clausius_equal_b_base.json)
+- [examples/clausius_cs_hybrid_base.json](examples/clausius_cs_hybrid_base.json)
+- [examples/clausius_tvm_hybrid_base.json](examples/clausius_tvm_hybrid_base.json)
 
 Use `qmm_blank_template.json` if you want the cleanest runnable file.
 
@@ -271,13 +271,13 @@ How to fill it:
 - `output.directory`: where the run products will be written
 
 If you want a fully documented input with LaTeX fields included, start from
-[examples/qmm_all_in_one_template.json](/Users/dajuarez4/Documents/QuarkMatt/QMM/examples/qmm_all_in_one_template.json).
+[examples/qmm_all_in_one_template.json](examples/qmm_all_in_one_template.json).
 If you want the cleanest runnable starting point, use
-[examples/qmm_blank_template.json](/Users/dajuarez4/Documents/QuarkMatt/QMM/examples/qmm_blank_template.json).
+[examples/qmm_blank_template.json](examples/qmm_blank_template.json).
 
 ## Adding Your Own Real-Gas Model
 
-To add a new model, edit [src/qmm/models.py](/Users/dajuarez4/Documents/QuarkMatt/QMM/src/qmm/models.py) and register one more `InteractionModel`.
+To add a new model, edit [src/qmm/models.py](src/qmm/models.py) and register one more `InteractionModel`.
 
 The solver needs:
 
@@ -308,49 +308,50 @@ in the JSON input.
 
 The formal manual is:
 
-- [docs/qmm_complete_workflow_manual.tex](/Users/dajuarez4/Documents/QuarkMatt/QMM/docs/qmm_complete_workflow_manual.tex)
+- [docs/qmm_complete_workflow_manual.tex](docs/qmm_complete_workflow_manual.tex)
+- [docs/QMM.pdf](docs/QMM.pdf)
 
 The notebook overview is:
 
-- [notebooks/QMM_workflow.ipynb](/Users/dajuarez4/Documents/QuarkMatt/QMM/notebooks/QMM_workflow.ipynb)
-- [notebooks/baryquark_quarkyonic.ipynb](/Users/dajuarez4/Documents/QuarkMatt/QMM/notebooks/baryquark_quarkyonic.ipynb)
-- [notebooks/clausius_beta_vs2_postprocess.ipynb](/Users/dajuarez4/Documents/QuarkMatt/QMM/notebooks/clausius_beta_vs2_postprocess.ipynb)
-- [notebooks/clausius_asymmetric_workflow.ipynb](/Users/dajuarez4/Documents/QuarkMatt/QMM/notebooks/clausius_asymmetric_workflow.ipynb)
-- [notebooks/clausius_cs_hybrid_scan.ipynb](/Users/dajuarez4/Documents/QuarkMatt/QMM/notebooks/clausius_cs_hybrid_scan.ipynb)
-- [notebooks/clausius_tvm_hybrid_scan.ipynb](/Users/dajuarez4/Documents/QuarkMatt/QMM/notebooks/clausius_tvm_hybrid_scan.ipynb)
+- [notebooks/QMM_workflow.ipynb](notebooks/QMM_workflow.ipynb)
+- [notebooks/baryquark_quarkyonic.ipynb](notebooks/baryquark_quarkyonic.ipynb)
+- [notebooks/clausius_beta_vs2_postprocess.ipynb](notebooks/clausius_beta_vs2_postprocess.ipynb)
+- [notebooks/clausius_asymmetric_workflow.ipynb](notebooks/clausius_asymmetric_workflow.ipynb)
+- [notebooks/clausius_cs_hybrid_scan.ipynb](notebooks/clausius_cs_hybrid_scan.ipynb)
+- [notebooks/clausius_tvm_hybrid_scan.ipynb](notebooks/clausius_tvm_hybrid_scan.ipynb)
 
 ## Baryquark/Quarkyonic Symmetric Comparison
 
 The cleaned notebook for the symmetric quarkyonic versus baryquark comparison is:
 
-- [notebooks/baryquark_quarkyonic.ipynb](/Users/dajuarez4/Documents/QuarkMatt/QMM/notebooks/baryquark_quarkyonic.ipynb)
+- [notebooks/baryquark_quarkyonic.ipynb](notebooks/baryquark_quarkyonic.ipynb)
 
 The runnable JSON files used there are:
 
-- [examples/baryquark_quarkyonic_vdw_quarkyonic.json](/Users/dajuarez4/Documents/QuarkMatt/QMM/examples/baryquark_quarkyonic_vdw_quarkyonic.json)
-- [examples/baryquark_quarkyonic_vdw_baryquark.json](/Users/dajuarez4/Documents/QuarkMatt/QMM/examples/baryquark_quarkyonic_vdw_baryquark.json)
-- [examples/baryquark_quarkyonic_cs_quarkyonic.json](/Users/dajuarez4/Documents/QuarkMatt/QMM/examples/baryquark_quarkyonic_cs_quarkyonic.json)
-- [examples/baryquark_quarkyonic_cs_baryquark.json](/Users/dajuarez4/Documents/QuarkMatt/QMM/examples/baryquark_quarkyonic_cs_baryquark.json)
-- [examples/baryquark_quarkyonic_tvm_quarkyonic.json](/Users/dajuarez4/Documents/QuarkMatt/QMM/examples/baryquark_quarkyonic_tvm_quarkyonic.json)
-- [examples/baryquark_quarkyonic_tvm_baryquark.json](/Users/dajuarez4/Documents/QuarkMatt/QMM/examples/baryquark_quarkyonic_tvm_baryquark.json)
-- [examples/baryquark_quarkyonic_clausius_quarkyonic.json](/Users/dajuarez4/Documents/QuarkMatt/QMM/examples/baryquark_quarkyonic_clausius_quarkyonic.json)
-- [examples/baryquark_quarkyonic_clausius_baryquark.json](/Users/dajuarez4/Documents/QuarkMatt/QMM/examples/baryquark_quarkyonic_clausius_baryquark.json)
+- [examples/baryquark_quarkyonic_vdw_quarkyonic.json](examples/baryquark_quarkyonic_vdw_quarkyonic.json)
+- [examples/baryquark_quarkyonic_vdw_baryquark.json](examples/baryquark_quarkyonic_vdw_baryquark.json)
+- [examples/baryquark_quarkyonic_cs_quarkyonic.json](examples/baryquark_quarkyonic_cs_quarkyonic.json)
+- [examples/baryquark_quarkyonic_cs_baryquark.json](examples/baryquark_quarkyonic_cs_baryquark.json)
+- [examples/baryquark_quarkyonic_tvm_quarkyonic.json](examples/baryquark_quarkyonic_tvm_quarkyonic.json)
+- [examples/baryquark_quarkyonic_tvm_baryquark.json](examples/baryquark_quarkyonic_tvm_baryquark.json)
+- [examples/baryquark_quarkyonic_clausius_quarkyonic.json](examples/baryquark_quarkyonic_clausius_quarkyonic.json)
+- [examples/baryquark_quarkyonic_clausius_baryquark.json](examples/baryquark_quarkyonic_clausius_baryquark.json)
 
 A small Clausius-only symmetric baryquark input is also available as:
 
-- [examples/clausius_baryquark_demo.json](/Users/dajuarez4/Documents/QuarkMatt/QMM/examples/clausius_baryquark_demo.json)
+- [examples/clausius_baryquark_demo.json](examples/clausius_baryquark_demo.json)
 
 Important numerical choices used in the current paper-style notebook:
 
 - quarkyonic curves use `lambda_momentum_mev = 200`
 - baryquark curves use `lambda_momentum_mev = 0`
-- the auxiliary `vdW excl. volume only` control curve is generated by [scripts/compute_vdw_excluded_volume_only.py](/Users/dajuarez4/Documents/QuarkMatt/QMM/scripts/compute_vdw_excluded_volume_only.py)
+- the auxiliary `vdW excl. volume only` control curve is generated by [scripts/compute_vdw_excluded_volume_only.py](scripts/compute_vdw_excluded_volume_only.py)
 
 At each fixed density, the notebook minimizes the zero-temperature energy
 density with respect to the quark fraction `f_Q`. The implementation first
 scans a coarse `f_Q` grid, identifies candidate minima, and then refines each
 candidate interval with the golden-section minimizer from
-[src/qmm/numerics.py](/Users/dajuarez4/Documents/QuarkMatt/QMM/src/qmm/numerics.py).
+[src/qmm/numerics.py](src/qmm/numerics.py).
 The state with the lowest final `epsilon(n_B,f_Q)` is the one written into the
 symmetric curve.
 
@@ -367,18 +368,18 @@ comparison.
 
 Current output figures from the cleaned notebook are stored in:
 
-- [results/generated/baryquark_quarkyonic_notebook/baryquark_quarkyonic_paper_style.pdf](/Users/dajuarez4/Documents/QuarkMatt/QMM/results/generated/baryquark_quarkyonic_notebook/baryquark_quarkyonic_paper_style.pdf)
-- [results/generated/baryquark_quarkyonic_notebook/clausius_symmetric_quarkyonic_baryquark.pdf](/Users/dajuarez4/Documents/QuarkMatt/QMM/results/generated/baryquark_quarkyonic_notebook/clausius_symmetric_quarkyonic_baryquark.pdf)
+- [results/generated/baryquark_quarkyonic_notebook/baryquark_quarkyonic_paper_style.pdf](results/generated/baryquark_quarkyonic_notebook/baryquark_quarkyonic_paper_style.pdf)
+- [results/generated/baryquark_quarkyonic_notebook/clausius_symmetric_quarkyonic_baryquark.pdf](results/generated/baryquark_quarkyonic_notebook/clausius_symmetric_quarkyonic_baryquark.pdf)
 
 ## Clausius Beta-Equilibrium `v_s^2` Postprocessing
 
 The Clausius beta-equilibrium comparison plots discussed during the smoothing study are now collected in:
 
-- [notebooks/clausius_beta_vs2_postprocess.ipynb](/Users/dajuarez4/Documents/QuarkMatt/QMM/notebooks/clausius_beta_vs2_postprocess.ipynb)
+- [notebooks/clausius_beta_vs2_postprocess.ipynb](notebooks/clausius_beta_vs2_postprocess.ipynb)
 
 The script used to regenerate them is:
 
-- [scripts/postprocess_beta_sound_speed.py](/Users/dajuarez4/Documents/QuarkMatt/QMM/scripts/postprocess_beta_sound_speed.py)
+- [scripts/postprocess_beta_sound_speed.py](scripts/postprocess_beta_sound_speed.py)
 
 This postprocessing step:
 
@@ -404,13 +405,13 @@ python3 scripts/postprocess_beta_sound_speed.py \
 
 The current outputs are stored in:
 
-- [results/generated/clausius_beta_vs2_postprocess_window29](/Users/dajuarez4/Documents/QuarkMatt/QMM/results/generated/clausius_beta_vs2_postprocess_window29)
+- [results/generated/clausius_beta_vs2_postprocess_window29](results/generated/clausius_beta_vs2_postprocess_window29)
 
 Key comparison figures:
 
-- [results/generated/clausius_beta_vs2_postprocess_window29/clausius_branch_comparison_k0_overlay.png](/Users/dajuarez4/Documents/QuarkMatt/QMM/results/generated/clausius_beta_vs2_postprocess_window29/clausius_branch_comparison_k0_overlay.png)
-- [results/generated/clausius_beta_vs2_postprocess_window29/clausius_branch_comparison_same_k0_colors.png](/Users/dajuarez4/Documents/QuarkMatt/QMM/results/generated/clausius_beta_vs2_postprocess_window29/clausius_branch_comparison_same_k0_colors.png)
-- [results/generated/clausius_beta_vs2_postprocess_window29/clausius_branch_comparison_k0_250_280_315.png](/Users/dajuarez4/Documents/QuarkMatt/QMM/results/generated/clausius_beta_vs2_postprocess_window29/clausius_branch_comparison_k0_250_280_315.png)
+- [results/generated/clausius_beta_vs2_postprocess_window29/clausius_branch_comparison_k0_overlay.png](results/generated/clausius_beta_vs2_postprocess_window29/clausius_branch_comparison_k0_overlay.png)
+- [results/generated/clausius_beta_vs2_postprocess_window29/clausius_branch_comparison_same_k0_colors.png](results/generated/clausius_beta_vs2_postprocess_window29/clausius_branch_comparison_same_k0_colors.png)
+- [results/generated/clausius_beta_vs2_postprocess_window29/clausius_branch_comparison_k0_250_280_315.png](results/generated/clausius_beta_vs2_postprocess_window29/clausius_branch_comparison_k0_250_280_315.png)
 
 ## Included Reference Results
 

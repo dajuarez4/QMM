@@ -1,0 +1,2 @@
+[console_scripts]
+qmm = qmm.cli:main

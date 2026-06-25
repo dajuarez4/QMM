@@ -65,7 +65,9 @@
     "sequence_points": 12
   },
   "output": {
-    "directory": "/Users/dajuarez4/Documents/QuarkMatt/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290",
-    "write_plots": false
+    "directory": "/Users/dajuarez4/Documents/QuarkMatt/good_repo/QMM/results/generated/clausius_asymmetric_scan_lambda200_smooth/K0_290",
+    "write_json": true,
+    "write_csv": true,
+    "write_plots": true
   }
 }
