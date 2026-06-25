@@ -9,6 +9,7 @@
 
 - `src/qmm/`: documented production source code
 - `notebooks/QMM_workflow.ipynb`: the single overview notebook
+- `notebooks/baryquark_quarkyonic.ipynb`: symmetric quarkyonic/baryquark comparison notebook
 - `notebooks/clausius_beta_vs2_postprocess.ipynb`: Clausius beta-equilibrium `v_s^2` postprocessing notebook
 - `examples/`: JSON inputs, including a blank template
 - `docs/qmm_complete_workflow_manual.tex`: formal workflow manual
@@ -187,6 +188,93 @@ Then fill:
 - whether outputs are written
 - the numerical settings you want to override
 
+## JSON Skeleton
+
+`QMM` reads ordinary JSON, so the safest way to prepare a run is to copy one of
+the files in `examples/` and replace the placeholder values. A compact general
+shape is:
+
+```json
+{
+  "run_name": "my_simulation_name",
+  "model": {
+    "name": "clausius_tvm",
+    "parameter_value": null,
+    "parameter_search": {
+      "enabled": true,
+      "target_k0": 280.0,
+      "parameter_min": 0.0,
+      "parameter_max": 6.0,
+      "scan_steps": 81
+    }
+  },
+  "workflows": {
+    "ground_state": true,
+    "quantum_critical": true,
+    "hadronic_eos_table": true,
+    "symmetric_quarkyonic": true,
+    "asymmetric_fit": true,
+    "asymmetric_quarkyonic": true,
+    "neutron_star": false
+  },
+  "quarkyonic": {
+    "momentum_mode": "quarkyonic",
+    "lambda_momentum_mev": 200.0,
+    "n_min_ratio": 0.000001,
+    "n_max_ratio": 5.0,
+    "n_points": 220,
+    "fq_scan_points": 181,
+    "shell_integral_points": 400,
+    "quark_integral_points": 400,
+    "smoothing_window": 11,
+    "smoothing_degree": 3
+  },
+  "asymmetric": {
+    "enabled": true,
+    "branch_mode": "target_l",
+    "target_j": 32.5,
+    "target_l": 58.9,
+    "proton_fraction_values": [0.0, 0.1, 0.2, 0.3, 0.4, 0.5],
+    "beta_equilibrium": true
+  },
+  "neutron_star": {
+    "sequence_points": 48,
+    "central_pressure_min_mev_fm3": 0.10,
+    "central_pressure_max_fraction": 0.995,
+    "surface_pressure_mev_fm3": 0.05,
+    "start_radius_cm": 1.0,
+    "step_cm": 2500.0,
+    "max_radius_cm": 4000000.0
+  },
+  "output": {
+    "directory": "results/generated/my_simulation_name",
+    "write_csv": true,
+    "write_json": true,
+    "write_plots": true,
+    "plot_formats": ["png", "pdf"]
+  }
+}
+```
+
+How to fill it:
+
+- `model.name`: one of the registered models in `src/qmm/models.py`
+- `parameter_value`: use this when the extra parameter is fixed by hand
+- `parameter_search`: use this instead when the extra parameter must be solved from a target `K0`
+- `workflows.*`: switch each physics block on or off
+- `quarkyonic.momentum_mode`: `"quarkyonic"` or `"baryquark"` for the symmetric solver
+- `quarkyonic.lambda_momentum_mev`: the infrared regulator that you choose for that run
+- `asymmetric.branch_mode`: `"equal_b"` for `b_pn = b_n` or `"target_l"` for `b_pn != b_n`
+- `asymmetric.beta_equilibrium`: `true` adds electrons and muons
+- `workflows.neutron_star`: this is the real on/off switch for neutron stars
+- `neutron_star.*`: these are only the TOV numerical settings
+- `output.directory`: where the run products will be written
+
+If you want a fully documented input with LaTeX fields included, start from
+[examples/qmm_all_in_one_template.json](/Users/dajuarez4/Documents/QuarkMatt/QMM/examples/qmm_all_in_one_template.json).
+If you want the cleanest runnable starting point, use
+[examples/qmm_blank_template.json](/Users/dajuarez4/Documents/QuarkMatt/QMM/examples/qmm_blank_template.json).
+
 ## Adding Your Own Real-Gas Model
 
 To add a new model, edit [src/qmm/models.py](/Users/dajuarez4/Documents/QuarkMatt/QMM/src/qmm/models.py) and register one more `InteractionModel`.
@@ -248,7 +336,7 @@ The runnable JSON files used there are:
 - [examples/baryquark_quarkyonic_clausius_quarkyonic.json](/Users/dajuarez4/Documents/QuarkMatt/QMM/examples/baryquark_quarkyonic_clausius_quarkyonic.json)
 - [examples/baryquark_quarkyonic_clausius_baryquark.json](/Users/dajuarez4/Documents/QuarkMatt/QMM/examples/baryquark_quarkyonic_clausius_baryquark.json)
 
-The older single-file Clausius test case is still available as:
+A small Clausius-only symmetric baryquark input is also available as:
 
 - [examples/clausius_baryquark_demo.json](/Users/dajuarez4/Documents/QuarkMatt/QMM/examples/clausius_baryquark_demo.json)
 
