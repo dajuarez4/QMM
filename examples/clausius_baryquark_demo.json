@@ -1,0 +1,29 @@
+{
+  "run_name": "clausius_baryquark_demo",
+  "model": {
+    "name": "clausius",
+    "parameter_search": {
+      "enabled": true,
+      "target_k0": 280.0,
+      "parameter_min": 0.0,
+      "parameter_max": 4.74,
+      "scan_steps": 81
+    }
+  },
+  "workflows": {
+    "ground_state": true,
+    "quantum_critical": false,
+    "symmetric_quarkyonic": true,
+    "asymmetric_fit": false,
+    "asymmetric_quarkyonic": false,
+    "neutron_star": false
+  },
+  "quarkyonic": {
+    "quick": true,
+    "momentum_mode": "baryquark",
+    "lambda_momentum_mev": 300.0
+  },
+  "output": {
+    "directory": "results/generated/clausius_baryquark_demo"
+  }
+}

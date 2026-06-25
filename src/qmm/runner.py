@@ -75,6 +75,7 @@ def _symmetric_curve_rows(curve: SymmetricQuarkyonicCurve) -> list[dict[str, Any
         rows.append(
             {
                 "model": curve.model,
+                "momentum_mode": curve.momentum_mode,
                 "parameter_name": curve.parameter_name,
                 "parameter_value": curve.parameter_value,
                 "a": curve.a,
@@ -82,6 +83,7 @@ def _symmetric_curve_rows(curve: SymmetricQuarkyonicCurve) -> list[dict[str, Any
                 "K0": curve.K0,
                 "n": curve.n[index],
                 "n_over_n0": curve.n_over_n0[index],
+                "eps_raw": curve.eps_raw[index],
                 "eps": curve.eps[index],
                 "mu_b": curve.mu_b[index],
                 "pressure": curve.P[index],
@@ -98,10 +100,17 @@ def _symmetric_curve_rows(curve: SymmetricQuarkyonicCurve) -> list[dict[str, Any
     return rows
 
 
-def _asymmetric_profile_rows(rows, model_name: str, parameter_name: str | None, parameter_value: float | None) -> list[dict[str, Any]]:
+def _asymmetric_profile_rows(
+    rows,
+    model_name: str,
+    momentum_mode: str,
+    parameter_name: str | None,
+    parameter_value: float | None,
+) -> list[dict[str, Any]]:
     return [
         {
             "model": model_name,
+            "momentum_mode": momentum_mode,
             "parameter_name": parameter_name,
             "parameter_value": parameter_value,
             "n_b": row.n_b,
@@ -233,6 +242,7 @@ def run_workflow(config: RunConfig) -> dict[str, Any]:
         )
         summary["symmetric_quarkyonic"] = {
             "model": symmetric_quarkyonic.model,
+            "momentum_mode": symmetric_quarkyonic.momentum_mode,
             "parameter_name": symmetric_quarkyonic.parameter_name,
             "parameter_value": symmetric_quarkyonic.parameter_value,
             "a": symmetric_quarkyonic.a,
@@ -272,6 +282,7 @@ def run_workflow(config: RunConfig) -> dict[str, Any]:
         )
         summary["asymmetric_quarkyonic"] = {
             "model": asymmetric_quarkyonic.model,
+            "momentum_mode": asymmetric_quarkyonic.momentum_mode,
             "parameter_name": asymmetric_quarkyonic.parameter_name,
             "parameter_value": asymmetric_quarkyonic.parameter_value,
             "fixed_y_labels": sorted(asymmetric_quarkyonic.fixed_y_profiles.keys()),
@@ -282,7 +293,13 @@ def run_workflow(config: RunConfig) -> dict[str, Any]:
                 path = output_dir / f"{config.run_name}_asymmetric_{label}.csv"
                 write_csv_rows(
                     path,
-                    _asymmetric_profile_rows(rows, asymmetric_quarkyonic.model, asymmetric_quarkyonic.parameter_name, asymmetric_quarkyonic.parameter_value),
+                    _asymmetric_profile_rows(
+                        rows,
+                        asymmetric_quarkyonic.model,
+                        asymmetric_quarkyonic.momentum_mode,
+                        asymmetric_quarkyonic.parameter_name,
+                        asymmetric_quarkyonic.parameter_value,
+                    ),
                 )
                 summary["outputs"][f"asymmetric_{label}_csv"] = str(path)
             if asymmetric_quarkyonic.beta_profile:
@@ -292,6 +309,7 @@ def run_workflow(config: RunConfig) -> dict[str, Any]:
                     _asymmetric_profile_rows(
                         asymmetric_quarkyonic.beta_profile,
                         asymmetric_quarkyonic.model,
+                        asymmetric_quarkyonic.momentum_mode,
                         asymmetric_quarkyonic.parameter_name,
                         asymmetric_quarkyonic.parameter_value,
                     ),

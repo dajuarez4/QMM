@@ -1,0 +1,57 @@
+{
+  "ground_state": {
+    "K0": 564.2212815200054,
+    "a": 349.00932637089204,
+    "b": 4.280134137208359,
+    "binding": -15.999999999786155,
+    "e_per_particle_minus_m_at_sat": -15.99999999978445,
+    "eps_id": 392.3199865738516,
+    "kf": 1.8110105996233306,
+    "model": "tvm",
+    "n_id": 0.40121020604611785,
+    "n_sat": 0.16000001568179112,
+    "p_id": 10.402152878367199,
+    "p_sat": 9.831110894253925e-07,
+    "parameter_name": null,
+    "parameter_value": null
+  },
+  "model": {
+    "name": "tvm",
+    "parameter_search": {
+      "enabled": false,
+      "parameter_max": null,
+      "parameter_min": null,
+      "scan_steps": 121,
+      "target_k0": null,
+      "tol": 1e-08
+    },
+    "parameter_value": null
+  },
+  "outputs": {
+    "ground_state_csv": "results/generated/tvm_baryquark_symmetric_notebook/tvm_baryquark_symmetric_notebook_ground_state.csv",
+    "summary_json": "results/generated/tvm_baryquark_symmetric_notebook/tvm_baryquark_symmetric_notebook_summary.json",
+    "symmetric_quarkyonic_csv": "results/generated/tvm_baryquark_symmetric_notebook/tvm_baryquark_symmetric_notebook_symmetric_quarkyonic_curve.csv"
+  },
+  "run_name": "tvm_baryquark_symmetric_notebook",
+  "symmetric_quarkyonic": {
+    "K0": 564.2212815200054,
+    "a": 349.00932637089204,
+    "b": 4.280134137208359,
+    "model": "tvm",
+    "momentum_mode": "baryquark",
+    "n_tr": 0.2549152542372881,
+    "n_tr_over_n0": 1.5932203389830506,
+    "parameter_name": null,
+    "parameter_value": null,
+    "vs2_max": 0.44644664076529633
+  },
+  "workflows": {
+    "asymmetric_fit": false,
+    "asymmetric_quarkyonic": false,
+    "ground_state": true,
+    "hadronic_eos_table": false,
+    "neutron_star": false,
+    "quantum_critical": false,
+    "symmetric_quarkyonic": true
+  }
+}

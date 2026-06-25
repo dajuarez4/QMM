@@ -1,4 +1,4 @@
-"""Zero-temperature quarkyonic workflows."""
+"""Zero-temperature quarkyonic and baryquark workflows."""
 
 from __future__ import annotations
 
@@ -38,6 +38,7 @@ class SymmetricQuarkyonicCurve:
     """One symmetric quarkyonic sound-speed curve."""
 
     model: str
+    momentum_mode: str
     parameter_name: str | None
     parameter_value: float | None
     a: float
@@ -89,6 +90,7 @@ class AsymmetricQuarkyonicResult:
     """All asymmetric quarkyonic outputs for one model."""
 
     model: str
+    momentum_mode: str
     parameter_name: str | None
     parameter_value: float | None
     fixed_y_profiles: dict[str, list[AsymmetricQuarkyonicRow]]
@@ -109,6 +111,16 @@ def _nucleon_energy_shell(
         physical.degeneracy_symmetric,
         physical,
     )
+
+
+def _validate_momentum_mode(settings: QuarkyonicSettings) -> str:
+    mode = settings.momentum_mode.strip().lower()
+    if mode not in {"quarkyonic", "baryquark"}:
+        raise ValueError(
+            f"Unsupported quarkyonic.momentum_mode '{settings.momentum_mode}'. "
+            "Use 'quarkyonic' or 'baryquark'."
+        )
+    return mode
 
 
 def _quark_density_from_kbu(k_bu: float, settings: QuarkyonicSettings, physical: PhysicalConstants) -> float:
@@ -141,6 +153,28 @@ def _quark_energy_density_from_kbu(k_bu: float, settings: QuarkyonicSettings, ph
     integral = simpson_integral(integrand, 0.0, upper, settings.quark_integral_points)
     prefactor = float(settings.nc) * settings.quark_degeneracy / (2.0 * math.pi ** 2)
     return prefactor * integral
+
+
+def _quark_density_between_momenta(
+    k_inner: float,
+    k_outer: float,
+    settings: QuarkyonicSettings,
+    physical: PhysicalConstants,
+) -> float:
+    if k_outer <= k_inner:
+        return 0.0
+    return _quark_density_from_kbu(k_outer, settings, physical) - _quark_density_from_kbu(k_inner, settings, physical)
+
+
+def _quark_energy_density_between_momenta(
+    k_inner: float,
+    k_outer: float,
+    settings: QuarkyonicSettings,
+    physical: PhysicalConstants,
+) -> float:
+    if k_outer <= k_inner:
+        return 0.0
+    return _quark_energy_density_from_kbu(k_outer, settings, physical) - _quark_energy_density_from_kbu(k_inner, settings, physical)
 
 
 def _kbu_from_quark_density(n_q: float, settings: QuarkyonicSettings, physical: PhysicalConstants) -> float:
@@ -184,6 +218,19 @@ def _state_at_fraction(
     physical: PhysicalConstants,
     gs_settings: GroundStateSettings,
 ) -> QuarkyonicState | None:
+    mode = _validate_momentum_mode(settings)
+    if mode == "baryquark":
+        return _baryquark_state_at_fraction(ground_state, n_b, fq, settings, physical)
+    return _quarkyonic_state_at_fraction(ground_state, n_b, fq, settings, physical)
+
+
+def _quarkyonic_state_at_fraction(
+    ground_state: GroundStateResult,
+    n_b: float,
+    fq: float,
+    settings: QuarkyonicSettings,
+    physical: PhysicalConstants,
+) -> QuarkyonicState | None:
     model = get_model(ground_state.model)
     if fq < 0.0 or fq > 1.0:
         return None
@@ -214,6 +261,58 @@ def _state_at_fraction(
 
     quark_energy = _quark_energy_density_from_kbu(k_bu, settings, physical)
     total_energy = shell_energy + interaction_energy + quark_energy
+    if not math.isfinite(total_energy):
+        return None
+
+    return QuarkyonicState(
+        n_b=n_b,
+        n_over_n0=n_b / physical.n0,
+        quark_fraction=fq,
+        n_q=n_q,
+        n_n=n_n,
+        k_bu=k_bu,
+        k_f=k_f,
+        energy_density=total_energy,
+    )
+
+
+def _baryquark_state_at_fraction(
+    ground_state: GroundStateResult,
+    n_b: float,
+    fq: float,
+    settings: QuarkyonicSettings,
+    physical: PhysicalConstants,
+) -> QuarkyonicState | None:
+    model = get_model(ground_state.model)
+    if fq < 0.0 or fq > 1.0:
+        return None
+
+    n_q = n_b * fq
+    n_n = n_b - n_q
+    if n_n < 0.0:
+        return None
+
+    if n_n <= 1.0e-14:
+        n_n_id = 0.0
+        k_f = 0.0
+        baryon_energy = 0.0
+        interaction_energy = 0.0
+    else:
+        n_n_id = model.nid_from_n(n_n, ground_state.b)
+        if n_n_id is None:
+            return None
+        k_f = ((6.0 * math.pi ** 2 * n_n_id) / physical.degeneracy_symmetric) ** (1.0 / 3.0)
+        volume_fraction = n_n / n_n_id if n_n_id > 0.0 else 1.0
+        baryon_energy = volume_fraction * eps_id_from_kf(k_f, physical.degeneracy_symmetric, physical)
+        u_value = model.U(n_n, ground_state.b, ground_state.parameter_value)
+        if u_value is None:
+            return None
+        interaction_energy = n_n * ground_state.a * u_value
+
+    inner_quark_density = _quark_density_from_kbu(k_f, settings, physical)
+    k_bu = _kbu_from_quark_density(n_q + inner_quark_density, settings, physical)
+    quark_energy = _quark_energy_density_between_momenta(k_f, k_bu, settings, physical)
+    total_energy = baryon_energy + interaction_energy + quark_energy
     if not math.isfinite(total_energy):
         return None
 
@@ -297,6 +396,7 @@ def compute_symmetric_quarkyonic_curve(
     model = get_model(model_name)
     if not model.supports_symmetric_quarkyonic:
         raise ValueError(f"Model '{model_name}' does not support the symmetric quarkyonic workflow.")
+    momentum_mode = _validate_momentum_mode(settings)
 
     ground_state = compute_ground_state_point(model_name, parameter_value, parameter_search, physical, gs_settings)
     density_ratios = linspace(settings.n_min_ratio, settings.n_max_ratio, settings.n_points)
@@ -340,6 +440,7 @@ def compute_symmetric_quarkyonic_curve(
 
     return SymmetricQuarkyonicCurve(
         model=ground_state.model,
+        momentum_mode=momentum_mode,
         parameter_name=ground_state.parameter_name,
         parameter_value=ground_state.parameter_value,
         a=ground_state.a,
@@ -738,6 +839,12 @@ def compute_asymmetric_quarkyonic_profiles(
     model = get_model(fit_result.model)
     if not model.supports_asymmetric_quarkyonic:
         raise ValueError(f"Model '{fit_result.model}' does not support the asymmetric quarkyonic workflow.")
+    momentum_mode = _validate_momentum_mode(settings)
+    if momentum_mode == "baryquark":
+        raise ValueError(
+            "The current baryquark implementation is only available for the symmetric workflow. "
+            "The asymmetric extension requires a dedicated prescription for proton/neutron and u/d shell boundaries."
+        )
 
     eos = AsymmetricQuarkyonicEOS(fit_result, physical, settings)
     density_ratios = linspace(settings.n_min_ratio, settings.n_max_ratio, settings.n_points)
@@ -763,6 +870,7 @@ def compute_asymmetric_quarkyonic_profiles(
 
     return AsymmetricQuarkyonicResult(
         model=fit_result.model,
+        momentum_mode=momentum_mode,
         parameter_name=fit_result.parameter_name,
         parameter_value=fit_result.parameter_value,
         fixed_y_profiles=fixed_y_profiles,

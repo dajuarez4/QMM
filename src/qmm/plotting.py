@@ -216,6 +216,7 @@ def plot_symmetric_quarkyonic_bundle(
 ) -> dict[str, str]:
     """Plot the main symmetric quarkyonic observables."""
     plt = _load_matplotlib()
+    mode_label = "baryquark" if curve.momentum_mode == "baryquark" else "quarkyonic"
     energy_per_baryon = [
         _energy_per_baryon_minus_m(energy_density, density, physical)
         for energy_density, density in zip(curve.eps, curve.n)
@@ -223,7 +224,7 @@ def plot_symmetric_quarkyonic_bundle(
 
     fig, axes = plt.subplots(2, 2, figsize=(12, 8), constrained_layout=True)
     fig.suptitle(
-        f"{curve.model} quarkyonic curve (K0={curve.K0:.3f} MeV{_parameter_caption(curve.parameter_name, curve.parameter_value)})",
+        f"{curve.model} {mode_label} curve (K0={curve.K0:.3f} MeV{_parameter_caption(curve.parameter_name, curve.parameter_value)})",
         fontsize=12,
     )
 

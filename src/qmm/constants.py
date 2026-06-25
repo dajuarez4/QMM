@@ -108,7 +108,13 @@ class HadronicEOSSettings:
 
 @dataclass(frozen=True)
 class QuarkyonicSettings:
-    """Settings for zero-temperature quarkyonic minimization."""
+    """Settings for zero-temperature quarkyonic minimization.
+
+    `momentum_mode` selects how baryons and quarks fill momentum space:
+
+    - `quarkyonic`: quark Fermi sea plus baryonic shell
+    - `baryquark`: baryonic Fermi sea plus quark shell
+    """
 
     n_min_ratio: float = 1.0
     n_max_ratio: float = 8.0
@@ -125,6 +131,7 @@ class QuarkyonicSettings:
     nc: int = 3
     quark_degeneracy: float = 4.0
     lambda_momentum_mev: float = 300.0
+    momentum_mode: str = "quarkyonic"
 
     @staticmethod
     def quick() -> "QuarkyonicSettings":

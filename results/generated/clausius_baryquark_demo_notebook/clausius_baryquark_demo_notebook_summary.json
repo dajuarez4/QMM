@@ -1,0 +1,57 @@
+{
+  "ground_state": {
+    "K0": 280.0000001057512,
+    "a": 454.4126972453143,
+    "b": 1.936449726194465,
+    "binding": -16.00000000011221,
+    "e_per_particle_minus_m_at_sat": -16.00000000011096,
+    "eps_id": 223.90949035007523,
+    "kf": 1.508407605443754,
+    "model": "clausius",
+    "n_id": 0.23182759827156763,
+    "n_sat": 0.15999997361210014,
+    "p_id": 4.230450216438622,
+    "p_sat": -8.209566368932997e-07,
+    "parameter_name": "c",
+    "parameter_value": 4.114108112409712
+  },
+  "model": {
+    "name": "clausius",
+    "parameter_search": {
+      "enabled": true,
+      "parameter_max": 4.74,
+      "parameter_min": 0.0,
+      "scan_steps": 81,
+      "target_k0": 280.0,
+      "tol": 1e-08
+    },
+    "parameter_value": null
+  },
+  "outputs": {
+    "ground_state_csv": "results/generated/clausius_baryquark_demo_notebook/clausius_baryquark_demo_notebook_ground_state.csv",
+    "summary_json": "results/generated/clausius_baryquark_demo_notebook/clausius_baryquark_demo_notebook_summary.json",
+    "symmetric_quarkyonic_csv": "results/generated/clausius_baryquark_demo_notebook/clausius_baryquark_demo_notebook_symmetric_quarkyonic_curve.csv"
+  },
+  "run_name": "clausius_baryquark_demo_notebook",
+  "symmetric_quarkyonic": {
+    "K0": 280.0000001057512,
+    "a": 454.4126972453143,
+    "b": 1.936449726194465,
+    "model": "clausius",
+    "momentum_mode": "baryquark",
+    "n_tr": 0.33084745762711865,
+    "n_tr_over_n0": 2.0677966101694913,
+    "parameter_name": "c",
+    "parameter_value": 4.114108112409712,
+    "vs2_max": 0.3597100862892073
+  },
+  "workflows": {
+    "asymmetric_fit": false,
+    "asymmetric_quarkyonic": false,
+    "ground_state": true,
+    "hadronic_eos_table": false,
+    "neutron_star": false,
+    "quantum_critical": false,
+    "symmetric_quarkyonic": true
+  }
+}
