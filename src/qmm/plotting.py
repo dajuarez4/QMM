@@ -234,13 +234,15 @@ def plot_symmetric_quarkyonic_bundle(
     axes[0, 0].set_title(r"$v_s^2$ vs $n/n_0$")
     axes[0, 0].set_xlabel(r"$n / n_0$")
     axes[0, 0].set_ylabel(r"$v_s^2$")
-    axes[0, 0].set_ylim(-0.1, 0.8)
+    axes[0, 0].set_ylim(-0.1, 1.0)
+    axes[0, 0].set_xlim(0.0, 5.0)
     axes[0, 0].grid(alpha=0.25)
 
     axes[0, 1].plot(curve.n_over_n0, curve.quark_fraction, color="#2A9D8F", lw=2.0)
     axes[0, 1].set_title("Quark Fraction")
     axes[0, 1].set_xlabel(r"$n / n_0$")
     axes[0, 1].set_ylabel(r"$f_Q$")
+    axes[0, 1].set_xlim(0.0, 5.0)
     axes[0, 1].grid(alpha=0.25)
 
     axes[1, 0].plot(curve.n_over_n0, curve.P, color="#E76F51", lw=2.0)
@@ -248,6 +250,7 @@ def plot_symmetric_quarkyonic_bundle(
     axes[1, 0].set_title("Pressure")
     axes[1, 0].set_xlabel(r"$n / n_0$")
     axes[1, 0].set_ylabel(r"$P$ [MeV fm$^{-3}$]")
+    axes[1, 0].set_xlim(0.0, 5.0)
     axes[1, 0].grid(alpha=0.25)
 
     axes[1, 1].plot(curve.n_over_n0, energy_per_baryon, color="#6A4C93", lw=2.0)
@@ -255,6 +258,7 @@ def plot_symmetric_quarkyonic_bundle(
     axes[1, 1].set_title(r"$E/A - m_N$")
     axes[1, 1].set_xlabel(r"$n / n_0$")
     axes[1, 1].set_ylabel(r"$E/A - m_N$ [MeV]")
+    axes[1, 1].set_xlim(0.0, 5.0)
     axes[1, 1].grid(alpha=0.25)
 
     base_path = Path(output_dir) / f"{run_name}_symmetric_quarkyonic"
@@ -307,16 +311,20 @@ def plot_asymmetric_profiles(
     axes[0, 0].set_xlabel(r"$n / n_0$")
     axes[0, 0].set_ylabel(r"$v_s^2$")
     axes[0, 0].axhline(1.0 / 3.0, color="gray", ls=(0, (5, 5)), lw=1.0)
-    axes[0, 0].set_ylim(-0.1, 0.8)
+    axes[0, 0].set_ylim(-0.1, 1.0)
+    axes[0, 0].set_xlim(0.0, 5.0)
     axes[0, 1].set_title("Quark Fraction")
     axes[0, 1].set_xlabel(r"$n / n_0$")
     axes[0, 1].set_ylabel(r"$f_Q$")
+    axes[0, 1].set_xlim(0.0, 5.0)
     axes[1, 0].set_title("Pressure")
     axes[1, 0].set_xlabel(r"$n / n_0$")
     axes[1, 0].set_ylabel(r"$P$ [MeV fm$^{-3}$]")
+    axes[1, 0].set_xlim(0.0, 5.0)
     axes[1, 1].set_title(r"$E/A - m_N$")
     axes[1, 1].set_xlabel(r"$n / n_0$")
     axes[1, 1].set_ylabel(r"$E/A - m_N$ [MeV]")
+    axes[1, 1].set_xlim(0.0, 5.0)
 
     for axis in axes.flat:
         axis.grid(alpha=0.25)
@@ -360,24 +368,28 @@ def plot_beta_equilibrium_observables(
     axes[0, 0].set_title("Charge Fraction")
     axes[0, 0].set_xlabel(r"$n / n_0$")
     axes[0, 0].set_ylabel(r"$y$")
+    axes[0, 0].set_xlim(0.0, 5.0)
 
     axes[0, 1].plot(x_values, vs2_values, color="#0F4C81", lw=2.2)
     axes[0, 1].axhline(1.0 / 3.0, color="gray", ls=(0, (5, 5)), lw=1.0)
-    axes[0, 1].set_ylim(-0.1, 0.8)
+    axes[0, 1].set_ylim(-0.1, 1.0)
     axes[0, 1].set_title(r"$v_s^2$")
     axes[0, 1].set_xlabel(r"$n / n_0$")
     axes[0, 1].set_ylabel(r"$v_s^2$")
+    axes[0, 1].set_xlim(0.0, 5.0)
 
     axes[1, 0].plot(x_values, energy_values, color="#6A4C93", lw=2.2)
     axes[1, 0].axhline(0.0, color="black", ls="--", lw=1.0)
     axes[1, 0].set_title(r"$\varepsilon / n_B - m_N$")
     axes[1, 0].set_xlabel(r"$n / n_0$")
     axes[1, 0].set_ylabel(r"$\varepsilon / n_B - m_N$ [MeV]")
+    axes[1, 0].set_xlim(0.0, 5.0)
 
     axes[1, 1].plot(x_values, fq_values, color="#2A9D8F", lw=2.2)
     axes[1, 1].set_title("Quark Fraction")
     axes[1, 1].set_xlabel(r"$n / n_0$")
     axes[1, 1].set_ylabel(r"$f_Q$")
+    axes[1, 1].set_xlim(0.0, 5.0)
 
     for axis in axes.flat:
         axis.grid(alpha=0.25)

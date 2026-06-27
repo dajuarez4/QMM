@@ -79,8 +79,8 @@
   "quarkyonic": {
     "quick": false,
     "momentum_mode": "quarkyonic",
-    "n_min_ratio": 1.0,
-    "n_max_ratio": 8.0,
+    "n_min_ratio": 0.05,
+    "n_max_ratio": 5.0,
     "n_points": 120,
     "fq_scan_points": 121,
     "fq_min_shift": 1.0e-5,
