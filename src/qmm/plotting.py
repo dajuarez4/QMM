@@ -129,7 +129,7 @@ def plot_ground_state_eos(
     axes[0].axvline(1.0, color="#5F0F40", lw=1.2, ls=":")
     axes[0].set_title("Hadronic Binding Curve")
     axes[0].set_xlabel(r"$n / n_0$")
-    axes[0].set_ylabel(r"$E/A - m_N$ [MeV]")
+    axes[0].set_ylabel(r"$\varepsilon / n_B - m_N$ [MeV]")
     axes[0].grid(alpha=0.25)
     axes[0].annotate(label, xy=(0.02, 0.03), xycoords="axes fraction", fontsize=9)
 
@@ -255,9 +255,9 @@ def plot_symmetric_quarkyonic_bundle(
 
     axes[1, 1].plot(curve.n_over_n0, energy_per_baryon, color="#6A4C93", lw=2.0)
     axes[1, 1].axhline(0.0, color="black", ls="--", lw=1.0)
-    axes[1, 1].set_title(r"$E/A - m_N$")
+    axes[1, 1].set_title(r"$\varepsilon / n_B - m_N$")
     axes[1, 1].set_xlabel(r"$n / n_0$")
-    axes[1, 1].set_ylabel(r"$E/A - m_N$ [MeV]")
+    axes[1, 1].set_ylabel(r"$\varepsilon / n_B - m_N$ [MeV]")
     axes[1, 1].set_xlim(0.0, 5.0)
     axes[1, 1].grid(alpha=0.25)
 
@@ -321,9 +321,9 @@ def plot_asymmetric_profiles(
     axes[1, 0].set_xlabel(r"$n / n_0$")
     axes[1, 0].set_ylabel(r"$P$ [MeV fm$^{-3}$]")
     axes[1, 0].set_xlim(0.0, 5.0)
-    axes[1, 1].set_title(r"$E/A - m_N$")
+    axes[1, 1].set_title(r"$\varepsilon / n_B - m_N$")
     axes[1, 1].set_xlabel(r"$n / n_0$")
-    axes[1, 1].set_ylabel(r"$E/A - m_N$ [MeV]")
+    axes[1, 1].set_ylabel(r"$\varepsilon / n_B - m_N$ [MeV]")
     axes[1, 1].set_xlim(0.0, 5.0)
 
     for axis in axes.flat:
