@@ -9,6 +9,7 @@
 
 - `src/qmm/`: documented production source code
 - `notebooks/QMM_workflow.ipynb`: the single overview notebook
+- `notebooks/qmm_guided_json_runner.ipynb`: guided interactive notebook that asks what to simulate, writes one or more JSON configs, runs them, and can build branch-comparison plots automatically
 - `notebooks/baryquark_quarkyonic.ipynb`: symmetric quarkyonic/baryquark comparison notebook
 - `notebooks/clausius_beta_vs2_postprocess.ipynb`: Clausius beta-equilibrium `v_s^2` postprocessing notebook
 - `examples/`: JSON inputs, including a blank template
@@ -314,11 +315,32 @@ The formal manual is:
 The notebook overview is:
 
 - [notebooks/QMM_workflow.ipynb](notebooks/QMM_workflow.ipynb)
+- [notebooks/qmm_guided_json_runner.ipynb](notebooks/qmm_guided_json_runner.ipynb)
 - [notebooks/baryquark_quarkyonic.ipynb](notebooks/baryquark_quarkyonic.ipynb)
 - [notebooks/clausius_beta_vs2_postprocess.ipynb](notebooks/clausius_beta_vs2_postprocess.ipynb)
 - [notebooks/clausius_asymmetric_workflow.ipynb](notebooks/clausius_asymmetric_workflow.ipynb)
 - [notebooks/clausius_cs_hybrid_scan.ipynb](notebooks/clausius_cs_hybrid_scan.ipynb)
 - [notebooks/clausius_tvm_hybrid_scan.ipynb](notebooks/clausius_tvm_hybrid_scan.ipynb)
+
+## Guided JSON Notebook
+
+The easiest way to launch new runs interactively is:
+
+- [notebooks/qmm_guided_json_runner.ipynb](notebooks/qmm_guided_json_runner.ipynb)
+
+This notebook:
+
+- asks for the preset, mean field, excluded-volume rule, `K0` handling, asymmetric branch mode, and output choices
+- writes the generated JSON files into `examples/generated/`
+- runs the selected configs directly from the notebook
+- summarizes the produced CSV, JSON, and plot outputs
+
+If you choose `branch_mode = both` for an asymmetric run and keep plot writing enabled, the notebook now also generates combined branch-comparison figures after both runs finish:
+
+- `<run_name>_asymmetric_branch_comparison.*`: fixed-`y` overlays of `f_Q`, `v_s^2`, pressure, energy per baryon, and EOS for `b_{pn} \neq b_n` and `b_{pn} = b_n`
+- `<run_name>_beta_equilibrium_branch_comparison.*`: beta-equilibrium overlays of charge fraction, `f_Q`, `v_s^2`, pressure, energy per baryon, and EOS for the two branches
+
+These comparison plots are written next to the branch outputs in a sibling directory ending in `_branch_comparison`.
 
 ## Baryquark/Quarkyonic Symmetric Comparison
 
