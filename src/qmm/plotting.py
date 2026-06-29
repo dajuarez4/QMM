@@ -77,6 +77,17 @@ def _energy_per_baryon_minus_m(energy_density: float, density: float, physical: 
     return energy_density / density - physical.m_nucleon
 
 
+def _vs2_axis_limits(values: Iterable[float], lower: float = -0.1, default_upper: float = 1.0) -> tuple[float, float]:
+    finite_values = [float(value) for value in values if math.isfinite(value)]
+    if not finite_values:
+        return lower, default_upper
+
+    peak = max(finite_values)
+    upper = max(default_upper, 1.08 * peak)
+    rounded_upper = 0.1 * math.ceil(upper / 0.1)
+    return lower, rounded_upper
+
+
 def plot_ground_state_eos(
     output_dir: str | Path,
     run_name: str,
@@ -279,12 +290,14 @@ def plot_asymmetric_profiles(
         f"{result.model} asymmetric quarkyonic profiles{_parameter_caption(result.parameter_name, result.parameter_value)}",
         fontsize=12,
     )
+    all_vs2_values: list[float] = []
 
     for label, rows in sorted(result.fixed_y_profiles.items()):
         if not rows:
             continue
         x_values = [row.n_over_n0 for row in rows]
         vs2_values = [math.nan if row.vs2 is None else row.vs2 for row in rows]
+        all_vs2_values.extend(vs2_values)
         fq_values = [row.quark_fraction for row in rows]
         pressure_values = [math.nan if row.pressure is None else row.pressure for row in rows]
         energy_values = [_energy_per_baryon_minus_m(row.energy_density, row.n_b, physical) for row in rows]
@@ -298,6 +311,7 @@ def plot_asymmetric_profiles(
     if result.beta_profile:
         x_values = [row.n_over_n0 for row in result.beta_profile]
         vs2_values = [math.nan if row.vs2 is None else row.vs2 for row in result.beta_profile]
+        all_vs2_values.extend(vs2_values)
         fq_values = [row.quark_fraction for row in result.beta_profile]
         pressure_values = [math.nan if row.pressure is None else row.pressure for row in result.beta_profile]
         energy_values = [_energy_per_baryon_minus_m(row.energy_density, row.n_b, physical) for row in result.beta_profile]
@@ -311,7 +325,7 @@ def plot_asymmetric_profiles(
     axes[0, 0].set_xlabel(r"$n / n_0$")
     axes[0, 0].set_ylabel(r"$v_s^2$")
     axes[0, 0].axhline(1.0 / 3.0, color="gray", ls=(0, (5, 5)), lw=1.0)
-    axes[0, 0].set_ylim(-0.1, 1.0)
+    axes[0, 0].set_ylim(*_vs2_axis_limits(all_vs2_values))
     axes[0, 0].set_xlim(0.0, 5.0)
     axes[0, 1].set_title("Quark Fraction")
     axes[0, 1].set_xlabel(r"$n / n_0$")
@@ -372,7 +386,7 @@ def plot_beta_equilibrium_observables(
 
     axes[0, 1].plot(x_values, vs2_values, color="#0F4C81", lw=2.2)
     axes[0, 1].axhline(1.0 / 3.0, color="gray", ls=(0, (5, 5)), lw=1.0)
-    axes[0, 1].set_ylim(-0.1, 1.0)
+    axes[0, 1].set_ylim(*_vs2_axis_limits(vs2_values))
     axes[0, 1].set_title(r"$v_s^2$")
     axes[0, 1].set_xlabel(r"$n / n_0$")
     axes[0, 1].set_ylabel(r"$v_s^2$")

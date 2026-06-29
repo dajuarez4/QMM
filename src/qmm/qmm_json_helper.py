@@ -22,6 +22,7 @@ PRESET_DESCRIPTIONS: Dict[str, str] = {
     "full_symmetric": "Ground state, critical point, hadronic EOS, and symmetric quarkyonic matter.",
     "asymmetric_fixed_y": "Asymmetric fixed-y quarkyonic matter without beta equilibrium.",
     "asymmetric_beta": "Asymmetric quarkyonic matter in beta equilibrium.",
+    "asymmetric_beta_critical_point": "Asymmetric beta-equilibrium matter plus the finite-temperature critical point.",
     "asymmetric_beta_neutron_star": "Asymmetric beta-equilibrium matter plus a neutron-star sequence.",
     "baryquark_symmetric": "Symmetric baryquark matter demo.",
     "custom": "Choose each workflow block manually.",
@@ -394,6 +395,12 @@ def _workflow_from_preset(preset: str, custom_workflows: Optional[Mapping[str, A
             workflow["asymmetric_quarkyonic"] = True
         elif preset == "asymmetric_beta":
             workflow["ground_state"] = True
+            workflow["hadronic_eos_table"] = True
+            workflow["asymmetric_fit"] = True
+            workflow["asymmetric_quarkyonic"] = True
+        elif preset == "asymmetric_beta_critical_point":
+            workflow["ground_state"] = True
+            workflow["quantum_critical"] = True
             workflow["hadronic_eos_table"] = True
             workflow["asymmetric_fit"] = True
             workflow["asymmetric_quarkyonic"] = True

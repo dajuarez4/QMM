@@ -19,7 +19,8 @@ import pandas as pd
 
 K0_VALUES = [250, 260, 270, 280, 290, 300, 315]
 SELECTED_K0_VALUES = [250, 280, 315]
-X_LIMITS = (1.0e-6, 5.0)
+DEFAULT_X_LIMITS = (0.05, 5.0)
+X_LIMITS = DEFAULT_X_LIMITS
 AXIS_LABEL_SIZE = 18
 TICK_LABEL_SIZE = 15
 LEGEND_SIZE = 16
@@ -528,12 +529,29 @@ def main() -> None:
         help="Polynomial degree used for the local reconstruction.",
     )
     parser.add_argument(
+        "--xmin",
+        type=float,
+        default=DEFAULT_X_LIMITS[0],
+        help="Lower x-axis limit for the overlay plots in units of n/n0.",
+    )
+    parser.add_argument(
+        "--xmax",
+        type=float,
+        default=DEFAULT_X_LIMITS[1],
+        help="Upper x-axis limit for the overlay plots in units of n/n0.",
+    )
+    parser.add_argument(
         "--output-dir",
         type=Path,
         default=Path("QMM/results/generated/clausius_beta_vs2_postprocess_window29"),
         help="Target directory for the recomputed overlays and summary table.",
     )
     args = parser.parse_args()
+    if args.xmax <= args.xmin:
+        raise SystemExit(f"Invalid x-axis limits: xmin={args.xmin}, xmax={args.xmax}")
+
+    global X_LIMITS
+    X_LIMITS = (args.xmin, args.xmax)
 
     unequal_raw = _load_branch(args.unequal_root, "clausius_k0_")
     equal_raw = _load_branch(args.equal_root, "clausius_equal_b_k0_")
@@ -622,6 +640,7 @@ def main() -> None:
 
     print(f"window={args.window}")
     print(f"degree={args.degree}")
+    print(f"x_limits={X_LIMITS}")
     print(f"vs2_max_unequal={_branch_vs2_max(unequal):.6f}")
     print(f"vs2_max_equal={_branch_vs2_max(equal):.6f}")
     print(f"summary={summary_path}")
