@@ -24,7 +24,7 @@
     "target_k0": null
   },
   "asymmetric_quarkyonic": {
-    "beta_profile_points": 115,
+    "beta_profile_points": 120,
     "fixed_y_labels": [
       "y_0.000",
       "y_0.100",

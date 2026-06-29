@@ -729,11 +729,91 @@ class AsymmetricQuarkyonicEOS:
             return math.nan
         return eps_hq + eps_e + eps_mu
 
+    def beta_lower_quark_fraction_bound(self, n_b: float) -> float:
+        """Return a conservative lower bound that keeps the hadronic sector finite."""
+        if n_b <= 0.0:
+            return 0.0
+
+        model_name = self.fit_result.model
+        b_limit = max(self.fit_result.b_n, self.fit_result.b_pn)
+        max_n_h = _max_hadronic_density(model_name, b_limit)
+        if not math.isfinite(max_n_h) or n_b <= max_n_h:
+            return 0.0
+        return max(0.0, 1.0 - max_n_h / n_b + self.settings.fq_min_shift)
+
+    def _coarse_beta_candidates(
+        self,
+        n_b: float,
+        fq_min: float,
+        fq_max: float,
+        y_scan: int,
+    ) -> tuple[tuple[float, float], list[tuple[float, float]]]:
+        """Return the best coarse point and refinement intervals for beta equilibrium."""
+        fq_grid = linspace(fq_min, fq_max, self.settings.fq_scan_points)
+        trial_energies = [self.total_energy_beta(fq, n_b, y_scan=y_scan) for fq in fq_grid]
+        finite_trials = [
+            (index, fq_value, energy)
+            for index, (fq_value, energy) in enumerate(zip(fq_grid, trial_energies))
+            if math.isfinite(energy)
+        ]
+        if not finite_trials:
+            return (math.nan, math.nan), []
+
+        _, best_fq, best_energy = min(finite_trials, key=lambda item: item[2])
+        candidate_intervals: list[tuple[float, float]] = []
+
+        if len(fq_grid) >= 2:
+            if math.isfinite(trial_energies[0]) and math.isfinite(trial_energies[1]) and trial_energies[0] <= trial_energies[1]:
+                candidate_intervals.append((fq_grid[0], fq_grid[1]))
+            if math.isfinite(trial_energies[-1]) and math.isfinite(trial_energies[-2]) and trial_energies[-1] <= trial_energies[-2]:
+                candidate_intervals.append((fq_grid[-2], fq_grid[-1]))
+
+        for index in range(1, len(fq_grid) - 1):
+            e_left = trial_energies[index - 1]
+            e_mid = trial_energies[index]
+            e_right = trial_energies[index + 1]
+            if not (math.isfinite(e_left) and math.isfinite(e_mid) and math.isfinite(e_right)):
+                continue
+            if e_mid <= e_left and e_mid <= e_right:
+                candidate_intervals.append((fq_grid[index - 1], fq_grid[index + 1]))
+
+        return (best_fq, best_energy), candidate_intervals
+
     def solve_fq_fixed_y(self, n_b: float, y_value: float, fq_min: float = 0.0, fq_max: float = 1.0) -> tuple[float, float]:
         return golden_section_min_safe(lambda fq: self.energy_hq_of_fq_y(fq, n_b, y_value), fq_min, fq_max, tol=self.settings.refine_tol, max_iter=self.settings.refine_max_iter)
 
     def solve_fq_beta(self, n_b: float, fq_min: float = 0.0, fq_max: float = 1.0, y_scan: int = 160) -> tuple[float, float]:
-        return golden_section_min_safe(lambda fq: self.total_energy_beta(fq, n_b, y_scan=y_scan), fq_min, fq_max, tol=self.settings.refine_tol, max_iter=self.settings.refine_max_iter)
+        lower = max(fq_min, self.beta_lower_quark_fraction_bound(n_b))
+        if lower >= fq_max:
+            return math.nan, math.nan
+
+        objective = lambda fq: self.total_energy_beta(fq, n_b, y_scan=y_scan)
+        fq_star, energy_star = golden_section_min_safe(
+            objective,
+            lower,
+            fq_max,
+            tol=self.settings.refine_tol,
+            max_iter=self.settings.refine_max_iter,
+        )
+        if math.isfinite(fq_star) and math.isfinite(energy_star):
+            return fq_star, energy_star
+
+        (best_fq, best_energy), candidate_intervals = self._coarse_beta_candidates(n_b, lower, fq_max, y_scan)
+        if not math.isfinite(best_fq) or not math.isfinite(best_energy):
+            return math.nan, math.nan
+
+        for left, right in candidate_intervals:
+            fq_star, energy_star = golden_section_min_safe(
+                objective,
+                left,
+                right,
+                tol=self.settings.refine_tol,
+                max_iter=self.settings.refine_max_iter,
+            )
+            if math.isfinite(energy_star) and energy_star < best_energy:
+                best_fq = fq_star
+                best_energy = energy_star
+        return best_fq, best_energy
 
     def build_fixed_y_row(self, n_b: float, y_value: float) -> AsymmetricQuarkyonicRow | None:
         fq_star, energy = self.solve_fq_fixed_y(n_b, y_value)
