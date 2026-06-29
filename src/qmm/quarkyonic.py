@@ -639,8 +639,10 @@ class AsymmetricQuarkyonicEOS:
     def charge_density_hq(self, n_b: float, fq: float, y_value: float) -> float:
         k_bu = self.kbu_solver(n_b, fq, y_value)
         n_p, _ = self.hadronic_densities(n_b, fq, y_value)
-        n_u = 3.0 * self.nuid(k_bu, y_value)
-        n_d = 3.0 * self.ndid(k_bu)
+        # `nuid()` and `ndid()` already return quark number densities.
+        # Multiplying by `N_c` again overcounts the quark charge by a factor of 3.
+        n_u = self.nuid(k_bu, y_value)
+        n_d = self.ndid(k_bu)
         return n_p + (2.0 / 3.0) * n_u - (1.0 / 3.0) * n_d
 
     def mu_q_fd(self, n_b: float, fq: float, y_value: float, dy: float = 1.0e-5) -> float:

@@ -436,6 +436,24 @@ def _default_lambda(workflow: Mapping[str, bool], raw_lambda: Any) -> float:
     return 300.0
 
 
+def _apply_quick_mode_overrides(config: Dict[str, Any]) -> None:
+    """Apply reduced numerical settings for notebook smoke tests."""
+    config["ground_state"]["b_scan_steps"] = 1600
+    config["ground_state"]["n_integral_points"] = 1500
+    config["quantum"]["quick"] = True
+    config["quantum"]["n_k_fd"] = 220
+    config["quantum"]["coarse_t_count"] = 11
+    config["quantum"]["coarse_n_count"] = 11
+    config["quantum"]["outer_max_iter"] = 24
+    config["quarkyonic"]["quick"] = True
+    config["quarkyonic"]["n_points"] = 60
+    config["quarkyonic"]["fq_scan_points"] = 61
+    config["quarkyonic"]["shell_integral_points"] = 200
+    config["quarkyonic"]["quark_integral_points"] = 200
+    config["hadronic_eos"]["n_points"] = 80
+    config["neutron_star"]["sequence_points"] = 24
+
+
 def _normalize_request(request: Mapping[str, Any]) -> Dict[str, Any]:
     merged = default_request()
     merged.update(dict(request))
@@ -584,12 +602,7 @@ def build_config(
     config["output"]["plot_formats"] = plot_formats if write_plots else []
 
     if bool(normalized.get("quick_mode", False)):
-        config["ground_state"]["b_scan_steps"] = 1600
-        config["ground_state"]["n_integral_points"] = 1500
-        config["quantum"]["quick"] = True
-        config["quarkyonic"]["quick"] = True
-        config["hadronic_eos"]["n_points"] = 80
-        config["neutron_star"]["sequence_points"] = 24
+        _apply_quick_mode_overrides(config)
 
     return config
 
