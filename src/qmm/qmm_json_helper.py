@@ -315,6 +315,12 @@ def default_request() -> Dict[str, Any]:
         "quick_mode": True,
         "momentum_mode": "quarkyonic",
         "lambda_momentum_mev": 300.0,
+        "quarkyonic_n_min_ratio": None,
+        "quarkyonic_n_max_ratio": None,
+        "quarkyonic_n_points": None,
+        "quarkyonic_fq_scan_points": None,
+        "quarkyonic_shell_integral_points": None,
+        "quarkyonic_quark_integral_points": None,
         "branch_mode": "target_l",
         "beta_equilibrium": True,
         "proton_fraction_values": [0.0, 0.1, 0.2, 0.3, 0.4, 0.5],
@@ -459,6 +465,23 @@ def _apply_quick_mode_overrides(config: Dict[str, Any]) -> None:
     config["quarkyonic"]["quark_integral_points"] = 200
     config["hadronic_eos"]["n_points"] = 80
     config["neutron_star"]["sequence_points"] = 24
+
+
+def _apply_numeric_request_overrides(config: Dict[str, Any], request: Mapping[str, Any]) -> None:
+    """Apply explicit numerical overrides from a notebook request."""
+    override_specs = (
+        ("quarkyonic_n_min_ratio", "quarkyonic", "n_min_ratio", float),
+        ("quarkyonic_n_max_ratio", "quarkyonic", "n_max_ratio", float),
+        ("quarkyonic_n_points", "quarkyonic", "n_points", int),
+        ("quarkyonic_fq_scan_points", "quarkyonic", "fq_scan_points", int),
+        ("quarkyonic_shell_integral_points", "quarkyonic", "shell_integral_points", int),
+        ("quarkyonic_quark_integral_points", "quarkyonic", "quark_integral_points", int),
+    )
+    for request_key, section, config_key, cast in override_specs:
+        raw_value = request.get(request_key)
+        if raw_value is None or raw_value == "":
+            continue
+        config[section][config_key] = cast(raw_value)
 
 
 def _normalize_request(request: Mapping[str, Any]) -> Dict[str, Any]:
@@ -610,6 +633,8 @@ def build_config(
 
     if bool(normalized.get("quick_mode", False)):
         _apply_quick_mode_overrides(config)
+
+    _apply_numeric_request_overrides(config, normalized)
 
     return config
 
