@@ -1,0 +1,69 @@
+{
+  "asymmetric_fit": {
+    "J": 32.500000009814585,
+    "K0": 250.00000103281295,
+    "L": 58.90000006356786,
+    "a_avg": 468.4325015432171,
+    "a_n": 258.3770527203532,
+    "a_pn": 678.4879503660809,
+    "b_avg": 2.0369036213762515,
+    "b_n": 1.477707033979602,
+    "b_pn": 2.596100208772901,
+    "binding": -15.999999999937017,
+    "branch_mode": "target_l",
+    "j_residual": 9.814584700507112e-09,
+    "k0_residual": 1.0328129462777724e-06,
+    "l_residual": 6.356786030892181e-08,
+    "model": "clausius_cs",
+    "n_sat": 0.16000001568179112,
+    "p_sat": 4.356052789589171e-07,
+    "parameter_name": "c",
+    "parameter_value": 4.47008402645588,
+    "ratio_a_pn_over_a_n": 2.6259605612129273,
+    "ratio_b_pn_over_b_n": 1.7568436429387242,
+    "target_k0": 250.0
+  },
+  "ground_state": {
+    "K0": 250.00000103281295,
+    "a": 468.4325015432171,
+    "b": 2.0369036213762515,
+    "binding": -15.999999999937017,
+    "e_per_particle_minus_m_at_sat": -15.999999999936676,
+    "eps_id": 222.06054248824736,
+    "kf": 1.504321104275161,
+    "model": "clausius_cs",
+    "n_id": 0.22994853153416542,
+    "n_sat": 0.16000001568179112,
+    "p_id": 4.174206659715946,
+    "p_sat": 4.356052789589171e-07,
+    "parameter_name": "c",
+    "parameter_value": 4.47008402645588
+  },
+  "model": {
+    "name": "clausius_cs",
+    "parameter_search": {
+      "enabled": true,
+      "parameter_max": 6.0,
+      "parameter_min": 0.0,
+      "scan_steps": 121,
+      "target_k0": 250.0,
+      "tol": 1e-08
+    },
+    "parameter_value": null
+  },
+  "outputs": {
+    "asymmetric_fit_csv": "results/generated/clausius_cs_compare_k0_250/clausius_cs_compare_k0_250_asymmetric_fit.csv",
+    "ground_state_csv": "results/generated/clausius_cs_compare_k0_250/clausius_cs_compare_k0_250_ground_state.csv",
+    "summary_json": "results/generated/clausius_cs_compare_k0_250/clausius_cs_compare_k0_250_summary.json"
+  },
+  "run_name": "clausius_cs_compare_k0_250",
+  "workflows": {
+    "asymmetric_fit": true,
+    "asymmetric_quarkyonic": false,
+    "ground_state": true,
+    "hadronic_eos_table": false,
+    "neutron_star": false,
+    "quantum_critical": false,
+    "symmetric_quarkyonic": false
+  }
+}
