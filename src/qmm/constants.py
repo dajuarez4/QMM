@@ -128,6 +128,7 @@ class QuarkyonicSettings:
     smoothing_window: int = 9
     smoothing_degree: int = 3
     derivative_floor: float = 1.0e-10
+    beta_y_scan_points: int = 160
     nc: int = 3
     quark_degeneracy: float = 4.0
     lambda_momentum_mev: float = 300.0

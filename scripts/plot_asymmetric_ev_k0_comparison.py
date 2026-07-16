@@ -13,8 +13,10 @@ from qmm.constants import DEFAULT_PHYSICAL_CONSTANTS
 
 
 ROOT = Path(__file__).resolve().parents[1]
-MANIFEST_PATH = ROOT / "results" / "reports" / "asymmetric_ev_full_suite" / "run_manifest.csv"
-FIGURE_DIR = ROOT / "results" / "reports" / "asymmetric_ev_full_suite" / "figures"
+DEFAULT_MANIFEST_PATH = ROOT / "results" / "reports" / "asymmetric_ev_full_suite" / "run_manifest.csv"
+DEFAULT_FIGURE_DIR = ROOT / "results" / "reports" / "asymmetric_ev_full_suite" / "figures"
+MANIFEST_PATH = DEFAULT_MANIFEST_PATH
+FIGURE_DIR = DEFAULT_FIGURE_DIR
 X_LIMITS = (0.05, 5.0)
 AXIS_LABEL_SIZE = 16
 TICK_LABEL_SIZE = 12
@@ -33,6 +35,7 @@ MODEL_COLORS = {
     "clausius_cs": "#BC4749",
     "clausius_tvm": "#2A9D8F",
 }
+FALLBACK_COLORS = ("#0F4C81", "#BC4749", "#2A9D8F", "#7A4EAB", "#C76B28")
 
 
 def load_manifest_rows() -> list[dict[str, str]]:
@@ -40,8 +43,19 @@ def load_manifest_rows() -> list[dict[str, str]]:
         return list(csv.DictReader(handle))
 
 
-def available_k0_values() -> list[int]:
-    return sorted({int(round(float(row["target_k0"]))) for row in load_manifest_rows()})
+def normalize_k0(value: str | float) -> float:
+    return round(float(value), 9)
+
+
+def k0_tag(value: float) -> str:
+    rounded = round(float(value), 3)
+    if abs(rounded - round(rounded)) < 1.0e-9:
+        return str(int(round(rounded)))
+    return f"{rounded:.3f}".replace(".", "p")
+
+
+def available_k0_values() -> list[float]:
+    return sorted({normalize_k0(row["target_k0"]) for row in load_manifest_rows()})
 
 
 def load_csv_rows(path: Path) -> list[dict[str, str]]:
@@ -122,20 +136,19 @@ def reconstruct_pressure_mu_vs2(
     return pressure, mu_b, vs2
 
 
-def load_model_curves(target_k0: int, window_size: int, degree: int) -> dict[str, dict[str, list[float]]]:
+def load_model_curves(target_k0: float, window_size: int, degree: int) -> dict[str, dict[str, list[float]]]:
     rows = load_manifest_rows()
     selected = [
         row
         for row in rows
-        if int(round(float(row["target_k0"]))) == target_k0 and row["model"] in MODEL_ORDER
+        if normalize_k0(row["target_k0"]) == normalize_k0(target_k0) and row["model"] in MODEL_ORDER
     ]
     by_model = {row["model"]: row for row in selected}
-    missing = [model for model in MODEL_ORDER if model not in by_model]
-    if missing:
-        raise FileNotFoundError(f"Missing manifest rows for K0={target_k0}: {', '.join(missing)}")
+    if not by_model:
+        raise FileNotFoundError(f"No manifest rows found for K0={target_k0}.")
 
     curves: dict[str, dict[str, list[float]]] = {}
-    for model in MODEL_ORDER:
+    for model in [model for model in MODEL_ORDER if model in by_model]:
         beta_path = ROOT / by_model[model]["asymmetric_beta_csv"]
         beta_rows = load_csv_rows(beta_path)
         n_over_n0 = np.array([parse_float(row, "n_over_n0") for row in beta_rows], dtype=float)
@@ -165,6 +178,29 @@ def load_model_curves(target_k0: int, window_size: int, degree: int) -> dict[str
             "quark_fraction": np.array([parse_float(row, "quark_fraction") for row in beta_rows], dtype=float)[valid].tolist(),
         }
     return curves
+
+
+def ordered_models(curves: dict[str, dict[str, list[float]]]) -> list[str]:
+    ordered = [model for model in MODEL_ORDER if model in curves]
+    extras = [model for model in curves if model not in ordered]
+    return ordered + extras
+
+
+def model_label(model: str) -> str:
+    return MODEL_LABELS.get(model, model)
+
+
+def model_color(model: str, index: int) -> str:
+    return MODEL_COLORS.get(model, FALLBACK_COLORS[index % len(FALLBACK_COLORS)])
+
+
+def curve_set_tag(curves: dict[str, dict[str, list[float]]]) -> str:
+    models = ordered_models(curves)
+    if models == list(MODEL_ORDER):
+        return "three_model"
+    if len(models) == 1:
+        return models[0]
+    return f"{len(models)}model"
 
 
 def vs2_limits(curves: dict[str, dict[str, list[float]]]) -> tuple[float, float]:
@@ -236,7 +272,7 @@ def style_axis(axis, *, x_limits: tuple[float, float] | None = None) -> None:
 
 def make_four_panel(
     curves: dict[str, dict[str, list[float]]],
-    target_k0: int,
+    target_k0: float,
     window_size: int,
     degree: int,
 ) -> list[Path]:
@@ -246,10 +282,10 @@ def make_four_panel(
     fig, axes = plt.subplots(2, 2, figsize=(11.8, 8.2), constrained_layout=True)
     lower_vs2, upper_vs2 = vs2_limits(curves)
 
-    for model in MODEL_ORDER:
+    for index, model in enumerate(ordered_models(curves)):
         curve = curves[model]
-        color = MODEL_COLORS[model]
-        label = MODEL_LABELS[model]
+        color = model_color(model, index)
+        label = model_label(model)
         axes[0, 0].plot(curve["n_over_n0"], curve["y"], lw=LINE_WIDTH, color=color, label=label, solid_capstyle="round")
         axes[0, 1].plot(curve["n_over_n0"], curve["vs2"], lw=LINE_WIDTH, color=color, label=label, solid_capstyle="round")
         axes[1, 0].plot(curve["n_over_n0"], curve["energy_per_baryon"], lw=LINE_WIDTH, color=color, label=label, solid_capstyle="round")
@@ -274,14 +310,15 @@ def make_four_panel(
         style_axis(axis, x_limits=X_LIMITS)
     axes[0, 0].legend(loc="lower right", handlelength=2.8)
 
-    written = save_figure(fig, f"k0_{target_k0}_three_model_beta_equilibrium_4panel")
+    set_tag = curve_set_tag(curves)
+    written = save_figure(fig, f"k0_{k0_tag(target_k0)}_{set_tag}_beta_equilibrium_4panel")
     plt.close(fig)
     return written
 
 
 def make_full_six_panel(
     curves: dict[str, dict[str, list[float]]],
-    target_k0: int,
+    target_k0: float,
     window_size: int,
     degree: int,
 ) -> list[Path]:
@@ -291,10 +328,10 @@ def make_full_six_panel(
     fig, axes = plt.subplots(2, 3, figsize=(15.0, 8.4), constrained_layout=True)
     lower_vs2, upper_vs2 = vs2_limits(curves)
 
-    for model in MODEL_ORDER:
+    for index, model in enumerate(ordered_models(curves)):
         curve = curves[model]
-        color = MODEL_COLORS[model]
-        label = MODEL_LABELS[model]
+        color = model_color(model, index)
+        label = model_label(model)
         axes[0, 0].plot(curve["n_over_n0"], curve["y"], lw=LINE_WIDTH, color=color, label=label, solid_capstyle="round")
         axes[0, 1].plot(curve["n_over_n0"], curve["quark_fraction"], lw=LINE_WIDTH, color=color, label=label, solid_capstyle="round")
         axes[0, 2].plot(curve["n_over_n0"], curve["vs2"], lw=LINE_WIDTH, color=color, label=label, solid_capstyle="round")
@@ -328,18 +365,35 @@ def make_full_six_panel(
         style_axis(axis, x_limits=X_LIMITS if index < 5 else None)
     axes[0, 0].legend(loc="lower right", handlelength=2.8)
 
-    written = save_figure(fig, f"k0_{target_k0}_three_model_beta_equilibrium_full")
+    set_tag = curve_set_tag(curves)
+    written = save_figure(fig, f"k0_{k0_tag(target_k0)}_{set_tag}_beta_equilibrium_full")
     plt.close(fig)
     return written
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Overlay asymmetric beta-equilibrium curves for one K0.")
-    parser.add_argument("--k0", type=int, default=250, help="Target incompressibility K0 in MeV.")
+    parser.add_argument("--k0", type=float, default=250.0, help="Target incompressibility K0 in MeV.")
     parser.add_argument("--window", type=int, default=29, help="Local polynomial window size.")
     parser.add_argument("--degree", type=int, default=3, help="Local polynomial degree.")
     parser.add_argument("--all-k0", action="store_true", help="Generate figures for every K0 in the manifest.")
+    parser.add_argument(
+        "--manifest",
+        type=str,
+        default=str(DEFAULT_MANIFEST_PATH.relative_to(ROOT)),
+        help="Manifest CSV path relative to the QMM root.",
+    )
+    parser.add_argument(
+        "--figure-dir",
+        type=str,
+        default=str(DEFAULT_FIGURE_DIR.relative_to(ROOT)),
+        help="Figure output directory relative to the QMM root.",
+    )
     args = parser.parse_args()
+
+    global MANIFEST_PATH, FIGURE_DIR
+    MANIFEST_PATH = ROOT / args.manifest
+    FIGURE_DIR = ROOT / args.figure_dir
 
     written = []
     target_k0_values = available_k0_values() if args.all_k0 else [args.k0]

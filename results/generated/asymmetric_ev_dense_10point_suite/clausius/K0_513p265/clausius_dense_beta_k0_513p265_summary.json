@@ -1,0 +1,78 @@
+{
+  "asymmetric_fit": {
+    "J": 32.499999998055955,
+    "K0": 513.2653060768711,
+    "L": 58.900000042012834,
+    "a_avg": 372.25220325878234,
+    "a_n": 211.76208334737396,
+    "a_pn": 532.7423231701907,
+    "b_avg": 2.9023514186924366,
+    "b_n": 2.015781016175002,
+    "b_pn": 3.7889218212098714,
+    "binding": -16.00000000009163,
+    "branch_mode": "target_l",
+    "j_residual": -1.944044925039634e-09,
+    "k0_residual": -4.557796273729764e-08,
+    "l_residual": 4.201283587690341e-08,
+    "model": "clausius",
+    "n_sat": 0.16000000533317396,
+    "p_sat": 3.0414798324329695e-07,
+    "parameter_name": "c",
+    "parameter_value": 1.3672882295250892,
+    "ratio_a_pn_over_a_n": 2.5157587928348892,
+    "ratio_b_pn_over_b_n": 1.879629677433639,
+    "target_k0": 513.265306122449
+  },
+  "asymmetric_quarkyonic": {
+    "beta_profile_points": 80,
+    "fixed_y_labels": [],
+    "model": "clausius",
+    "momentum_mode": "quarkyonic",
+    "parameter_name": "c",
+    "parameter_value": 1.3672882295250892
+  },
+  "ground_state": {
+    "K0": 513.2653060768711,
+    "a": 372.25220325878234,
+    "b": 2.9023514186924366,
+    "binding": -16.00000000009163,
+    "e_per_particle_minus_m_at_sat": -16.00000000009186,
+    "eps_id": 290.0153235950007,
+    "kf": 1.641409896476649,
+    "model": "clausius",
+    "n_id": 0.29871713703276714,
+    "n_sat": 0.16000000533317396,
+    "p_id": 6.4155884768714575,
+    "p_sat": 3.0414798324329695e-07,
+    "parameter_name": "c",
+    "parameter_value": 1.3672882295250892
+  },
+  "model": {
+    "name": "clausius",
+    "parameter_search": {
+      "enabled": true,
+      "parameter_max": 4.74,
+      "parameter_min": 0.0,
+      "scan_steps": 121,
+      "target_k0": 513.265306122449,
+      "tol": 1e-08
+    },
+    "parameter_value": null
+  },
+  "outputs": {
+    "asymmetric_beta_csv": "results/generated/asymmetric_ev_dense_10point_suite/clausius/K0_513p265/clausius_dense_beta_k0_513p265_asymmetric_beta.csv",
+    "asymmetric_fit_csv": "results/generated/asymmetric_ev_dense_10point_suite/clausius/K0_513p265/clausius_dense_beta_k0_513p265_asymmetric_fit.csv",
+    "ground_state_csv": "results/generated/asymmetric_ev_dense_10point_suite/clausius/K0_513p265/clausius_dense_beta_k0_513p265_ground_state.csv",
+    "summary_json": "results/generated/asymmetric_ev_dense_10point_suite/clausius/K0_513p265/clausius_dense_beta_k0_513p265_summary.json"
+  },
+  "run_name": "clausius_dense_beta_k0_513p265",
+  "workflows": {
+    "asymmetric_fit": true,
+    "asymmetric_quarkyonic": true,
+    "ground_state": true,
+    "hadronic_eos_table": false,
+    "neutron_star": false,
+    "quantum_critical": false,
+    "symmetric_quarkyonic": false
+  }
+}
