@@ -675,8 +675,10 @@ class AsymmetricQuarkyonicEOS:
         fq: float,
         y_min: float = 1.0e-6,
         y_max: float = 0.5 - 1.0e-6,
-        n_scan: int = 160,
+        n_scan: int | None = None,
     ) -> tuple[float, float, float, float]:
+        if n_scan is None:
+            n_scan = self.settings.beta_y_scan_points
         y_grid = linspace(y_min, y_max, n_scan)
         values = [self.neutrality_residual(y_value, n_b, fq) for y_value in y_grid]
         y_star = math.nan
@@ -720,7 +722,7 @@ class AsymmetricQuarkyonicEOS:
         eps_mu = self.lepton_energy_density_from_mu(mu_e, 105.66)
         return y_star, mu_e, eps_e, eps_mu
 
-    def total_energy_beta(self, fq: float, n_b: float, y_scan: int = 160) -> float:
+    def total_energy_beta(self, fq: float, n_b: float, y_scan: int | None = None) -> float:
         y_star, _, eps_e, eps_mu = self.solve_y_beta_equilibrium(n_b, fq, n_scan=y_scan)
         if not math.isfinite(y_star):
             return math.nan
@@ -856,7 +858,13 @@ class AsymmetricQuarkyonicEOS:
                 best_energy = energy_star
         return best_fq, best_energy
 
-    def solve_fq_beta(self, n_b: float, fq_min: float = 0.0, fq_max: float = 1.0, y_scan: int = 160) -> tuple[float, float]:
+    def solve_fq_beta(
+        self,
+        n_b: float,
+        fq_min: float = 0.0,
+        fq_max: float = 1.0,
+        y_scan: int | None = None,
+    ) -> tuple[float, float]:
         lower = max(fq_min, self.beta_lower_quark_fraction_bound(n_b))
         if lower >= fq_max:
             return math.nan, math.nan

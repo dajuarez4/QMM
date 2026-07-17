@@ -42,16 +42,16 @@
     "n_min_ratio": 0.05,
     "n_max_ratio": 5.0,
     "n_points": 80,
-    "fq_scan_points": 61,
+    "fq_scan_points": 41,
     "fq_min_shift": 1e-05,
     "refine_tol": 1e-06,
     "refine_max_iter": 400,
-    "shell_integral_points": 200,
-    "quark_integral_points": 200,
+    "shell_integral_points": 160,
+    "quark_integral_points": 160,
     "smoothing_window": 9,
     "smoothing_degree": 3,
     "derivative_floor": 1e-10,
-    "beta_y_scan_points": 64
+    "beta_y_scan_points": 48
   },
   "asymmetric": {
     "enabled": true,
