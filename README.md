@@ -137,7 +137,7 @@ So the practical way to skip sound-speed or EOS generation is to disable the cor
 
 ## Install And Run
 
-Use Python `3.11+`. Create a fresh virtual environment after cloning so the
+Use Python `3.9+`. Create a fresh virtual environment after cloning so the
 installation is independent of paths and packages on the original computer.
 
 From this `QMM` directory:

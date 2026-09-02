@@ -7,7 +7,7 @@ name = "qmm"
 version = "0.1.0"
 description = "Clean quarkyonic and nuclear-matter workflow package."
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.9"
 dependencies = [
   "matplotlib>=3.8",
   "numpy>=1.26",
