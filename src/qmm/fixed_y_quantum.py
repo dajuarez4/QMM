@@ -13,7 +13,10 @@ from .numerics import linspace
 from .quantum import QuantumFermiGas
 
 
-FIXED_Y_MODELS = frozenset({"vdw", "clausius", "dieterici", "cs", "tvm"})
+FIXED_Y_MODELS = frozenset({
+    "vdw", "clausius", "clausius_cs", "clausius_tvm",
+    "dieterici", "cs", "tvm",
+})
 
 
 @dataclass(frozen=True)

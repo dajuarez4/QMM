@@ -8,6 +8,7 @@
 ## Layout
 
 - `src/qmm/`: documented production source code
+- `src/TOVsolver/`: bundled TOV integrator, BPS crust data, and notebook helpers
 - `notebooks/QMM_workflow.ipynb`: the single overview notebook
 - `notebooks/qmm_guided_json_runner.ipynb`: guided interactive notebook that asks what to simulate, writes one or more JSON configs, runs them, and can build branch-comparison plots automatically
 - `notebooks/baryquark_quarkyonic.ipynb`: symmetric quarkyonic/baryquark comparison notebook
@@ -136,27 +137,35 @@ So the practical way to skip sound-speed or EOS generation is to disable the cor
 
 ## Install And Run
 
-Use Python `3.11+`. On this machine, `python3` points to `3.9`, so the safe interpreter is `/opt/homebrew/bin/python3.12`.
+Use Python `3.11+`. Create a fresh virtual environment after cloning so the
+installation is independent of paths and packages on the original computer.
 
 From this `QMM` directory:
 
 ```bash
-/opt/homebrew/bin/python3.12 -m pip install -e .
-/opt/homebrew/bin/python3.12 -m qmm examples/cs_full.json
-/opt/homebrew/bin/python3.12 -m qmm examples/tvm_full.json
-/opt/homebrew/bin/python3.12 -m qmm examples/clausius_reference.json
-/opt/homebrew/bin/python3.12 -m qmm examples/clausius_asymmetric_base.json
-/opt/homebrew/bin/python3.12 -m qmm examples/clausius_equal_b_base.json
-/opt/homebrew/bin/python3.12 -m qmm examples/clausius_cs_hybrid_base.json
-/opt/homebrew/bin/python3.12 -m qmm examples/clausius_tvm_hybrid_base.json
-/opt/homebrew/bin/python3.12 -m qmm examples/clausius_baryquark_demo.json
-/opt/homebrew/bin/python3.12 -m qmm examples/baryquark_quarkyonic_vdw_quarkyonic.json
+python3 -m venv .venv
+source .venv/bin/activate  # Windows PowerShell: .venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+python -m pip install -e '.[notebook]'
+python -m qmm examples/cs_full.json
+jupyter lab
 ```
+
+The complete six-model Dieterici/Clausius calculation is
+`notebooks/guided_dieterici_vdw_lambda300_asymmetric_complete.ipynb`. It can be
+opened from any directory inside this cloned repository; all QMM, TOV, and BPS
+dependencies are resolved from the clone. The full 672-configuration workflow
+is computationally expensive and checkpoints completed results.
+
+The bundled TOV implementation is derived from Anton Motornenko's
+[`TOVsolver`](https://github.com/amotornenko/TOVsolver) and retains its GPLv3+
+notices in the source. QMM-specific orchestration and crust-stitching helpers
+live beside it in `src/TOVsolver`.
 
 If you prefer not to install the package:
 
 ```bash
-PYTHONPATH=src /opt/homebrew/bin/python3.12 -m qmm examples/cs_full.json
+PYTHONPATH=src python3 -m qmm examples/cs_full.json
 ```
 
 ## Blank Template

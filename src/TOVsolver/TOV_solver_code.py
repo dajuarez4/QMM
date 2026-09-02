@@ -3,7 +3,7 @@
 The input tables are produced by
 ``good_repo/QMM/notebooks/guided_beta_cs_tvm_vdw_exc_vol.ipynb``. Their
 ``energy_density`` and ``pressure`` columns are already in MeV/fm^3, the units
-expected by :class:`tovsolver.tov.TOV`.
+expected by :class:`TOVsolver.tov.TOV`.
 """
 
 from __future__ import annotations
@@ -28,15 +28,14 @@ from scipy.optimize import brentq
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 TOV_ROOT = SCRIPT_DIR.parent
-WORKSPACE_ROOT = TOV_ROOT.parent
-QMM_ROOT = WORKSPACE_ROOT / "good_repo" / "QMM"
+QMM_ROOT = TOV_ROOT.parent
 QMM_RESULTS = QMM_ROOT / "results" / "generated"
 
 if str(TOV_ROOT) not in sys.path:
     sys.path.insert(0, str(TOV_ROOT))
 
-from tovsolver.constants import MeV_fm3_to_pa_cgs, c  # noqa: E402
-from tovsolver.tov import TOV  # noqa: E402
+from TOVsolver.constants import MeV_fm3_to_pa_cgs, c  # noqa: E402
+from TOVsolver.tov import TOV  # noqa: E402
 
 
 @dataclass(frozen=True)
@@ -93,7 +92,7 @@ def load_core_eos(path: Path) -> tuple[np.ndarray, np.ndarray]:
 
 def load_bps_crust() -> tuple[np.ndarray, np.ndarray]:
     """Return the bundled BPS crust table converted from cgs to MeV/fm^3."""
-    path = TOV_ROOT / "tovsolver" / "data" / "Baym_eos.dat"
+    path = TOV_ROOT / "TOVsolver" / "data" / "Baym_eos.dat"
     table = np.genfromtxt(path, dtype=float, skip_header=1,
                           names=["energy", "pressure", "n_b"])
     energy = table["energy"] / (MeV_fm3_to_pa_cgs / c**2)

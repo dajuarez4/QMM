@@ -1,11 +1,24 @@
 import unittest
+import math
 
 from qmm.asymmetry import compute_asymmetric_fit
 from qmm.constants import AsymmetricFitSettings, QuarkyonicSettings
-from qmm.quarkyonic import AsymmetricQuarkyonicEOS
+from qmm.quarkyonic import AsymmetricQuarkyonicEOS, _max_hadronic_density
 
 
 class QuarkyonicBetaChargeTests(unittest.TestCase):
+    def test_hadronic_density_bound_recognizes_prefixed_ev_families(self) -> None:
+        b_value = 2.5
+        for model_name in ("cs", "clausius_cs"):
+            with self.subTest(model=model_name):
+                self.assertAlmostEqual(_max_hadronic_density(model_name, b_value), 4.0 / b_value)
+        for model_name in ("tvm", "clausius_tvm"):
+            with self.subTest(model=model_name):
+                self.assertTrue(math.isinf(_max_hadronic_density(model_name, b_value)))
+        for model_name in ("vdw", "clausius"):
+            with self.subTest(model=model_name):
+                self.assertAlmostEqual(_max_hadronic_density(model_name, b_value), 1.0 / b_value)
+
     def test_total_charge_density_matches_y_times_baryon_density(self) -> None:
         fit = compute_asymmetric_fit(
             "cs",

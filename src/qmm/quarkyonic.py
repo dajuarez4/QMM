@@ -189,9 +189,10 @@ def _kbu_from_quark_density(n_q: float, settings: QuarkyonicSettings, physical: 
 def _max_hadronic_density(model_name: str, b_value: float) -> float:
     if b_value <= 0.0:
         return math.inf
-    if model_name == "cs":
+    normalized = model_name.strip().lower()
+    if normalized == "cs" or normalized.endswith("_cs"):
         return 4.0 / b_value
-    if model_name == "tvm":
+    if normalized == "tvm" or normalized.endswith("_tvm"):
         return math.inf
     return 1.0 / b_value
 
