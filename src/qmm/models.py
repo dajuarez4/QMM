@@ -4,15 +4,15 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass
-from typing import Callable
+from typing import Callable, Optional
 
 from .constants import DEFAULT_CLAUSIUS_CS_RANGE, DEFAULT_CLAUSIUS_RANGE, DEFAULT_CLAUSIUS_TVM_RANGE, DEFAULT_DIETERICI_RANGE
 
 
-ScalarModelFunction = Callable[[float, float, float | None], float | None]
-DensityMap = Callable[[float, float], float | None]
-VolumeFractionMap = Callable[[float, float], float | None]
-SpeciesVolumeFractionMap = Callable[[float], float | None]
+ScalarModelFunction = Callable[[float, float, Optional[float]], Optional[float]]
+DensityMap = Callable[[float, float], Optional[float]]
+VolumeFractionMap = Callable[[float, float], Optional[float]]
+SpeciesVolumeFractionMap = Callable[[float], Optional[float]]
 
 
 def u_vdw(n: float, b: float, parameter: float | None = None) -> float:
