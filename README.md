@@ -168,6 +168,104 @@ If you prefer not to install the package:
 PYTHONPATH=src python3 -m qmm examples/cs_full.json
 ```
 
+## VS Code on Windows with WSL
+
+VS Code must be connected to the same WSL distribution in which QMM and its
+virtual environment are installed. A Windows VS Code window, a Debian WSL
+window, and an Ubuntu WSL window use different Python environments.
+
+If more than one WSL distribution is installed, list them from Windows
+PowerShell and start Ubuntu explicitly:
+
+```powershell
+wsl --list --verbose
+wsl -d Ubuntu
+```
+
+Use the exact distribution name shown by the first command, such as
+`Ubuntu-24.04`. To make it the default:
+
+```powershell
+wsl --set-default Ubuntu
+```
+
+Inside the Ubuntu terminal, clone or enter QMM and create a new Linux virtual
+environment. `/path/to/QMM` in examples is a placeholder, not a literal path.
+
+```bash
+cd ~/QMM                       # use the actual clone location
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -e '.[notebook]'
+python -m ipykernel install --user --name qmm --display-name "Python (QMM)"
+```
+
+If creation of the environment fails on Ubuntu or Debian, install its system
+support first:
+
+```bash
+sudo apt update
+sudo apt install python3-venv
+```
+
+Open QMM in an Ubuntu-connected VS Code window. The most reliable method is:
+
+1. Install Microsoft's **WSL** extension in Windows VS Code.
+2. Run **WSL: Connect to WSL using Distro...** from the Command Palette.
+3. Select Ubuntu and open `/home/YOUR_USER/QMM`.
+4. Install Microsoft's **Python** and **Jupyter** extensions in the WSL window
+   when VS Code offers **Install in WSL: Ubuntu**.
+
+The lower-left corner of VS Code must say `WSL: Ubuntu`. If `code .` reports
+`Exec format error`, use the procedure above instead of running that command;
+it usually means Ubuntu found an incorrect Linux `code` executable rather than
+the Windows-to-WSL launcher.
+
+Select the environment with **Python: Select Interpreter**. If it is not
+listed, choose **Enter interpreter path** and select:
+
+```text
+/home/YOUR_USER/QMM/.venv/bin/python
+```
+
+For a notebook, click **Select Kernel**, choose **Select Another Kernel**, and
+select either **Python (QMM)** or the same `.venv/bin/python` interpreter.
+Verify the active kernel in a cell:
+
+```python
+import sys
+print(sys.executable)
+print(sys.version)
+```
+
+The executable must end in `/QMM/.venv/bin/python`, not `C:\...` and not an
+environment from another WSL distribution.
+
+### WSL and notebook troubleshooting
+
+- **QMM is not shown as an interpreter:** confirm that VS Code says
+  `WSL: Ubuntu`, then run `realpath .venv/bin/python` in QMM and enter that
+  exact result through **Python: Select Interpreter**.
+- **The notebook kernel is not shown:** reactivate the environment, rerun the
+  `ipykernel install` command above, and use **Developer: Reload Window**.
+- **`Package 'qmm' requires a different version of Python`:** pull the current
+  `main` branch. QMM supports Python 3.9 and newer.
+- **`TypeError: unsupported operand type(s) for |: 'type' and 'type'` on
+  Python 3.9:** this was fixed in commit `401203e1`. Update and reinstall QMM,
+  then restart the notebook kernel:
+
+  ```bash
+  git pull origin main
+  source .venv/bin/activate
+  python -m pip install -e '.[notebook]'
+  python -c "import qmm; from qmm.models import MODELS; print('QMM OK')"
+  ```
+
+- **Unsure which kernel is active:** run `which python` in the activated WSL
+  terminal and `print(sys.executable)` in the notebook. Both paths should point
+  to the same QMM `.venv`.
+
 ## Blank Template
 
 The fully general blank template is:
