@@ -1,0 +1,121 @@
+model_key,model,excluded_volume,K0_MeV,branch_mode,y,source_method,status,Tc_MeV,nc_fm3,Pc_MeV_fm3
+dieterici_vdw,Dieterici–VDW,vdw,200,equal_b,0.1,fixed-y asymmetric,ok,2.281622774841345,0.011566625485229099,0.004721991176365382
+dieterici_vdw,Dieterici–VDW,vdw,250,equal_b,0.1,fixed-y asymmetric,ok,2.668608721520317,0.01617207119188801,0.008484270450531448
+dieterici_vdw,Dieterici–VDW,vdw,300,equal_b,0.1,fixed-y asymmetric,ok,3.1829940625893025,0.021086316354090764,0.014615218707204697
+dieterici_vdw,Dieterici–VDW,vdw,350,equal_b,0.1,fixed-y asymmetric,ok,3.7807995107677566,0.02578538948510263,0.023325110304735552
+dieterici_vdw,Dieterici–VDW,vdw,400,equal_b,0.1,fixed-y asymmetric,ok,4.415977973105093,0.030044183036274194,0.034394819180923186
+dieterici_vdw,Dieterici–VDW,vdw,450,equal_b,0.1,fixed-y asymmetric,ok,5.058373459757928,0.03383120533982405,0.04744430433593566
+dieterici_vdw,Dieterici–VDW,vdw,500,equal_b,0.1,fixed-y asymmetric,failed,,,
+dieterici_vdw,Dieterici–VDW,vdw,550,equal_b,0.1,fixed-y asymmetric,failed,,,
+dieterici_vdw,Dieterici–VDW,vdw,600,equal_b,0.1,fixed-y asymmetric,failed,,,
+dieterici_vdw,Dieterici–VDW,vdw,650,equal_b,0.1,fixed-y asymmetric,failed,,,
+dieterici_vdw,Dieterici–VDW,vdw,700,equal_b,0.1,fixed-y asymmetric,failed,,,
+dieterici_vdw,Dieterici–VDW,vdw,750,equal_b,0.1,fixed-y asymmetric,failed,,,
+dieterici_vdw,Dieterici–VDW,vdw,200,equal_b,0.2,fixed-y asymmetric,ok,6.2472037071230675,0.03173787413288513,0.04209651846883267
+dieterici_vdw,Dieterici–VDW,vdw,250,equal_b,0.2,fixed-y asymmetric,ok,7.170289084631813,0.03693021267865105,0.061786186837944734
+dieterici_vdw,Dieterici–VDW,vdw,300,equal_b,0.2,fixed-y asymmetric,ok,8.029920469430028,0.04117280683893241,0.083310804510908
+dieterici_vdw,Dieterici–VDW,vdw,350,equal_b,0.2,fixed-y asymmetric,ok,8.829359195914813,0.04470660628047846,0.10604184488096335
+dieterici_vdw,Dieterici–VDW,vdw,400,equal_b,0.2,fixed-y asymmetric,ok,9.574829097172957,0.04770853148977257,0.1295764825698793
+dieterici_vdw,Dieterici–VDW,vdw,450,equal_b,0.2,fixed-y asymmetric,ok,10.272795413480006,0.050303659884645725,0.15365269169473894
+dieterici_vdw,Dieterici–VDW,vdw,500,equal_b,0.2,fixed-y asymmetric,ok,10.929102578407557,0.05258088044800967,0.17809564143897982
+dieterici_vdw,Dieterici–VDW,vdw,550,equal_b,0.2,fixed-y asymmetric,ok,11.54878701249241,0.05460450992926256,0.20278553187497073
+dieterici_vdw,Dieterici–VDW,vdw,600,equal_b,0.2,fixed-y asymmetric,ok,12.13611762550273,0.05642207840712092,0.22763825191172005
+dieterici_vdw,Dieterici–VDW,vdw,650,equal_b,0.2,fixed-y asymmetric,ok,12.694698888982305,0.05806944781250315,0.2525934517321812
+dieterici_vdw,Dieterici–VDW,vdw,700,equal_b,0.2,fixed-y asymmetric,ok,13.227580809323713,0.05957420543599153,0.2776070336085723
+dieterici_vdw,Dieterici–VDW,vdw,750,equal_b,0.2,fixed-y asymmetric,ok,13.737356502556404,0.060957949722067084,0.3026462736579276
+dieterici_vdw,Dieterici–VDW,vdw,200,equal_b,0.3,fixed-y asymmetric,ok,9.38052981314226,0.04544677943156307,0.09614395485366889
+dieterici_vdw,Dieterici–VDW,vdw,250,equal_b,0.3,fixed-y asymmetric,ok,10.414222518203262,0.04941877029984322,0.12625201521694296
+dieterici_vdw,Dieterici–VDW,vdw,300,equal_b,0.3,fixed-y asymmetric,ok,11.334698059967412,0.052579501317529885,0.15647931706978557
+dieterici_vdw,Dieterici–VDW,vdw,350,equal_b,0.3,fixed-y asymmetric,ok,12.167238759518542,0.055195165455658356,0.18663192392606331
+dieterici_vdw,Dieterici–VDW,vdw,400,equal_b,0.3,fixed-y asymmetric,ok,12.929453820076827,0.057422564700488295,0.21661897691438525
+dieterici_vdw,Dieterici–VDW,vdw,450,equal_b,0.3,fixed-y asymmetric,ok,13.634038779049021,0.059360599140722135,0.2463973137741331
+dieterici_vdw,Dieterici–VDW,vdw,500,equal_b,0.3,fixed-y asymmetric,ok,14.290439100797213,0.061075188546007755,0.2759474839044016
+dieterici_vdw,Dieterici–VDW,vdw,550,equal_b,0.3,fixed-y asymmetric,ok,14.905875195374868,0.06261227355359748,0.30526240933076143
+dieterici_vdw,Dieterici–VDW,vdw,600,equal_b,0.3,fixed-y asymmetric,ok,15.485996262338238,0.06400506054649453,0.3343416965690995
+dieterici_vdw,Dieterici–VDW,vdw,650,equal_b,0.3,fixed-y asymmetric,ok,16.035310162493705,0.06527828615936809,0.36318857877680477
+dieterici_vdw,Dieterici–VDW,vdw,700,equal_b,0.3,fixed-y asymmetric,ok,16.55747598559404,0.06645085096218525,0.3918082549737292
+dieterici_vdw,Dieterici–VDW,vdw,750,equal_b,0.3,fixed-y asymmetric,ok,17.05550798396071,0.06753751035864715,0.4202069353126199
+dieterici_vdw,Dieterici–VDW,vdw,200,equal_b,0.4,fixed-y asymmetric,ok,11.309240666242903,0.053171780521459065,0.13906947227993027
+dieterici_vdw,Dieterici–VDW,vdw,250,equal_b,0.4,fixed-y asymmetric,ok,12.362870344655299,0.05624990111547455,0.17412490362381405
+dieterici_vdw,Dieterici–VDW,vdw,300,equal_b,0.4,fixed-y asymmetric,ok,13.291545647166819,0.058730766371174116,0.20845551252259242
+dieterici_vdw,Dieterici–VDW,vdw,350,equal_b,0.4,fixed-y asymmetric,ok,14.126034987310083,0.060812968137104226,0.24213085361654274
+dieterici_vdw,Dieterici–VDW,vdw,400,equal_b,0.4,fixed-y asymmetric,ok,14.886586285817668,0.06261011535592124,0.2752162083493066
+dieterici_vdw,Dieterici–VDW,vdw,450,equal_b,0.4,fixed-y asymmetric,ok,15.587294377454759,0.0641930833183193,0.30776783486668124
+dieterici_vdw,Dieterici–VDW,vdw,500,equal_b,0.4,fixed-y asymmetric,ok,16.238404198069787,0.06560902574538048,0.339833352126677
+dieterici_vdw,Dieterici–VDW,vdw,550,equal_b,0.4,fixed-y asymmetric,ok,16.847620280914104,0.06689090276929387,0.37145307742307865
+dieterici_vdw,Dieterici–VDW,vdw,600,equal_b,0.4,fixed-y asymmetric,ok,17.42089886607595,0.06806267132349582,0.40266139880801544
+dieterici_vdw,Dieterici–VDW,vdw,650,equal_b,0.4,fixed-y asymmetric,ok,17.962949942909802,0.06914230190425381,0.43348787870714856
+dieterici_vdw,Dieterici–VDW,vdw,700,equal_b,0.4,fixed-y asymmetric,ok,18.477569776833832,0.07014363015375993,0.4639581703728475
+dieterici_vdw,Dieterici–VDW,vdw,750,equal_b,0.4,fixed-y asymmetric,ok,18.967868063172304,0.07107754254584273,0.4940947247203169
+dieterici_vdw,Dieterici–VDW,vdw,200,equal_b,0.5,high-accuracy symmetric fixed-y limit,ok,11.957190744005098,0.055665882573939424,0.1550379733881586
+dieterici_vdw,Dieterici–VDW,vdw,250,equal_b,0.5,high-accuracy symmetric fixed-y limit,ok,13.012208186410264,0.05843433240943853,0.1914954956693694
+dieterici_vdw,Dieterici–VDW,vdw,300,equal_b,0.5,high-accuracy symmetric fixed-y limit,ok,13.940417145376655,0.06068853081160527,0.22700708062409114
+dieterici_vdw,Dieterici–VDW,vdw,350,equal_b,0.5,high-accuracy symmetric fixed-y limit,ok,14.773486707148487,0.0625967606721423,0.26171107858314624
+dieterici_vdw,Dieterici–VDW,vdw,400,equal_b,0.5,high-accuracy symmetric fixed-y limit,ok,15.532084641796603,0.06425552278930523,0.2957125710946613
+dieterici_vdw,Dieterici–VDW,vdw,450,equal_b,0.5,high-accuracy symmetric fixed-y limit,ok,16.23052418000125,0.06572533211906026,0.329093010583666
+dieterici_vdw,Dieterici–VDW,vdw,500,equal_b,0.5,high-accuracy symmetric fixed-y limit,ok,16.879173400232986,0.06704669890498538,0.3619170644527139
+dieterici_vdw,Dieterici–VDW,vdw,550,equal_b,0.5,high-accuracy symmetric fixed-y limit,ok,17.485810643056812,0.0682481208016983,0.3942371890348204
+dieterici_vdw,Dieterici–VDW,vdw,600,equal_b,0.5,high-accuracy symmetric fixed-y limit,ok,18.056438526012222,0.06935044081859519,0.4260967683757493
+dieterici_vdw,Dieterici–VDW,vdw,650,equal_b,0.5,high-accuracy symmetric fixed-y limit,ok,18.595797276364433,0.07036938659265372,0.4575322478232826
+dieterici_vdw,Dieterici–VDW,vdw,700,equal_b,0.5,high-accuracy symmetric fixed-y limit,ok,19.107703455997676,0.07131713463685142,0.4885746864212963
+dieterici_vdw,Dieterici–VDW,vdw,750,equal_b,0.5,high-accuracy symmetric fixed-y limit,ok,19.595280691754656,0.07220331580264884,0.5192508734434107
+dieterici_vdw,Dieterici–VDW,vdw,200,target_l,0.1,fixed-y asymmetric,ok,1.4869929136525746,0.00784865812381039,0.001898836652275672
+dieterici_vdw,Dieterici–VDW,vdw,250,target_l,0.1,fixed-y asymmetric,ok,1.3253115390282035,0.010272391192563016,0.002190800433619182
+dieterici_vdw,Dieterici–VDW,vdw,300,target_l,0.1,fixed-y asymmetric,ok,1.2614494534437788,0.014528269530656638,0.0030928431298512665
+dieterici_vdw,Dieterici–VDW,vdw,350,target_l,0.1,fixed-y asymmetric,ok,1.5046853881754219,0.02045953038263174,0.006113160741208587
+dieterici_vdw,Dieterici–VDW,vdw,400,target_l,0.1,fixed-y asymmetric,ok,2.059020740061305,0.026670880371008423,0.012683433046162568
+dieterici_vdw,Dieterici–VDW,vdw,450,target_l,0.1,fixed-y asymmetric,ok,2.7592128106497267,0.032429001328985775,0.02307794028698862
+dieterici_vdw,Dieterici–VDW,vdw,500,target_l,0.1,fixed-y asymmetric,ok,3.499465765193768,0.03755687928864273,0.03681722123361353
+dieterici_vdw,Dieterici–VDW,vdw,550,target_l,0.1,fixed-y asymmetric,failed,,,
+dieterici_vdw,Dieterici–VDW,vdw,600,target_l,0.1,fixed-y asymmetric,failed,,,
+dieterici_vdw,Dieterici–VDW,vdw,650,target_l,0.1,fixed-y asymmetric,failed,,,
+dieterici_vdw,Dieterici–VDW,vdw,700,target_l,0.1,fixed-y asymmetric,failed,,,
+dieterici_vdw,Dieterici–VDW,vdw,750,target_l,0.1,fixed-y asymmetric,failed,,,
+dieterici_vdw,Dieterici–VDW,vdw,200,target_l,0.2,fixed-y asymmetric,ok,6.012358134574569,0.03307835106928524,0.0414509443768854
+dieterici_vdw,Dieterici–VDW,vdw,250,target_l,0.2,fixed-y asymmetric,ok,6.926483702260612,0.03934903022419128,0.06252004691104435
+dieterici_vdw,Dieterici–VDW,vdw,300,target_l,0.2,fixed-y asymmetric,ok,7.804737085143562,0.044551324952721676,0.08637656374881963
+dieterici_vdw,Dieterici–VDW,vdw,350,target_l,0.2,fixed-y asymmetric,ok,8.635665066774735,0.04887340014105687,0.11208264136409807
+dieterici_vdw,Dieterici–VDW,vdw,400,target_l,0.2,fixed-y asymmetric,ok,9.417451046313875,0.05250266586222458,0.1389770544807789
+dieterici_vdw,Dieterici–VDW,vdw,450,target_l,0.2,fixed-y asymmetric,ok,10.152434522921286,0.055590816600319434,0.16661376918274196
+dieterici_vdw,Dieterici–VDW,vdw,500,target_l,0.2,fixed-y asymmetric,ok,10.844436241425868,0.05825353283201622,0.19469490424990654
+dieterici_vdw,Dieterici–VDW,vdw,550,target_l,0.2,fixed-y asymmetric,ok,11.497570791486213,0.060577789273050485,0.22302090459366797
+dieterici_vdw,Dieterici–VDW,vdw,600,target_l,0.2,fixed-y asymmetric,ok,12.115758418215776,0.06262917347658259,0.25145714653022955
+dieterici_vdw,Dieterici–VDW,vdw,650,target_l,0.2,fixed-y asymmetric,ok,12.70254972690774,0.06445762934607523,0.27991215237108213
+dieterici_vdw,Dieterici–VDW,vdw,700,target_l,0.2,fixed-y asymmetric,ok,13.261088166101649,0.06610165931578331,0.3083234676278648
+dieterici_vdw,Dieterici–VDW,vdw,750,target_l,0.2,fixed-y asymmetric,ok,13.794128869309766,0.06759133135089435,0.3366484060216737
+dieterici_vdw,Dieterici–VDW,vdw,200,target_l,0.3,fixed-y asymmetric,ok,9.401104923735376,0.047245672219616584,0.09970918526843764
+dieterici_vdw,Dieterici–VDW,vdw,250,target_l,0.3,fixed-y asymmetric,ok,10.461623958934268,0.05171294938653544,0.13219885569926015
+dieterici_vdw,Dieterici–VDW,vdw,300,target_l,0.3,fixed-y asymmetric,ok,11.407871564251447,0.05521830794115762,0.1648782315739602
+dieterici_vdw,Dieterici–VDW,vdw,350,target_l,0.3,fixed-y asymmetric,ok,12.263656606399739,0.05807436859910022,0.19744298390973958
+dieterici_vdw,Dieterici–VDW,vdw,400,target_l,0.3,fixed-y asymmetric,ok,13.046337057232584,0.06047010988051419,0.2297524570612024
+dieterici_vdw,Dieterici–VDW,vdw,450,target_l,0.3,fixed-y asymmetric,ok,13.768770849225776,0.06252594134981367,0.26174329491345905
+dieterici_vdw,Dieterici–VDW,vdw,500,target_l,0.3,fixed-y asymmetric,ok,14.440687231587608,0.06432224328022791,0.293390426638827
+dieterici_vdw,Dieterici–VDW,vdw,550,target_l,0.3,fixed-y asymmetric,ok,15.06960470521731,0.06591484451944439,0.324688311415668
+dieterici_vdw,Dieterici–VDW,vdw,600,target_l,0.3,fixed-y asymmetric,ok,15.661447366842028,0.0673438463581835,0.3556415007943865
+dieterici_vdw,Dieterici–VDW,vdw,650,target_l,0.3,fixed-y asymmetric,ok,16.22096412589647,0.06863888514645698,0.3862596469903956
+dieterici_vdw,Dieterici–VDW,vdw,700,target_l,0.3,fixed-y asymmetric,ok,16.752020896990647,0.06982240486872386,0.41655483638817214
+dieterici_vdw,Dieterici–VDW,vdw,750,target_l,0.3,fixed-y asymmetric,ok,17.257807795684514,0.07091176435661149,0.4465401161914371
+dieterici_vdw,Dieterici–VDW,vdw,200,target_l,0.4,fixed-y asymmetric,ok,11.33351737901883,0.053776057618999985,0.14083061338180403
+dieterici_vdw,Dieterici–VDW,vdw,250,target_l,0.4,fixed-y asymmetric,ok,12.39623940332483,0.056963696180908616,0.17668691016067894
+dieterici_vdw,Dieterici–VDW,vdw,300,target_l,0.4,fixed-y asymmetric,ok,13.332434423790321,0.05951293021204492,0.21176737129338796
+dieterici_vdw,Dieterici–VDW,vdw,350,target_l,0.4,fixed-y asymmetric,ok,14.173139617190854,0.06163863010834491,0.24613823230006027
+dieterici_vdw,Dieterici–VDW,vdw,400,target_l,0.4,fixed-y asymmetric,ok,14.938855322140624,0.0634634949511085,0.279867554321114
+dieterici_vdw,Dieterici–VDW,vdw,450,target_l,0.4,fixed-y asymmetric,ok,15.643880727813325,0.06506377120697915,0.31301609754474646
+dieterici_vdw,Dieterici–VDW,vdw,500,target_l,0.4,fixed-y asymmetric,ok,16.298620555338676,0.06648994388947442,0.3456361915502104
+dieterici_vdw,Dieterici–VDW,vdw,550,target_l,0.4,fixed-y asymmetric,ok,16.910903740598766,0.06777712320069797,0.3777725536013019
+dieterici_vdw,Dieterici–VDW,vdw,600,target_l,0.4,fixed-y asymmetric,ok,17.486783955270113,0.06895070070319885,0.40946350982108326
+dieterici_vdw,Dieterici–VDW,vdw,650,target_l,0.4,fixed-y asymmetric,ok,18.031048222695514,0.07002963060245711,0.44074208618280664
+dieterici_vdw,Dieterici–VDW,vdw,700,target_l,0.4,fixed-y asymmetric,ok,18.547554351423372,0.07102843874249795,0.4716369621179475
+dieterici_vdw,Dieterici–VDW,vdw,750,target_l,0.4,fixed-y asymmetric,ok,19.03946171351283,0.07195850543531757,0.5021732291460954
+dieterici_vdw,Dieterici–VDW,vdw,200,target_l,0.5,high-accuracy symmetric fixed-y limit,ok,11.957190744005098,0.055665882573939424,0.1550379733881586
+dieterici_vdw,Dieterici–VDW,vdw,250,target_l,0.5,high-accuracy symmetric fixed-y limit,ok,13.012208186410264,0.05843433240943853,0.1914954956693694
+dieterici_vdw,Dieterici–VDW,vdw,300,target_l,0.5,high-accuracy symmetric fixed-y limit,ok,13.940417145376655,0.06068853081160527,0.22700708062409114
+dieterici_vdw,Dieterici–VDW,vdw,350,target_l,0.5,high-accuracy symmetric fixed-y limit,ok,14.773486707148487,0.0625967606721423,0.26171107858314624
+dieterici_vdw,Dieterici–VDW,vdw,400,target_l,0.5,high-accuracy symmetric fixed-y limit,ok,15.532084641796603,0.06425552278930523,0.2957125710946613
+dieterici_vdw,Dieterici–VDW,vdw,450,target_l,0.5,high-accuracy symmetric fixed-y limit,ok,16.23052418000125,0.06572533211906026,0.329093010583666
+dieterici_vdw,Dieterici–VDW,vdw,500,target_l,0.5,high-accuracy symmetric fixed-y limit,ok,16.879173400232986,0.06704669890498538,0.3619170644527139
+dieterici_vdw,Dieterici–VDW,vdw,550,target_l,0.5,high-accuracy symmetric fixed-y limit,ok,17.485810643056812,0.0682481208016983,0.3942371890348204
+dieterici_vdw,Dieterici–VDW,vdw,600,target_l,0.5,high-accuracy symmetric fixed-y limit,ok,18.056438526012222,0.06935044081859519,0.4260967683757493
+dieterici_vdw,Dieterici–VDW,vdw,650,target_l,0.5,high-accuracy symmetric fixed-y limit,ok,18.595797276364433,0.07036938659265372,0.4575322478232826
+dieterici_vdw,Dieterici–VDW,vdw,700,target_l,0.5,high-accuracy symmetric fixed-y limit,ok,19.107703455997676,0.07131713463685142,0.4885746864212963
+dieterici_vdw,Dieterici–VDW,vdw,750,target_l,0.5,high-accuracy symmetric fixed-y limit,ok,19.595280691754656,0.07220331580264884,0.5192508734434107

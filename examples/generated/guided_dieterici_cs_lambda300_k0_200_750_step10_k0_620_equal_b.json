@@ -1,0 +1,129 @@
+{
+  "asymmetric": {
+    "beta_equilibrium": true,
+    "branch_mode": "equal_b",
+    "delta_scan_steps": 401,
+    "derivative_step_l": 0.0001,
+    "enabled": true,
+    "proton_fraction_values": [],
+    "target_j": 32.5,
+    "target_k0": 620.0,
+    "target_l": 58.9
+  },
+  "ground_state": {
+    "b_max": 6.0,
+    "b_min": 1e-06,
+    "b_scan_steps": 5000,
+    "derivative_step": 1e-06,
+    "n_integral_points": 4000,
+    "saturation_left": 0.05,
+    "saturation_right": 0.3
+  },
+  "hadronic_eos": {
+    "derivative_floor": 1e-10,
+    "n_max_ratio": 5.0,
+    "n_min_ratio": 0.2,
+    "n_points": 160,
+    "smoothing_degree": 3,
+    "smoothing_window": 9
+  },
+  "model": {
+    "excluded_volume": "vdw",
+    "mean_field": "dieterici",
+    "name": "dieterici_cs",
+    "parameter_search": {
+      "enabled": true,
+      "parameter_max": 2.11,
+      "parameter_min": 1.64,
+      "scan_steps": 241,
+      "target_k0": 620.0,
+      "tol": 1e-08
+    },
+    "parameter_value": null
+  },
+  "neutron_star": {
+    "central_pressure_max_fraction": 0.995,
+    "central_pressure_min_mev_fm3": 0.1,
+    "max_radius_cm": 4000000.0,
+    "sequence_points": 48,
+    "start_radius_cm": 1.0,
+    "step_cm": 2500.0,
+    "surface_pressure_mev_fm3": 0.05
+  },
+  "output": {
+    "collection_output_directory": null,
+    "collection_search_root": null,
+    "directory": "/home/dajuarez4/QMM/results/generated/guided_dieterici_cs_lambda300_k0_200_750_step10/K0_620_equal_b",
+    "plot_formats": [],
+    "write_csv": true,
+    "write_json": true,
+    "write_plots": false
+  },
+  "physical": {
+    "binding_energy": -16.0,
+    "degeneracy_species": 2.0,
+    "degeneracy_symmetric": 4.0,
+    "hbarc": 197.3269804,
+    "m_nucleon": 938.0,
+    "n0": 0.16,
+    "symmetry_energy_j": 32.5,
+    "symmetry_slope_l": 58.9
+  },
+  "quantum": {
+    "cache_round_digits": 8,
+    "coarse_n_count": 17,
+    "coarse_t_count": 17,
+    "h_n": 0.0002,
+    "h_t": 0.02,
+    "k_max_fd": 20.0,
+    "mu_delta": 0.25,
+    "mu_max": 1200.0,
+    "mu_min": -200.0,
+    "mu_scf_damping": 0.7,
+    "mu_scf_max_iter": 80,
+    "mu_scf_tol": 1e-08,
+    "n_k_fd": 400,
+    "n_max_cp": 0.075,
+    "n_min_cp": 0.045,
+    "outer_damping_n": 0.7,
+    "outer_damping_t": 0.7,
+    "outer_max_iter": 35,
+    "outer_max_step_n": 0.004,
+    "outer_max_step_t": 0.75,
+    "outer_min_lambda": 0.001,
+    "outer_tol_d2Pdn2": 0.0001,
+    "outer_tol_dPdn": 1e-05,
+    "quick": false,
+    "t_max_cp": 22.0,
+    "t_min_cp": 10.0
+  },
+  "quarkyonic": {
+    "derivative_floor": 1e-10,
+    "fq_min_shift": 1e-05,
+    "fq_scan_points": 121,
+    "lambda_momentum_mev": 300.0,
+    "momentum_mode": "quarkyonic",
+    "n_max_ratio": 5.0,
+    "n_min_ratio": 0.05,
+    "n_points": 120,
+    "nc": 3,
+    "quark_degeneracy": 4.0,
+    "quark_integral_points": 300,
+    "quick": false,
+    "refine_max_iter": 400,
+    "refine_tol": 1e-06,
+    "shell_integral_points": 300,
+    "smoothing_degree": 3,
+    "smoothing_window": 9
+  },
+  "run_name": "guided_dieterici_cs_lambda300_k0_200_750_step10_k0_620_equal_b",
+  "workflows": {
+    "asymmetric_fit": true,
+    "asymmetric_quarkyonic": true,
+    "ground_state": true,
+    "hadronic_eos_table": true,
+    "neutron_star": false,
+    "quantum_critical": false,
+    "symmetric_quarkyonic": false
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "asymmetric_fit": {
+    "J": 32.500000000480554,
+    "K0": 500.0000001071925,
+    "L": 58.9000000739361,
+    "a_avg": 375.3792012559776,
+    "a_n": 213.12372220949587,
+    "a_pn": 537.6346803024593,
+    "b_avg": 2.86544085784868,
+    "b_n": 1.9880146150301334,
+    "b_pn": 3.742867100667227,
+    "binding": -15.99999999967838,
+    "branch_mode": "target_l",
+    "j_residual": 4.80554263049271e-10,
+    "k0_residual": 1.0719247711676871e-07,
+    "l_residual": 7.393609990913319e-08,
+    "model": "clausius",
+    "n_sat": 0.16000000070513165,
+    "p_sat": 3.917370960948574e-08,
+    "parameter_name": "c",
+    "parameter_value": 1.4683402386307713,
+    "ratio_a_pn_over_a_n": 2.5226411904254205,
+    "ratio_b_pn_over_b_n": 1.8827160888907721,
+    "target_k0": 500.0
+  },
+  "asymmetric_quarkyonic": {
+    "beta_profile_points": 120,
+    "fixed_y_labels": [],
+    "model": "clausius",
+    "momentum_mode": "quarkyonic",
+    "parameter_name": "c",
+    "parameter_value": 1.4683402386307713
+  },
+  "ground_state": {
+    "K0": 500.0000001071925,
+    "a": 375.3792012559776,
+    "b": 2.86544085784868,
+    "binding": -15.99999999967838,
+    "e_per_particle_minus_m_at_sat": -15.999999999678266,
+    "eps_id": 286.78320109629993,
+    "kf": 1.6354212343582943,
+    "model": "clausius",
+    "n_id": 0.2954594551313919,
+    "n_sat": 0.16000000070513165,
+    "p_id": 6.3011869886430905,
+    "p_sat": 3.917370960948574e-08,
+    "parameter_name": "c",
+    "parameter_value": 1.4683402386307713
+  },
+  "hadronic_eos_table": {
+    "K0": 500.0000001071925,
+    "a": 375.3792012559776,
+    "b": 2.86544085784868,
+    "model": "clausius",
+    "parameter_name": "c",
+    "parameter_value": 1.4683402386307713,
+    "points": 66
+  },
+  "model": {
+    "name": "clausius",
+    "parameter_search": {
+      "enabled": true,
+      "parameter_max": 6.2,
+      "parameter_min": 0.0,
+      "scan_steps": 241,
+      "target_k0": 500.0,
+      "tol": 1e-08
+    },
+    "parameter_value": null
+  },
+  "outputs": {
+    "asymmetric_beta_csv": "/home/dajuarez4/QMM/results/generated/guided_clausius_vdw_lambda300_k0_200_750_step10/K0_500_target_l/guided_clausius_vdw_lambda300_k0_200_750_step10_k0_500_target_l_asymmetric_beta.csv",
+    "asymmetric_fit_csv": "/home/dajuarez4/QMM/results/generated/guided_clausius_vdw_lambda300_k0_200_750_step10/K0_500_target_l/guided_clausius_vdw_lambda300_k0_200_750_step10_k0_500_target_l_asymmetric_fit.csv",
+    "ground_state_csv": "/home/dajuarez4/QMM/results/generated/guided_clausius_vdw_lambda300_k0_200_750_step10/K0_500_target_l/guided_clausius_vdw_lambda300_k0_200_750_step10_k0_500_target_l_ground_state.csv",
+    "hadronic_eos_csv": "/home/dajuarez4/QMM/results/generated/guided_clausius_vdw_lambda300_k0_200_750_step10/K0_500_target_l/guided_clausius_vdw_lambda300_k0_200_750_step10_k0_500_target_l_hadronic_eos.csv",
+    "summary_json": "/home/dajuarez4/QMM/results/generated/guided_clausius_vdw_lambda300_k0_200_750_step10/K0_500_target_l/guided_clausius_vdw_lambda300_k0_200_750_step10_k0_500_target_l_summary.json"
+  },
+  "run_name": "guided_clausius_vdw_lambda300_k0_200_750_step10_k0_500_target_l",
+  "workflows": {
+    "asymmetric_fit": true,
+    "asymmetric_quarkyonic": true,
+    "ground_state": true,
+    "hadronic_eos_table": true,
+    "neutron_star": false,
+    "quantum_critical": false,
+    "symmetric_quarkyonic": false
+  }
+}
