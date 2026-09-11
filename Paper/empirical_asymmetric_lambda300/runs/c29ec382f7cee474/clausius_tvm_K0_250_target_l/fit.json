@@ -1,0 +1,43 @@
+{
+  "ground_state": {
+    "K0": 249.999997503636,
+    "a": 467.9392664801958,
+    "b": 1.9257150920427115,
+    "binding": -15.999999999771262,
+    "e_per_particle_minus_m_at_sat": -15.999999999771944,
+    "eps_id": 220.46012937935427,
+    "kf": 1.5007650714162177,
+    "model": "clausius_tvm",
+    "n_id": 0.2283216718823725,
+    "n_sat": 0.16000000533317396,
+    "p_id": 4.125747641581659,
+    "p_sat": 1.4814396198659097e-07,
+    "parameter_name": "c",
+    "parameter_value": 4.490403232624134
+  },
+  "asymmetric_fit": {
+    "model": "clausius_tvm",
+    "branch_mode": "target_l",
+    "parameter_name": "c",
+    "parameter_value": 4.490403232624134,
+    "target_k0": 250.0,
+    "a_avg": 467.9392664801958,
+    "b_avg": 1.9257150920427115,
+    "a_n": 257.46361187151217,
+    "a_pn": 678.4149210888794,
+    "b_n": 1.4060752313100546,
+    "b_pn": 2.4453549527753684,
+    "ratio_a_pn_over_a_n": 2.634993411913463,
+    "ratio_b_pn_over_b_n": 1.7391352171796712,
+    "J": 32.49999999310819,
+    "L": 58.900000055655255,
+    "K0": 249.999997503636,
+    "binding": -15.999999999771262,
+    "n_sat": 0.16000000533317396,
+    "p_sat": 1.4814396198659097e-07,
+    "j_residual": -6.891809789522085e-09,
+    "l_residual": 5.565525640349733e-08,
+    "k0_residual": -2.496364004400675e-06
+  },
+  "source": "results/generated/guided_clausius_tvm_lambda300_k0_200_750_step50/K0_250_target_l/guided_clausius_tvm_lambda300_k0_200_750_step50_k0_250_target_l_summary.json"
+}

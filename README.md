@@ -157,6 +157,16 @@ opened from any directory inside this cloned repository; all QMM, TOV, and BPS
 dependencies are resolved from the clone. The full 672-configuration workflow
 is computationally expensive and checkpoints completed results.
 
+For the empirical interval **K0 = 250–315 MeV**, use
+[`empirical_asymmetric_eos_mass_radius.ipynb`](notebooks/empirical_asymmetric_eos_mass_radius.ipynb).
+It covers all six models, both `equal_b` and `target_l` branches, fixed-composition
+critical points, beta-equilibrium EoS, and mass–radius sequences. The default
+5-MeV grid has 168 configurations and saves progress after each density.
+Run all cells to compute missing results; the included previews show partial
+coverage, not a completed grid. See the [results and numerical diagnostics](Paper/empirical_asymmetric_lambda300/README.md).
+The smaller [symmetric critical-point notebook](notebooks/empirical_critical_dense_scan.ipynb)
+includes the completed 84-point symmetric scan.
+
 The bundled TOV implementation is derived from Anton Motornenko's
 [`TOVsolver`](https://github.com/amotornenko/TOVsolver) and retains its GPLv3+
 notices in the source. QMM-specific orchestration and crust-stitching helpers

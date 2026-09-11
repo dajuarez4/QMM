@@ -1,0 +1,5 @@
+critical y=0.1: Tc=4.244193, nc=0.0261436
+critical y=0.2: Tc=8.852576, nc=0.0429455
+critical y=0.3: Tc=12.003424, nc=0.0532617
+critical y=0.4: Tc=13.884868, nc=0.0591343
+critical y=0.5: Tc=14.512108, nc=0.0610569

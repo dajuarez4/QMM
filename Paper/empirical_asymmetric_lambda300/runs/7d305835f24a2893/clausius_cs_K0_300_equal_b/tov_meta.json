@@ -1,0 +1,20 @@
+{
+  "status": "ok",
+  "source": "computed",
+  "maximum_mass_msun": 2.410097206671593,
+  "radius_at_maximum_mass_km": 12.8325,
+  "radius_at_1p4_msun_km": 13.50117994455039,
+  "maximum_at_eos_boundary": false,
+  "maximum_density_ratio_reached": 15.0,
+  "core_nonpositive_or_nonfinite_rows_removed": 0,
+  "core_nonmonotone_rows_removed": 0,
+  "crust_transition_energy_mev_fm3": 75.75414349802229,
+  "crust_transition_pressure_mev_fm3": 0.40926640898528405,
+  "maximum_vs2": 0.5763417402574136,
+  "integration_warning_count": 26,
+  "integration_warnings": [
+    "Excess work done on this call (perhaps wrong Dfun type). Run with full_output = 1 to get quantitative information.",
+    "divide by zero encountered in divide",
+    "invalid value encountered in divide"
+  ]
+}

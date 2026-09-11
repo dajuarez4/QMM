@@ -1,0 +1,33 @@
+{
+  "density_resume": "passed: two actual new K0=315 target-L density points, interrupted and resumed in temporary directory",
+  "tov_recomputation": [
+    {
+      "model_key": "dieterici_cs",
+      "K0_MeV": 250,
+      "branch": "target_l",
+      "mass_delta_msun": 9.725820149242281e-11,
+      "seconds": 3.0633915970101953
+    },
+    {
+      "model_key": "dieterici_cs",
+      "K0_MeV": 250,
+      "branch": "equal_b",
+      "mass_delta_msun": 9.281464485866309e-14,
+      "seconds": 3.173983407992637
+    }
+  ],
+  "configurations_requested": 168,
+  "critical_requested": 840,
+  "fits_available": 36,
+  "eos_available": 24,
+  "tov_recomputed": 24,
+  "critical_computed": 180,
+  "symmetric_branch_max_difference": {
+    "Tc_MeV": 1.0176748332924035e-11,
+    "nc_fm3": 1.1758281848184282e-11
+  },
+  "max_mass_delta_against_saved_msun": 2.512968322321285e-08,
+  "integration_warnings_total": 851,
+  "max_dPdn": 2.0166680825273176e-09,
+  "max_d2Pdn2": 3.552713678800501e-07
+}

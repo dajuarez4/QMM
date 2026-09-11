@@ -1,0 +1,52 @@
+{
+  "model_key": "dieterici_cs",
+  "K0_MeV": 250.0,
+  "branch_mode": "target_l",
+  "controls": {
+    "lambda_mev": 300.0,
+    "beta_points": 120,
+    "extension_points": 31,
+    "maximum_density_ratio": 15.0,
+    "fq_scan_points": 141,
+    "integral_points": 400,
+    "tov_points": 260,
+    "tov_step_cm": 250.0,
+    "tov_rmax_km": 50.0,
+    "y_values": [
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5
+    ]
+  },
+  "physical": {
+    "hbarc": 197.3269804,
+    "m_nucleon": 938.0,
+    "degeneracy_symmetric": 4.0,
+    "degeneracy_species": 2.0,
+    "n0": 0.16,
+    "binding_energy": -16.0,
+    "symmetry_energy_j": 32.5,
+    "symmetry_slope_l": 58.9
+  },
+  "quarkyonic": {
+    "n_min_ratio": 0.05,
+    "n_max_ratio": 5.0,
+    "n_points": 120,
+    "fq_scan_points": 141,
+    "fq_min_shift": 1e-05,
+    "refine_tol": 1e-06,
+    "refine_max_iter": 400,
+    "shell_integral_points": 400,
+    "quark_integral_points": 400,
+    "smoothing_window": 9,
+    "smoothing_degree": 3,
+    "derivative_floor": 1e-10,
+    "beta_y_scan_points": 160,
+    "nc": 3,
+    "quark_degeneracy": 4.0,
+    "lambda_momentum_mev": 300.0,
+    "momentum_mode": "quarkyonic"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "status": "ok",
+  "source": "results/generated/guided_clausius_cs_lambda300_k0_200_750_step50_tov/extended_eos/K0_300_equal_b_extended_beta_eos.csv",
+  "points": 150,
+  "maximum_density_ratio": 15.0
+}

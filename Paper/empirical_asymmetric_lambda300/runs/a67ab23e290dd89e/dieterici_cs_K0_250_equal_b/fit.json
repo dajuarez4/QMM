@@ -1,0 +1,43 @@
+{
+  "ground_state": {
+    "K0": 249.99999534935924,
+    "a": 117.64630552745618,
+    "b": 2.8508438717963083,
+    "binding": -16.000000000041382,
+    "e_per_particle_minus_m_at_sat": -16.000000000042064,
+    "eps_id": 263.7559962928637,
+    "kf": 1.5913534677737347,
+    "model": "dieterici_cs",
+    "n_id": 0.27221306159712827,
+    "n_sat": 0.16000003705424776,
+    "p_id": 5.5080857724342165,
+    "p_sat": 1.0292855856519623e-06,
+    "parameter_name": "alpha",
+    "parameter_value": 1.697808099667231
+  },
+  "asymmetric_fit": {
+    "model": "dieterici_cs",
+    "branch_mode": "equal_b",
+    "parameter_name": "alpha",
+    "parameter_value": 1.697808099667231,
+    "target_k0": 250.0,
+    "a_avg": 117.64630552745618,
+    "b_avg": 2.8508438717963083,
+    "a_n": 80.39813292784754,
+    "a_pn": 154.89447812706481,
+    "b_n": 2.8508438717963083,
+    "b_pn": 2.8508438717963083,
+    "ratio_a_pn_over_a_n": 1.9265929753129123,
+    "ratio_b_pn_over_b_n": 1.0,
+    "J": 32.50000000958346,
+    "L": 85.56803894643963,
+    "K0": 249.99999534935924,
+    "binding": -16.000000000041382,
+    "n_sat": 0.16000003705424776,
+    "p_sat": 1.0292855856519623e-06,
+    "j_residual": 9.583459359419066e-09,
+    "l_residual": 26.66803894643963,
+    "k0_residual": -4.650640761383329e-06
+  },
+  "source": "results/generated/guided_dieterici_cs_lambda300_k0_200_750_step50/K0_250_equal_b/guided_dieterici_cs_lambda300_k0_200_750_step50_k0_250_equal_b_summary.json"
+}

@@ -1,0 +1,18 @@
+{
+  "lambda_mev": 300.0,
+  "beta_points": 120,
+  "extension_points": 31,
+  "maximum_density_ratio": 15.0,
+  "fq_scan_points": 141,
+  "integral_points": 400,
+  "tov_points": 260,
+  "tov_step_cm": 250.0,
+  "tov_rmax_km": 50.0,
+  "y_values": [
+    0.1,
+    0.2,
+    0.3,
+    0.4,
+    0.5
+  ]
+}
