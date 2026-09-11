@@ -1,0 +1,58 @@
+{
+  "configurations": 48,
+  "all_EoS_reach_15n0": true,
+  "rechecked_density_checks": [
+    {
+      "n_over_n0": 14.000000000000002,
+      "neutrality_residual": -3.258172898146228e-11,
+      "density_closure": 0.0,
+      "neighbor_energy_excess_MeV_fm3": [
+        4.787661919181119e-05,
+        4.8117969072336564e-05
+      ]
+    },
+    {
+      "n_over_n0": 14.33333333333333,
+      "neutrality_residual": -1.0434751673837894e-10,
+      "density_closure": 1.1102230246251565e-16,
+      "neighbor_energy_excess_MeV_fm3": [
+        5.0571026349643944e-05,
+        4.934399385092547e-05
+      ]
+    },
+    {
+      "n_over_n0": 14.666666666666666,
+      "neutrality_residual": -8.192813094609619e-11,
+      "density_closure": 1.1102230246251565e-16,
+      "neighbor_energy_excess_MeV_fm3": [
+        5.147319507159409e-05,
+        5.2488835081021534e-05
+      ]
+    },
+    {
+      "n_over_n0": 15.0,
+      "neutrality_residual": -1.307250557802675e-10,
+      "density_closure": 0.0,
+      "neighbor_energy_excess_MeV_fm3": [
+        5.4323955282598035e-05,
+        5.3862834192841547e-05
+      ]
+    }
+  ],
+  "recovered_TOV_valid_stars": 215,
+  "recovered_TOV_total_trials": 260,
+  "recovered_TOV_maximum_mass_msun": 2.316500670483321,
+  "descending_branch_present": true,
+  "TOV_resolution_checks": [
+    {
+      "central_energy_density_MeV_fm3": 1011.3003235043684,
+      "mass_difference_msun": -1.3701899798768125e-05,
+      "radius_difference_km": 0.0
+    },
+    {
+      "central_energy_density_MeV_fm3": 4089.5841754319754,
+      "mass_difference_msun": -2.0865830068217406e-06,
+      "radius_difference_km": -0.0012500000000006395
+    }
+  ]
+}

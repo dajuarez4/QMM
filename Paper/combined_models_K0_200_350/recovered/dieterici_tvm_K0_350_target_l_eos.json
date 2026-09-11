@@ -1,0 +1,35 @@
+{
+  "source_digest": "d95980ba638aa8a59af6bdd08489d73c1c7a550b2abf29f22f2e02d09a4a6b11",
+  "source": "results/generated/guided_dieterici_tvm_lambda300_k0_200_750_step50_tov/extended_eos/K0_350_target_l_extended_beta_eos.csv",
+  "method": "141-point global fq scan plus refinement of local minima; original physical settings",
+  "replacements": [
+    {
+      "n_over_n0": 14.000000000000002,
+      "old_energy_density": 22390.923963600188,
+      "new_energy_density": 3739.507704761277,
+      "old_fq": 0.4777895073635637,
+      "new_fq": 0.7210149839164566
+    },
+    {
+      "n_over_n0": 14.33333333333333,
+      "old_energy_density": 22536.24093763707,
+      "new_energy_density": 3855.395309552681,
+      "old_fq": 0.4897864110289844,
+      "new_fq": 0.7272951075955796
+    },
+    {
+      "n_over_n0": 14.666666666666666,
+      "old_energy_density": 22682.4910038334,
+      "new_energy_density": 3972.09111496636,
+      "old_fq": 0.5012391854543226,
+      "new_fq": 0.7333072842870185
+    },
+    {
+      "n_over_n0": 15.0,
+      "old_energy_density": 22829.675587542508,
+      "new_energy_density": 4089.584175840933,
+      "old_fq": 0.5121840064117019,
+      "new_fq": 0.7390643909231984
+    }
+  ]
+}

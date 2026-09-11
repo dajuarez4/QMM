@@ -167,6 +167,15 @@ coverage, not a completed grid. See the [results and numerical diagnostics](Pape
 The smaller [symmetric critical-point notebook](notebooks/empirical_critical_dense_scan.ipynb)
 includes the completed 84-point symmetric scan.
 
+For all model bands on shared axes over **K0 = 200–350 MeV**, use
+[`combined_models_bands_K0_200_350.ipynb`](notebooks/combined_models_bands_K0_200_350.ipynb).
+It combines sound speed, full mass–radius sequences, EoS and quark fraction,
+with model markers, K0 colors and black lines for the two vdW-repulsion models.
+The default 275-MeV center line is an explicitly labeled interpolated guide;
+select 300 MeV for a directly computed reference. The bands use the saved
+200, 250, 300 and 350 MeV samples and include a rechecked high-density
+Dieterici–TVM EoS and its recovered TOV sequence.
+
 The bundled TOV implementation is derived from Anton Motornenko's
 [`TOVsolver`](https://github.com/amotornenko/TOVsolver) and retains its GPLv3+
 notices in the source. QMM-specific orchestration and crust-stitching helpers
