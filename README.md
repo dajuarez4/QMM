@@ -1,573 +1,62 @@
 # QMM
 
-`QMM` is a clean, self-contained workflow for nuclear matter, quarkyonic matter, baryquark matter, asymmetric matter, leptonic beta equilibrium, and neutron stars. It is organized so that the same package can be used in two ways:
+QMM is a Python package for nuclear and quarkyonic matter calculations. It
+computes ground-state parameters, liquid–gas critical points, equations of
+state, sound speeds, and neutron-star mass–radius sequences. It includes symmetric and asymmetric matter, with optional beta equilibrium (leptons).
 
-1. as a production workflow for the models already implemented in `src/qmm`
-2. as a framework that you can extend with a new mean field and a new excluded-volume prescription
+## Getting started
 
-## Layout
-
-- `src/qmm/`: documented production source code
-- `src/TOVsolver/`: bundled TOV integrator, BPS crust data, and notebook helpers
-- `notebooks/QMM_workflow.ipynb`: the single overview notebook
-- `notebooks/qmm_guided_json_runner.ipynb`: guided interactive notebook that asks what to simulate, writes one or more JSON configs, runs them, and can build branch-comparison plots automatically
-- `notebooks/baryquark_quarkyonic.ipynb`: symmetric quarkyonic/baryquark comparison notebook
-- `notebooks/clausius_beta_vs2_postprocess.ipynb`: Clausius beta-equilibrium `v_s^2` postprocessing notebook
-- `examples/`: JSON inputs, including a blank template
-- `docs/qmm_complete_workflow_manual.tex`: formal workflow manual
-- `results/`: curated local reference outputs used by the notebook
-
-## What QMM Can Control From JSON
-
-The JSON file decides which physics blocks are executed and which outputs are written.
-
-| Block | Main controls | What it does |
-| --- | --- | --- |
-| `model` | `name`, `parameter_value`, `parameter_search` | Choose the real-gas model and optional extra parameter |
-| `workflows` | booleans | Turn on or off symmetric ground state, liquid critical point, symmetric quarkyonic matter, asymmetric fit, asymmetric quarkyonic matter, and neutron stars |
-| `hadronic_eos` | density and smoothing controls | Control the dense pure-hadronic EOS table and its reconstructed `v_s^2` |
-| `physical` | constants | Override `n0`, `m_nucleon`, `J`, `L`, degeneracies, binding target |
-| `ground_state` | scan/derivative settings | Control the symmetric `a,b` fit |
-| `quantum` | SCF and search settings | Control the finite-temperature liquid critical-point solver |
-| `quarkyonic` | density range, quadrature, `lambda_momentum_mev`, `momentum_mode` | Control the symmetric/asymmetric quarkyonic EOS construction |
-| `asymmetric` | `branch_mode`, `target_j`, `target_l`, `beta_equilibrium` | Choose `b_pn=b_n` or `b_pn!=b_n`, fixed-`y` scans, and leptons on/off |
-| `neutron_star` | TOV grid settings | Control the mass-radius sequence |
-| `output` | output flags | Decide whether CSV, JSON, and plots are written |
-
-The executable blank template is [examples/qmm_blank_template.json](examples/qmm_blank_template.json).
-
-The richer all-in-one template is [examples/qmm_all_in_one_template.json](examples/qmm_all_in_one_template.json). It includes:
-
-- LaTeX fields for the mean field and excluded-volume equations
-- a human-readable calculation summary
-- the actual runnable workflow blocks
-
-## What The JSON Can And Cannot Do
-
-The JSON file can:
-
-- choose a model that is already registered in `src/qmm/models.py`
-- solve symmetric `a,b`
-- solve an extra model parameter from a target `K0`
-- compute the liquid critical point
-- compute symmetric quarkyonic matter
-- switch between `quarkyonic` and `baryquark` momentum-space fillings for the symmetric solver
-- compute asymmetric couplings
-- compute fixed-`y` asymmetric quarkyonic matter
-- include or exclude leptons through `beta_equilibrium`
-- compute or skip neutron stars
-- save or skip CSV, JSON, and plot outputs
-
-The all-in-one template can also carry:
-
-- `documentation.mean_field_latex`
-- `documentation.excluded_volume_latex`
-- `documentation.ideal_density_map_latex`
-- `documentation.pressure_prefactor_latex`
-- `requested_calculations.*`
-
-These fields are safe to keep in the same JSON file because `QMM` ignores unknown descriptive keys at runtime.
-
-The JSON file cannot, by itself:
-
-- define a brand-new analytic mean field `U(n)`
-- define a brand-new excluded-volume map
-- add a symbolic new model without one code registration step
-
-For a genuinely new model, you must first register the physics in [src/qmm/models.py](src/qmm/models.py). After that, the same JSON interface works for it.
-
-## Quarkyonic Versus Baryquark Momentum Modes
-
-The `quarkyonic` block now accepts:
-
-- `momentum_mode = "quarkyonic"`
-- `momentum_mode = "baryquark"`
-
-These correspond to two opposite momentum-space fillings:
-
-- `quarkyonic`: quark Fermi sea plus baryonic shell
-- `baryquark`: baryonic Fermi sea plus quark shell
-
-The current `QMM` implementation supports:
-
-- symmetric baryquark matter
-
-and intentionally does not support yet:
-
-- asymmetric baryquark matter
-- beta-equilibrium baryquark matter
-- neutron stars built from baryquark beta-equilibrium EOS
-
-This restriction is deliberate: the asymmetric baryquark extension needs an explicit prescription for the proton/neutron and `u/d` shell boundaries, and that is not hardcoded here without a dedicated model choice.
-
-## Workflow Decision Map
-
-Use the `workflows` block like this.
-
-- Only symmetric `a,b,K0`:
-  set `ground_state=true` and the rest `false`.
-- Add the liquid critical point:
-  set `quantum_critical=true`.
-- Add symmetric quarkyonic EOS and sound speed:
-  set `symmetric_quarkyonic=true`.
-- Add a pure hadronic EOS table before quarkyonic matter:
-  set `hadronic_eos_table=true`.
-- Add asymmetric couplings only:
-  set `asymmetric_fit=true`.
-- Add asymmetric fixed-`y` matter without leptons:
-  set `asymmetric_quarkyonic=true` and `asymmetric.beta_equilibrium=false`.
-- Add beta equilibrium with electrons and muons:
-  set `asymmetric_quarkyonic=true` and `asymmetric.beta_equilibrium=true`.
-- Add neutron stars:
-  set `neutron_star=true`.
-
-Important practical detail:
-if you request a downstream workflow, `QMM` automatically computes the symmetric ground-state point first even if `workflows.ground_state=false`, because the higher-level solvers depend on it.
-
-## Sound Speed And EOS Outputs
-
-Within the current `QMM` design:
-
-- pure hadronic EOS tables are written when `workflows.hadronic_eos_table=true`
-- sound speed is reconstructed automatically when a quarkyonic profile is requested
-- EOS tables are written when `output.write_csv=true`
-- plots are written when `output.write_plots=true`
-
-So the practical way to skip sound-speed or EOS generation is to disable the corresponding workflow branch or disable the output writing.
-
-## Install And Run
-
-Use Python `3.9+`. Create a fresh virtual environment after cloning so the
-installation is independent of paths and packages on the original computer.
-
-From this `QMM` directory:
+Requires Python 3.9 or newer. From the repository directory, on macOS, Linux,
+or Windows with WSL:
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate  # Windows PowerShell: .venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-python -m pip install -e '.[notebook]'
-python -m qmm examples/cs_full.json
-jupyter lab
-```
-
-The complete six-model Dieterici/Clausius calculation is
-`notebooks/guided_dieterici_vdw_lambda300_asymmetric_complete.ipynb`. It can be
-opened from any directory inside this cloned repository; all QMM, TOV, and BPS
-dependencies are resolved from the clone. The full 672-configuration workflow
-is computationally expensive and checkpoints completed results.
-
-For the empirical interval **K0 = 250–315 MeV**, use
-[`empirical_asymmetric_eos_mass_radius.ipynb`](notebooks/empirical_asymmetric_eos_mass_radius.ipynb).
-It covers all six models, both `equal_b` and `target_l` branches, fixed-composition
-critical points, beta-equilibrium EoS, and mass–radius sequences. The default
-5-MeV grid has 168 configurations and saves progress after each density.
-Run all cells to compute missing results; the included previews show partial
-coverage, not a completed grid. See the [results and numerical diagnostics](Paper/empirical_asymmetric_lambda300/README.md).
-The smaller [symmetric critical-point notebook](notebooks/empirical_critical_dense_scan.ipynb)
-includes the completed 84-point symmetric scan.
-
-For all model bands on shared axes over **K0 = 200–350 MeV**, use
-[`combined_models_bands_K0_200_350.ipynb`](notebooks/combined_models_bands_K0_200_350.ipynb).
-It combines sound speed, full mass–radius sequences, EoS and quark fraction,
-with model markers, K0 colors and black lines for the two vdW-repulsion models.
-The default 275-MeV center line is an explicitly labeled interpolated guide;
-select 300 MeV for a directly computed reference. The bands use the saved
-200, 250, 300 and 350 MeV samples and include a rechecked high-density
-Dieterici–TVM EoS and its recovered TOV sequence.
-
-The bundled TOV implementation is derived from Anton Motornenko's
-[`TOVsolver`](https://github.com/amotornenko/TOVsolver) and retains its GPLv3+
-notices in the source. QMM-specific orchestration and crust-stitching helpers
-live beside it in `src/TOVsolver`.
-
-If you prefer not to install the package:
-
-```bash
-PYTHONPATH=src python3 -m qmm examples/cs_full.json
-```
-
-## VS Code on Windows with WSL
-
-VS Code must be connected to the same WSL distribution in which QMM and its
-virtual environment are installed. A Windows VS Code window, a Debian WSL
-window, and an Ubuntu WSL window use different Python environments.
-
-If more than one WSL distribution is installed, list them from Windows
-PowerShell and start Ubuntu explicitly:
-
-```powershell
-wsl --list --verbose
-wsl -d Ubuntu
-```
-
-Use the exact distribution name shown by the first command, such as
-`Ubuntu-24.04`. To make it the default:
-
-```powershell
-wsl --set-default Ubuntu
-```
-
-Inside the Ubuntu terminal, clone or enter QMM and create a new Linux virtual
-environment. `/path/to/QMM` in examples is a placeholder, not a literal path.
-
-```bash
-cd ~/QMM                       # use the actual clone location
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install --upgrade pip
 python -m pip install -e '.[notebook]'
-python -m ipykernel install --user --name qmm --display-name "Python (QMM)"
+python -m qmm examples/cs_full.json
 ```
 
-If creation of the environment fails on Ubuntu or Debian, install its system
-support first:
+For interactive runs, launch `jupyter lab` and open the
+[guided runner](notebooks/01_testing_separate_models/qmm_guided_json_runner.ipynb).
+It lets you choose a model and calculation, then creates and runs the JSON input.
+In VS Code, select the `.venv` notebook kernel; with WSL, open the repository
+in a VS Code window connected to the same Linux distribution.
+
+## Configuring a run
+
+Copy an input from [examples/](examples/) or start with the
+[blank template](examples/qmm_blank_template.json), then run:
 
 ```bash
-sudo apt update
-sudo apt install python3-venv
+python -m qmm path/to/your_config.json
 ```
 
-Open QMM in an Ubuntu-connected VS Code window. The most reliable method is:
-
-1. Install Microsoft's **WSL** extension in Windows VS Code.
-2. Run **WSL: Connect to WSL using Distro...** from the Command Palette.
-3. Select Ubuntu and open `/home/YOUR_USER/QMM`.
-4. Install Microsoft's **Python** and **Jupyter** extensions in the WSL window
-   when VS Code offers **Install in WSL: Ubuntu**.
-
-The lower-left corner of VS Code must say `WSL: Ubuntu`. If `code .` reports
-`Exec format error`, use the procedure above instead of running that command;
-it usually means Ubuntu found an incorrect Linux `code` executable rather than
-the Windows-to-WSL launcher.
-
-Select the environment with **Python: Select Interpreter**. If it is not
-listed, choose **Enter interpreter path** and select:
-
-```text
-/home/YOUR_USER/QMM/.venv/bin/python
-```
-
-For a notebook, click **Select Kernel**, choose **Select Another Kernel**, and
-select either **Python (QMM)** or the same `.venv/bin/python` interpreter.
-Verify the active kernel in a cell:
-
-```python
-import sys
-print(sys.executable)
-print(sys.version)
-```
-
-The executable must end in `/QMM/.venv/bin/python`, not `C:\...` and not an
-environment from another WSL distribution.
-
-### WSL and notebook troubleshooting
-
-- **QMM is not shown as an interpreter:** confirm that VS Code says
-  `WSL: Ubuntu`, then run `realpath .venv/bin/python` in QMM and enter that
-  exact result through **Python: Select Interpreter**.
-- **The notebook kernel is not shown:** reactivate the environment, rerun the
-  `ipykernel install` command above, and use **Developer: Reload Window**.
-- **`Package 'qmm' requires a different version of Python`:** pull the current
-  `main` branch. QMM supports Python 3.9 and newer.
-- **`TypeError: unsupported operand type(s) for |: 'type' and 'type'` on
-  Python 3.9:** this was fixed in commit `401203e1`. Update and reinstall QMM,
-  then restart the notebook kernel:
-
-  ```bash
-  git pull origin main
-  source .venv/bin/activate
-  python -m pip install -e '.[notebook]'
-  python -c "import qmm; from qmm.models import MODELS; print('QMM OK')"
-  ```
-
-- **Unsure which kernel is active:** run `which python` in the activated WSL
-  terminal and `print(sys.executable)` in the notebook. Both paths should point
-  to the same QMM `.venv`.
-
-## Blank Template
-
-The fully general blank template is:
-
-- [examples/qmm_blank_template.json](examples/qmm_blank_template.json)
-- [examples/qmm_all_in_one_template.json](examples/qmm_all_in_one_template.json)
-- [examples/clausius_asymmetric_base.json](examples/clausius_asymmetric_base.json)
-- [examples/clausius_baryquark_demo.json](examples/clausius_baryquark_demo.json)
-- [examples/clausius_equal_b_base.json](examples/clausius_equal_b_base.json)
-- [examples/clausius_cs_hybrid_base.json](examples/clausius_cs_hybrid_base.json)
-- [examples/clausius_tvm_hybrid_base.json](examples/clausius_tvm_hybrid_base.json)
-
-Use `qmm_blank_template.json` if you want the cleanest runnable file.
-
-Use `qmm_all_in_one_template.json` if you want one single JSON that also documents:
-
-- the mean field in LaTeX
-- the excluded-volume rule in LaTeX
-- whether you conceptually want symmetric or asymmetric matter
-- whether you want EOS, sound speed, liquid critical point, leptons, or neutron stars
-
-Then fill:
-
-- the model name
-- the extra parameter or parameter-search block
-- which workflows you want
-- whether leptons are included
-- whether outputs are written
-- the numerical settings you want to override
-
-## JSON Skeleton
-
-`QMM` reads ordinary JSON, so the safest way to prepare a run is to copy one of
-the files in `examples/` and replace the placeholder values. A compact general
-shape is:
-
-```json
-{
-  "run_name": "my_simulation_name",
-  "model": {
-    "name": "clausius_tvm",
-    "parameter_value": null,
-    "parameter_search": {
-      "enabled": true,
-      "target_k0": 280.0,
-      "parameter_min": 0.0,
-      "parameter_max": 6.0,
-      "scan_steps": 81
-    }
-  },
-  "workflows": {
-    "ground_state": true,
-    "quantum_critical": true,
-    "hadronic_eos_table": true,
-    "symmetric_quarkyonic": true,
-    "asymmetric_fit": true,
-    "asymmetric_quarkyonic": true,
-    "neutron_star": false
-  },
-  "quarkyonic": {
-    "momentum_mode": "quarkyonic",
-    "lambda_momentum_mev": 200.0,
-    "n_min_ratio": 0.000001,
-    "n_max_ratio": 5.0,
-    "n_points": 220,
-    "fq_scan_points": 181,
-    "shell_integral_points": 400,
-    "quark_integral_points": 400,
-    "smoothing_window": 11,
-    "smoothing_degree": 3
-  },
-  "asymmetric": {
-    "enabled": true,
-    "branch_mode": "target_l",
-    "target_j": 32.5,
-    "target_l": 58.9,
-    "proton_fraction_values": [0.0, 0.1, 0.2, 0.3, 0.4, 0.5],
-    "beta_equilibrium": true
-  },
-  "neutron_star": {
-    "sequence_points": 48,
-    "central_pressure_min_mev_fm3": 0.10,
-    "central_pressure_max_fraction": 0.995,
-    "surface_pressure_mev_fm3": 0.05,
-    "start_radius_cm": 1.0,
-    "step_cm": 2500.0,
-    "max_radius_cm": 4000000.0
-  },
-  "output": {
-    "directory": "results/generated/my_simulation_name",
-    "write_csv": true,
-    "write_json": true,
-    "write_plots": true,
-    "plot_formats": ["png", "pdf"]
-  }
-}
-```
-
-How to fill it:
-
-- `model.name`: one of the registered models in `src/qmm/models.py`
-- `parameter_value`: use this when the extra parameter is fixed by hand
-- `parameter_search`: use this instead when the extra parameter must be solved from a target `K0`
-- `workflows.*`: switch each physics block on or off
-- `quarkyonic.momentum_mode`: `"quarkyonic"` or `"baryquark"` for the symmetric solver
-- `quarkyonic.lambda_momentum_mev`: the infrared regulator that you choose for that run
-- `asymmetric.branch_mode`: `"equal_b"` for `b_pn = b_n` or `"target_l"` for `b_pn != b_n`
-- `asymmetric.beta_equilibrium`: `true` adds electrons and muons
-- `workflows.neutron_star`: this is the real on/off switch for neutron stars
-- `neutron_star.*`: these are only the TOV numerical settings
-- `output.directory`: where the run products will be written
-
-If you want a fully documented input with LaTeX fields included, start from
-[examples/qmm_all_in_one_template.json](examples/qmm_all_in_one_template.json).
-If you want the cleanest runnable starting point, use
-[examples/qmm_blank_template.json](examples/qmm_blank_template.json).
-
-## Adding Your Own Real-Gas Model
-
-To add a new model, edit [src/qmm/models.py](src/qmm/models.py) and register one more `InteractionModel`.
-
-The solver needs:
-
-1. an attractive function `U(n,b,parameter)` and `dU/dn`
-2. a map `nid_from_n`
-3. an inverse map `n_from_nid`
-4. a total volume fraction
-5. a species-level volume fraction
-6. a pressure prefactor
-7. capability flags declaring which workflow branches are supported
-
-If the model has an extra free parameter, define:
-
-- `parameter_name`
-- `parameter_range`
-
-and then provide either:
-
-- `model.parameter_value`
-
-or
-
-- `model.parameter_search`
-
-in the JSON input.
-
-## Documentation
-
-The formal manual is:
-
-- [docs/qmm_complete_workflow_manual.tex](docs/qmm_complete_workflow_manual.tex)
-- [docs/QMM.pdf](docs/QMM.pdf)
-
-The notebook overview is:
-
-- [notebooks/QMM_workflow.ipynb](notebooks/QMM_workflow.ipynb)
-- [notebooks/qmm_guided_json_runner.ipynb](notebooks/qmm_guided_json_runner.ipynb)
-- [notebooks/baryquark_quarkyonic.ipynb](notebooks/baryquark_quarkyonic.ipynb)
-- [notebooks/clausius_beta_vs2_postprocess.ipynb](notebooks/clausius_beta_vs2_postprocess.ipynb)
-- [notebooks/clausius_asymmetric_workflow.ipynb](notebooks/clausius_asymmetric_workflow.ipynb)
-- [notebooks/clausius_cs_hybrid_scan.ipynb](notebooks/clausius_cs_hybrid_scan.ipynb)
-- [notebooks/clausius_tvm_hybrid_scan.ipynb](notebooks/clausius_tvm_hybrid_scan.ipynb)
-
-## Guided JSON Notebook
-
-The easiest way to launch new runs interactively is:
-
-- [notebooks/qmm_guided_json_runner.ipynb](notebooks/qmm_guided_json_runner.ipynb)
-
-This notebook:
-
-- asks for the preset, mean field, excluded-volume rule, `K0` handling, asymmetric branch mode, and output choices
-- writes the generated JSON files into `examples/generated/`
-- runs the selected configs directly from the notebook
-- summarizes the produced CSV, JSON, and plot outputs
-
-If you choose `branch_mode = both` for an asymmetric run and keep plot writing enabled, the notebook now also generates combined branch-comparison figures after both runs finish:
-
-- `<run_name>_asymmetric_branch_comparison.*`: fixed-`y` overlays of `f_Q`, `v_s^2`, pressure, energy per baryon, and EOS for `b_{pn} \neq b_n` and `b_{pn} = b_n`
-- `<run_name>_beta_equilibrium_branch_comparison.*`: beta-equilibrium overlays of charge fraction, `f_Q`, `v_s^2`, pressure, energy per baryon, and EOS for the two branches
-
-These comparison plots are written next to the branch outputs in a sibling directory ending in `_branch_comparison`.
-
-## Baryquark/Quarkyonic Symmetric Comparison
-
-The cleaned notebook for the symmetric quarkyonic versus baryquark comparison is:
-
-- [notebooks/baryquark_quarkyonic.ipynb](notebooks/baryquark_quarkyonic.ipynb)
-
-The runnable JSON files used there are:
-
-- [examples/baryquark_quarkyonic_vdw_quarkyonic.json](examples/baryquark_quarkyonic_vdw_quarkyonic.json)
-- [examples/baryquark_quarkyonic_vdw_baryquark.json](examples/baryquark_quarkyonic_vdw_baryquark.json)
-- [examples/baryquark_quarkyonic_cs_quarkyonic.json](examples/baryquark_quarkyonic_cs_quarkyonic.json)
-- [examples/baryquark_quarkyonic_cs_baryquark.json](examples/baryquark_quarkyonic_cs_baryquark.json)
-- [examples/baryquark_quarkyonic_tvm_quarkyonic.json](examples/baryquark_quarkyonic_tvm_quarkyonic.json)
-- [examples/baryquark_quarkyonic_tvm_baryquark.json](examples/baryquark_quarkyonic_tvm_baryquark.json)
-- [examples/baryquark_quarkyonic_clausius_quarkyonic.json](examples/baryquark_quarkyonic_clausius_quarkyonic.json)
-- [examples/baryquark_quarkyonic_clausius_baryquark.json](examples/baryquark_quarkyonic_clausius_baryquark.json)
-
-A small Clausius-only symmetric baryquark input is also available as:
-
-- [examples/clausius_baryquark_demo.json](examples/clausius_baryquark_demo.json)
-
-Important numerical choices used in the current paper-style notebook:
-
-- quarkyonic curves use `lambda_momentum_mev = 200`
-- baryquark curves use `lambda_momentum_mev = 0`
-- the auxiliary `vdW excl. volume only` control curve is generated by [scripts/compute_vdw_excluded_volume_only.py](scripts/compute_vdw_excluded_volume_only.py)
-
-At each fixed density, the notebook minimizes the zero-temperature energy
-density with respect to the quark fraction `f_Q`. The implementation first
-scans a coarse `f_Q` grid, identifies candidate minima, and then refines each
-candidate interval with the golden-section minimizer from
-[src/qmm/numerics.py](src/qmm/numerics.py).
-The state with the lowest final `epsilon(n_B,f_Q)` is the one written into the
-symmetric curve.
-
-For symmetric CSV outputs, the saved tables now keep both:
-
-- `eps_raw`: the unsmoothed minimum-energy curve from the `f_Q` minimization
-- `eps`: the locally smoothed curve used for the production derivative reconstruction
-
-This matters for sound speed. The production solver reconstructs `v_s^2` from
-the smoothed `epsilon(n_B)` curve with a local polynomial fit, while the
-baryquark notebook panels can also plot a direct `numpy.gradient` estimate from
-`eps_raw` to preserve the narrow peak shape seen in the symmetric baryquark
-comparison.
-
-Current output figures from the cleaned notebook are stored in:
-
-- [results/generated/baryquark_quarkyonic_notebook/baryquark_quarkyonic_paper_style.pdf](results/generated/baryquark_quarkyonic_notebook/baryquark_quarkyonic_paper_style.pdf)
-- [results/generated/baryquark_quarkyonic_notebook/clausius_symmetric_quarkyonic_baryquark.pdf](results/generated/baryquark_quarkyonic_notebook/clausius_symmetric_quarkyonic_baryquark.pdf)
-
-## Clausius Beta-Equilibrium `v_s^2` Postprocessing
-
-The Clausius beta-equilibrium comparison plots discussed during the smoothing study are now collected in:
-
-- [notebooks/clausius_beta_vs2_postprocess.ipynb](notebooks/clausius_beta_vs2_postprocess.ipynb)
-
-The script used to regenerate them is:
-
-- [scripts/postprocess_beta_sound_speed.py](scripts/postprocess_beta_sound_speed.py)
-
-This postprocessing step:
-
-- starts from the saved beta-equilibrium CSV tables
-- recomputes `\mu_B`, `P`, and `v_s^2` from `\epsilon(n_B)`
-- applies a larger local-polynomial smoothing window to the derivative reconstruction
-- writes cleaned comparison figures without rerunning the full Clausius scan
-
-Current production choice:
-
-- `window = 29`
-- `degree = 3`
-
-Regenerate the plots with:
-
-```bash
-cd QMM
-python3 scripts/postprocess_beta_sound_speed.py \
-  --window 29 \
-  --degree 3 \
-  --output-dir results/generated/clausius_beta_vs2_postprocess_window29
-```
-
-The current outputs are stored in:
-
-- [results/generated/clausius_beta_vs2_postprocess_window29](results/generated/clausius_beta_vs2_postprocess_window29)
-
-Key comparison figures:
-
-- [results/generated/clausius_beta_vs2_postprocess_window29/clausius_branch_comparison_k0_overlay.png](results/generated/clausius_beta_vs2_postprocess_window29/clausius_branch_comparison_k0_overlay.png)
-- [results/generated/clausius_beta_vs2_postprocess_window29/clausius_branch_comparison_same_k0_colors.png](results/generated/clausius_beta_vs2_postprocess_window29/clausius_branch_comparison_same_k0_colors.png)
-- [results/generated/clausius_beta_vs2_postprocess_window29/clausius_branch_comparison_k0_250_280_315.png](results/generated/clausius_beta_vs2_postprocess_window29/clausius_branch_comparison_k0_250_280_315.png)
-
-## Included Reference Results
-
-The curated local `results/` tree contains:
-
-- combined symmetric nuclear-matter and liquid critical-point tables
-- symmetric quarkyonic survey curves
-- asymmetric CS, TVM, and Clausius outputs
-- beta-equilibrium and neutron-star summary tables
-
-Everything used by the notebook lives inside `QMM`.
+The main settings are:
+
+- `model`: model name and parameters, including an optional fit to a target `K0`.
+- `workflows`: calculations to run, such as the critical point, quarkyonic EOS,
+  asymmetric fit, or neutron stars.
+- `asymmetric`: fixed proton fractions or beta equilibrium with electrons and muons.
+- `output`: destination directory and whether to save CSV tables, JSON, and plots.
+
+Baryquark matter is currently supported only for symmetric calculations.
+New interaction models must be registered in [src/qmm/models.py](src/qmm/models.py)
+before they can be selected in JSON.
+
+## Notebooks and documentation
+
+- [Workflow overview](notebooks/01_testing_separate_models/QMM_workflow.ipynb)
+- [Notebook index](notebooks/README.md): individual models, comparisons, and six-model paper calculations
+- [Quarkyonic–baryquark comparison](notebooks/02_some_results/baryquark_quarkyonic.ipynb)
+- [Manual](docs/QMM.pdf) ([LaTeX source](docs/qmm_complete_workflow_manual.tex))
+
+Large parameter scans can take substantial time. The empirical asymmetric
+notebook includes partial results; see its
+[coverage and numerical diagnostics](Paper/empirical_asymmetric_lambda300/README.md)
+before using the saved outputs.
+
+Source code is in `src/qmm/`, input files in `examples/`, and saved calculations
+and figures in `results/` and `Paper/`.
+
+The bundled TOV integrator in `src/TOVsolver/` is derived from Anton Motornenko’s
+[TOVsolver](https://github.com/amotornenko/TOVsolver) and retains its GPLv3+ notices.
