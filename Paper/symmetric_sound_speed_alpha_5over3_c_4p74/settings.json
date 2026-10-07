@@ -1,0 +1,19 @@
+{
+  "n_min_ratio": 0.05,
+  "n_max_ratio": 5.0,
+  "n_points": 241,
+  "fq_scan_points": 141,
+  "fq_min_shift": 1e-05,
+  "refine_tol": 1e-06,
+  "refine_max_iter": 400,
+  "shell_integral_points": 400,
+  "quark_integral_points": 400,
+  "smoothing_window": 9,
+  "smoothing_degree": 3,
+  "derivative_floor": 1e-10,
+  "beta_y_scan_points": 160,
+  "nc": 3,
+  "quark_degeneracy": 4.0,
+  "lambda_momentum_mev": 306.0,
+  "momentum_mode": "quarkyonic"
+}

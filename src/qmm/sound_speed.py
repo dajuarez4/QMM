@@ -1,12 +1,8 @@
-"""Sound-speed reconstruction from a zero-temperature energy-density curve."""
 
 from __future__ import annotations
 
-import math
 from dataclasses import dataclass
 from pathlib import Path
-
-from .numerics import local_polynomial_regression
 
 GEV4_TO_MEV_FM3 = 1.30148926289e5
 
@@ -30,51 +26,9 @@ def reconstruct_sound_speed_curve(
     smoothing_degree: int,
     derivative_floor: float = 1.0e-12,
 ) -> SoundSpeedCurve:
-    """Compute `v_s^2` from `epsilon(n_B)` using local polynomial derivatives.
 
-    The reconstruction follows the zero-temperature identities used in the
-    quarkyonic workflow:
-
-    - `mu_B = d epsilon / d n_B`
-    - `P = n_B * mu_B - epsilon`
-    - `dP/dn_B = n_B * d^2 epsilon / d n_B^2`
-    - `v_s^2 = (dP/dn_B) / mu_B`
-    """
-    eps_smooth, mu_b_values, d2eps_values = local_polynomial_regression(
-        densities,
-        energy_density,
-        smoothing_window,
-        smoothing_degree,
-    )
-
-    pressure_values = [
-        density * mu_b - eps
-        for density, mu_b, eps in zip(densities, mu_b_values, eps_smooth)
-    ]
-    dP_dn_values = [
-        density * d2eps
-        for density, d2eps in zip(densities, d2eps_values)
-    ]
-
-    vs2_values: list[float] = []
-    for mu_b, dP_dn, d2eps in zip(mu_b_values, dP_dn_values, d2eps_values):
-        if (
-            not math.isfinite(mu_b)
-            or not math.isfinite(dP_dn)
-            or not math.isfinite(d2eps)
-            or abs(mu_b) < derivative_floor
-        ):
-            vs2_values.append(float("nan"))
-            continue
-        vs2_values.append(dP_dn / mu_b)
-
-    return SoundSpeedCurve(
-        energy_density_smoothed=eps_smooth,
-        chemical_potential=mu_b_values,
-        pressure=pressure_values,
-        dP_dn=dP_dn_values,
-        d2eps_dn2=d2eps_values,
-        vs2=vs2_values,
+    return reconstruct_sound_speed_curve_gradient_check(
+        densities, energy_density, derivative_floor=derivative_floor
     )
 
 
@@ -85,20 +39,7 @@ def reconstruct_sound_speed_curve_gradient_check(
     export_path: str | Path | None = None,
     mev_fm3_factor: float = GEV4_TO_MEV_FM3,
 ) -> SoundSpeedCurve:
-    """Diagnostic `v_s^2` reconstruction using the direct `numpy.gradient` recipe.
 
-    This follows the check requested in the notebook workflow:
-
-    - `mu_B = gradient(epsilon, n_B)`
-    - `mu_B' = gradient(mu_B, n_B)`
-    - `P = n_B * mu_B - epsilon`
-    - `v_s^2 = (n_B / mu_B) * mu_B'`
-
-    The routine intentionally works on the provided energy-density array
-    directly, without the local-polynomial reconstruction used by the main
-    workflow. It is therefore best used as a cross-check, not as the default
-    production method.
-    """
     import numpy as np
 
     density_array = np.asarray(densities, dtype=float)
@@ -111,6 +52,36 @@ def reconstruct_sound_speed_curve_gradient_check(
     if density_array.size < 3:
         raise ValueError("`numpy.gradient(..., edge_order=2)` requires at least three points.")
 
+    # Worked example: derivatives from a table of total energy density.
+    # These illustrative values use epsilon = 939*n_B + 30*n_B**2;
+    # they are not simulation results. Include rest-mass energy in epsilon.
+    #
+    #   n_B [fm^-3] | epsilon [MeV fm^-3] | mu_B [MeV]
+    #   ------------|---------------------|-----------
+    #       0.10    |          94.20      |   945.0
+    #       0.20    |         189.00      |   951.0
+    #       0.30    |         284.40      |   957.0
+    #       0.40    |         380.40      |   963.0
+    #       0.50    |         477.00      |   969.0
+    #
+    # On a uniform grid with spacing h, the first gradient uses
+    #   mu_B[i] = (epsilon[i+1] - epsilon[i-1]) / (2*h).
+    # At n_B = 0.30, h = 0.10:
+    #   mu_B = (380.40 - 189.00) / 0.20 = 957 MeV.
+    # The second gradient applies the same rule to the mu_B column:
+    #   dmu_B/dn_B = (963 - 951) / 0.20 = 60 MeV fm^3.
+    # Zero-temperature thermodynamics then gives
+    #   P = n_B*mu_B - epsilon = 0.30*957 - 284.40 = 2.70 MeV fm^-3,
+    #   vs2 = (c_s/c)**2 = dP/depsilon = n_B*(dmu_B/dn_B)/mu_B
+    #       = 0.30*60/957 = 0.0188088, so c_s/c = sqrt(vs2) = 0.137145.
+    #
+    # At the endpoints, edge_order=2 uses one-sided differences; for example,
+    #   mu_B[0] = (-3*epsilon[0] + 4*epsilon[1] - epsilon[2]) / (2*h).
+    # For nonuniform grids, numpy.gradient uses the actual neighboring
+    # spacings supplied in density_array, rather than a constant h.
+    # Both gradients are finite-difference approximations without smoothing.
+    # Applying gradient twice is not generally the same stencil as the
+    # nearest-neighbor second difference of epsilon.
     mu_b_array = np.gradient(energy_array, density_array, edge_order=2)
     mu_bb_array = np.gradient(mu_b_array, density_array, edge_order=2)
     pressure_array = density_array * mu_b_array - energy_array

@@ -17,8 +17,9 @@ python -m qmm examples/cs_full.json
 ```
 
 For interactive runs, launch `jupyter lab` and open the
-[guided runner](notebooks/01_testing_separate_models/qmm_guided_json_runner.ipynb).
-It lets you choose a model and calculation, then creates and runs the JSON input.
+[workflow notebook](notebooks/01_testing_separate_models/QMM_workflow.ipynb).
+Follow the [three research stages](notebooks/README.md) from basic calculations
+to model comparisons and the six-model beta-equilibrium study.
 In VS Code, select the `.venv` notebook kernel; with WSL, open the repository
 in a VS Code window connected to the same Linux distribution.
 
@@ -47,7 +48,6 @@ before they can be selected in JSON.
 
 - [Workflow overview](notebooks/01_testing_separate_models/QMM_workflow.ipynb)
 - [Notebook index](notebooks/README.md): individual models, comparisons, and six-model paper calculations
-- [Quarkyonic–baryquark comparison](notebooks/02_some_results/baryquark_quarkyonic.ipynb)
 - [Manual](docs/QMM.pdf) ([LaTeX source](docs/qmm_complete_workflow_manual.tex))
 
 Large parameter scans can take substantial time. The empirical asymmetric
@@ -60,3 +60,5 @@ and figures in `results/` and `Paper/`.
 
 The bundled TOV integrator in `src/TOVsolver/` is derived from Anton Motornenko’s
 [TOVsolver](https://github.com/amotornenko/TOVsolver) and retains its GPLv3+ notices.
+
+Repository contents and local research files are described in [docs/repository_contents.md](docs/repository_contents.md).
