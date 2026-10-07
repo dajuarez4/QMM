@@ -295,6 +295,10 @@ class TOV:
     p_R = p_R[:ind]
     m_R = m_R[:ind]
 
+    # The ODE stops evolving below min_p, but its last step can overshoot
+    # the tabulated surface pressure. Bound only the returned surface profile;
+    # do not extrapolate the EOS or alter the integrated mass and radius.
+    p_R = np.maximum(p_R, self.min_p)
     e_R = self.en_dens(p_R)
 
     return R / 1e5, M / Msun, (r, e_R, p_R, m_R)

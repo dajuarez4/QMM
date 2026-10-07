@@ -12,7 +12,7 @@ Ground-state fits, equations of state, asymmetric matter and reference results.
 
 [baryquark_quarkyonic](02_some_results/baryquark_quarkyonic.ipynb)
 
-Quarkyonic and baryquark matter: compare momentum-space prescriptions and excluded volumes.
+Symmetric VDW, Clausius and Dieterici calculations for comparisons with published results, with CS and TVM excluded-volume extensions.
 
 ## 3. Six-model study
 

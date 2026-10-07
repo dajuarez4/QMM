@@ -144,7 +144,7 @@ def main():
         'not an uncertainty envelope for the observables. No beta/TOV calculation at 315 MeV '
         'or dense empirical scan has been performed. NaN observables remain gaps.\n\n'
         'Reproduce with `.venv/bin/python scripts/plot_empirical_parameter_bands.py` '
-        'or the companion `notebooks/empirical_parameter_bands.ipynb`.\n')
+        'or the companion `notebooks/03_six_models_paper/empirical_parameter_bands.ipynb`.\n')
     return bounds
 
 

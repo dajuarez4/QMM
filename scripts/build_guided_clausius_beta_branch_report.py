@@ -2,7 +2,7 @@
 """Build an Overleaf-ready report for guided_clausius_beta_branch_recompute.
 
 This script packages the saved outputs from
-`notebooks/guided_clausius_beta_branch_recompute.ipynb` into:
+`notebooks/02_some_results/guided_clausius_beta_branch_recompute.ipynb` into:
 
 - a clean folder with copied raw CSV/JSON artifacts
 - derived summary tables in CSV and LaTeX

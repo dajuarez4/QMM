@@ -38,14 +38,18 @@ def solve_point(key, k0):
         f'guided_{key}_lambda300_k0_200_750_step50_k0_250_target_l.json')
     saved = pd.read_csv(ROOT / 'Paper/Clausius_Dieterici_3EV_Lambda300_K0_200_750_step50_combined/tables/six_models_lambda300_plot_results.csv')
     mapping = saved[saved.model_key == key][['K0_MeV', 'parameter_value']].drop_duplicates().sort_values('K0_MeV')
-    lower = mapping[mapping.K0_MeV < k0].iloc[-1].parameter_value
-    upper = mapping[mapping.K0_MeV > k0].iloc[0].parameter_value
     def ground(parameter):
         point = compute_ground_state_point_explicit(config.model_name, parameter, config.physical, config.ground_state)
         if point is None:
             raise ValueError(f'No saturation fit: {key}, {parameter}')
         return point
-    parameter = brentq(lambda x: ground(x).K0-k0, *sorted((lower, upper)), xtol=1e-10)
+    exact = mapping[np.isclose(mapping.K0_MeV, k0, atol=1e-8, rtol=0)]
+    if not exact.empty and abs(ground(float(exact.iloc[0].parameter_value)).K0-k0) <= .01:
+        parameter = float(exact.iloc[0].parameter_value)
+    else:
+        lower = mapping[mapping.K0_MeV < k0].iloc[-1].parameter_value
+        upper = mapping[mapping.K0_MeV > k0].iloc[0].parameter_value
+        parameter = brentq(lambda x: ground(x).K0-k0, *sorted((lower, upper)), xtol=1e-10)
     gs = ground(parameter)
     evaluator = QuantumPressureEvaluator(gs, physical=config.physical, settings=SETTINGS)
     def residual(values):
