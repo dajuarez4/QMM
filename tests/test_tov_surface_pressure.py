@@ -27,7 +27,8 @@ class SurfacePressureTests(unittest.TestCase):
         self.assertTrue(np.isfinite(energy).all())
         self.assertTrue((pressure >= 9.744e18).all())
         baseline = self.run_profile([1.5e19, 1.2e19, 9.744e18, 9.744e18, 9.744e18, 9.744e18])
-        self.assertEqual((r, m), baseline[:2])
+        self.assertAlmostEqual(r, baseline[0], delta=1e-7)
+        self.assertAlmostEqual(m, baseline[1], delta=1e-30)
 
     def test_upper_bound_error_is_not_hidden(self):
         with self.assertRaises(ValueError):

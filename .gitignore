@@ -298,3 +298,7 @@ dist/
 !/results/generated/lambda_scan/vdw_quarkyonic_lambda_400/vdw_quarkyonic_lambda_400_symmetric_quarkyonic_curve.csv
 
 /notebooks/notebook_locations.json
+
+# Audited paper reproduction and side-by-side comparison notebooks
+!/notebooks/03_six_models_paper/paper_replication_lambda300_audited.ipynb
+!/notebooks/03_six_models_paper/paper_figures_side_by_side.ipynb

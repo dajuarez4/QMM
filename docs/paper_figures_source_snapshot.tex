@@ -1,0 +1,640 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[twocolumn,floatfix,superscriptaddress,a4paper,showkeys,nofootinbib,reprint]{revtex4-1}
+\usepackage{epsfig}
+\usepackage{latexsym}
+\usepackage{xspace}
+\usepackage[colorlinks=true,linktocpage=true,linkcolor=blue,citecolor=blue,allcolors=blue]{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage{indentfirst}
+\usepackage{enumerate}
+\usepackage{color}
+
+\usepackage[caption=false,position=top]{subfig}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[english]{babel}
+\usepackage{url}
+
+\usepackage{array}  
+\usepackage{multirow}
+\usepackage{graphicx}
+
+
+
+
+
+\newcommand{\const}{\mathop{\rm const}\nolimits}
+\newcommand{\bs}{\boldsymbol}
+\newcommand*{\dis}{\displaystyle}
+\newcommand{\bvar}{\mathbf}
+
+\newcommand{\eq}[1]{\begin{align} #1 \end{align}}
+\newcommand{\mean}[1]{\langle #1 \rangle}
+\newcommand{\cum}[1]{\kappa_{#1}}
+\newcommand{\cumt}[1]{\tilde{\kappa}_{#1}}
+\newcommand{\cumu}[1]{\kappa_{#1}[B_1]}
+\newcommand{\dens}[1]{\rho_{#1}}
+\newcommand{\der}[2]{\frac{\partial #1}{\partial #2}}
+
+\newcommand{\rv}[1]{\textcolor{blue}{\textbf{RP: #1}}}
+\newcommand{\vv}[1]{{\bf  (VV: #1 )}}
+\newcommand{\tm}[1]{{\bf  (TM: #1 )}}
+
+\DeclareMathOperator*{\argmin}{arg\min}
+
+\newcommand\tab[2]{
+\begin{center}
+\begin{table}
+\begin{tabular}#1
+\end{tabular}
+\caption{#2}
+\end{table}
+\end{center}}
+
+\newcommand{\eqb}[0]{$b_{pn}=b_n$}
+\newcommand{\neqb}[0]{$b_{pn}\neq b_n$}
+
+\begin{document}
+
+
+\title{
+Effects of Nuclear Incompressibility on Quarkyonic Neutron Stars
+}
+
+\author{Diego~Juarez}
+\affiliation{Physics Department, University of Texas- El Paso, ADDRESS}
+
+\author{Tripp~Moss}
+\affiliation{Physics Department, University of Houston, Box 351550, Houston, TX 77204, USA}
+
+\author{Jorge Munoz}
+\affiliation{Physics Department, University of Texas- El Paso, ADDRESS}
+
+
+\author{Volodymyr~Vovchenko}
+\affiliation{Physics Department, University of Houston, Box 351550, Houston, TX 77204, USA}
+
+
+
+\begin{abstract}
+
+In this work we investigate the role of nuclear incompressibility on the properties of neutron stars with quarkyonic cores. We paramaeterize hadronic interactions using real-gas models within the two-component van der Waals framework, utilizing the Dieterici and Clausius models for mean-field attraction. Hadronic interactions are fit to reproduce symmetry energy, slope of the symmetry energy, and ground state properties of saturation density, binding energy per baryon, and incompressibility. Lastly, we include leptonic degrees of freedom along with their corresponding constraints of charge neutrality and beta-decay equilibrium, allowing for the dynamic evolution of isospin asymmetry. We find that the speed of sound, quarkyonic transition, and equation of state are all sensitively affected by ground state nuclear incompressibility. Additionally, we find that realistic values of incompressibility produce neutron star profiles which are compatible with current observational constraints. Lastly, we analyze the core composition of the star as a function of total mass, and find that lighter neutron stars ($M \lesssim 1.7M_{\odot}$) have a negligible quarkyonic content for the empirical range of nuclear incompressibility. Conversely, heavier stars ($M \gtrsim 1.7M_{\odot}$) see a rapid onset of the quarkyonic phase at the core.
+
+
+
+\end{abstract}
+
+
+
+\keywords{quarkyonic matter, quark-hadron duality, neutron star matter}
+
+\maketitle
+
+
+
+\section{Introduction}
+\label{sec:intro}
+
+
+Neutron star properties carry important implications for the thermodynamics of cold and dense QCD matter. This regime cannot be probed by current terrestrial experiments or calculated from first-principle approaches, and therefore neutron star observations provide the best available constraints to theoretical models. Observational data from the NICER mission offers constraints on neutron star geometry: namely mass-to-radius ratios, as well as tidal properties of the star (CITE). Theoretical models can then be constrained by solving the Tolmann-Oppenheimer-Volkoff (TOV) equation, using the nuclear equation of state as input. Another important set of observations come from the gravitational waves produced during binary merger events. As two compact objects inspiral towards each other, they produce extreme gravitational wave signatures of characteristic frequency and amplitude which are observed at the LIGO facility (CITE). Additionally, the intense gravitational fields create tidal forces which deform the neutron star shape from nearly-spherical to teardrop shaped. These observations help constrain theoretical models via hydrodynamic merger simulations and tidal properties from the TOV equation, both of which take the nuclear equation of state as input. Interestingly, these observations seem to indicate a rapid stiffening of the equation of state at intermediate densities, and a corresponding peak in the speed of sound above the conformal limit. This suggests the emergence of some new mechanism for stiffening, as simply introducing new degrees of freedom should soften the EoS. 
+
+One promising explanation for these observations comes from working within the framework of quarkyonic matter. Motivated in the large-$N_c$ limit, quarkyonic matter features a characteristic shell structure in momentum-space. Asymptotically free quarks begin to fill the deep Fermi sea, where low-momentum exchanges are blocked by the Pauli Exclusion principle. Consequently, confining interactions are only realized in a thin momentum shell of hadronic states at high momentum (CITE). This allows for hadronic excitations to reach relativistic momenta without a rapid increase in baryon density, leading to a sharp stiffening of the equation of state during the onset of the quarkyonic phase and a corresponding peak in the speed of sound above the conformal limit. Recent Bayesian analysis shows that quarkyonic models can explain the observations of massive neutron stars ($\sim2M_{\odot}$) while preserving other important nuclear properties and even resolving important cosmological questions such as the hyperon puzzle (CITE Pietro).
+
+In a previous work, we presented a quarkyonic matter model which used the Quantum van der Waals (QvdW) formalism to parameterize hadronic interactions (CITE). While excluded-volume was investigated using van der Waals, Carnahan-Starling, and Trivirial Model parameterizations, the attractive interactions were captured using only a simple van der Waals mean-field. Leptonic states were included, with isospin asymmetry determined dynamically through the constraints of charge neutrality and beta-decay equilibrium. Additionally, quark fraction was determined dynamically through the minimization of energy density. Neutron star properties were calculated by solving the TOV equation, and our model was able to support relatively heavy neutron stars of $\sim2.6M_{\odot}$ (CITE). Despite matching current neutron star observational constraints, the simple van der Waals mean-field attraction rendered the hadronic models incapable of reproducing nuclear incompressibility. This led to a relatively stiff equation of state, and a correspondingly large tidal deformability of $\Lambda$ = 800 for stars of $M = 1.4M_{\odot}$. In a separate work, we investigated the role of nuclear incompressibility on the quarkyonic transition, and its correlation to the liquid-gas phase transition (CITE). By introducing the attractive mean-field Dieterici and Clausius parameterizations, we were able to tune our interactions to ground state nuclear incompressibility. However, excluded-volume was captured via a simple van der Waals parameter, the work was restricted to only symmetric matter, and neutron star properties were not investigated (CITE).
+
+In the current analysis, we combine the two methods to probe the effect of nuclear incompressibility on neutron star properties. We implement excluded-volume parameterizations of van der Waals, Carnahan-Starling, and Trivirial Model, as well as attractive mean-field parameterizations of Clausius and Dieterici. This gives five tunable parameters, which can be fit to nuclear ground state properties of saturation density ($n_0$), binding energy ($\left. \frac{E}{A}\right|_{n_0}- m_N$), symmetry energy ($S_0$), symmetry energy slope parameter ($L$), and nuclear incompressibility ($K_0$). Additionally, we include leptonic constraints and determine both quark fraction and isospin content dynamically. We then use our resulting equations of state to solve the TOV equation and extract neutron star properties across a range of nuclear incompressibility. 
+
+The current paper is organized as follows: in Section~\ref{sec:method}, we describe the relevant aspects of our model and methodology. Part~\ref{subsec:quasi} gives a brief overview of the Quasiparticle Formalism used, Part~\ref{subsec:realgas} describes our hadronic interactions and corresponding constraints, and Part~\ref{subsec:minimization} describes our calculations of thermodynamic properties and equilibrium conditions. Section~\ref{sec:results} outlines the results of our calculations, including thermodynamics, squared speed of sound, evolution of the quarkyonic phase, and resulting neutron star properties. Section~\ref{sec:conclusions} gives our final thoughts and conclusions. Finally, we give a detailed description of our numerical procedures in Appendix~\ref{app:numerics}.
+
+
+\section{Methodology}
+\label{sec:method}
+
+\subsection{The Quasiparticle Picture}
+\label{subsec:quasi}
+
+
+The quasiparticle formulation of quarkyonic matter is based on the
+core concept that hadronic states can be treated as quasiparticles, formed by correlations between their underlying constituent quarks. Due to asymptotic freedom, confining interactions should only be relevant for momentum exchanges of $q \lesssim \Lambda_{QCD}$. At sufficiently large densities, small momentum exchanges are blocked within the deep Fermi sea by the Pauli Exclusion principle, resulting in asymptotically free quarks at low momentum occupying the ``bulk''. Confining interactions are then only accessible near the Fermi surface in a thin momentum shell of $\Delta \approx \Lambda_{QCD}$, pushing hadronic states out to high momentum (CITE). 
+
+In the original formulation introduced by (Reddy, McCleran, CITE), chiral symmetry is assumed to be broken in the bulk sea despite the presence of asymptotically free quarks. As a result, quarks in this formalism carry exactly $\frac{1}{N_c}$ of baryonic properties such as mass and momentum (CITE). At zero temperature, the quark and baryon distributions are
+represented by sharp step-functions with distinct Fermi surfaces:
+\begin{equation}
+    f_Q(q) = \Theta(k_Q-q)
+\end{equation}
+\begin{equation}
+    f_N(k)
+    =
+    \Theta(k-k_N)
+    \Theta(k_N+\Delta-k)
+\end{equation}
+\begin{equation}
+    q = \frac{k}{N_c};~~~
+    k_Q = \frac{k_N}{N_c};~~~
+    m_Q = \frac{m_N}{N_c}~~~
+\end{equation}
+where $k_N$ denotes the inner boundary of the baryonic shell and
+$\Delta$ is its width. 
+
+In previous works, it has been shown that this construction leads to a sharp appearance of the quarkyonic phase and a corresponding divergence in the speed of sound (CITE). To remedy this acausal behavior we adjust the quark distribution via an infrared regulator $\Lambda$, as originally introduced in (CITE). This adds a momentum-dependent factor $\frac{\sqrt{q^2 + \Lambda^2}}{q}$ to the quark distribution, enhancing the density of states at low momentum and smoothing out the quarkyonic onset without affecting the transition density. For an ideal Fermi gas, we can then write the contributions to baryon density and energy density from quarks and nucleons as 
+\begin{equation}
+n_Q
+&=
+g_Q
+\int_0^{k_Q}
+\frac{d^3 q}{(2\pi)^3}
+q\sqrt{q^2 + \Lambda^2}
+\end{equation}
+\begin{equation}
+n_N
+&=
+g_N
+\int_{k_N}^{k_N+\Delta}
+\frac{d^3 k}{(2\pi)^3}
+k^2
+\end{equation}
+\begin{equation}
+\epsilon_Q
+&=
+N_cg_Q
+\int_0^{k_Q}
+\frac{d^3 q}{(2\pi)^3}
+q\sqrt{q^2 + \Lambda^2}\sqrt{q^2+m_Q^2}
+\end{equation}
+\begin{equation}
+\epsilon_N
+&=
+g_N
+\int_{k_N}^{k_N+\Delta}
+\frac{d^3 k}{(2\pi)^3}
+k^2\sqrt{k^2+m_N^2}
+\end{equation}
+\\
+Here, the prefactors $g_Q$ and $g_N$ capture spin and isospin degeneracy for each particle. It is interesting to note that hadronic contributions to baryon density scale as $\frac{k^3}{(2\pi)^3}$, while quark contributions scale as $\frac{q^3}{(2\pi)^3} = \frac{(k/N_c)^3}{(2\pi)^3}$. Thus, in the Fermi Sea, baryon number contributions are suppressed by $\frac{1}{(N_c)^3}$ compared to an ideal gas of hadrons. For an ideal gas, the onset of the quarkyonic phase corresponds to a sharp stiffening of the equation of state, as an increase in baryon number requires a much larger increase in pressure (CITE). 
+
+
+To quantify the transition to a quarkyonic phase, we introduce the quark fraction as an order parameter: \textbf{(MM: Consider phrasing)}
+
+\begin{equation}
+    \xi(k_Q,\Delta) =  \frac{n_Q(k_Q)}{n_Q(k_Q) + n_N(k_N,\Delta)}
+\end{equation}
+\\
+The equilibrium configuration can then be determined by finding the appropriate thermodynamic extremum with respect to quark fraction.  
+
+\subsection{Hadronic Interactions via Real Gas Models}
+\label{subsec:realgas}
+
+Hadronic interactions are essential to dynamically generate a quarkyonic phase, as an ideal gas of hadrons is always energetically favorable to an ideal gas of quarks at zero temperature (CITE). In particular, the quark Fermi sea emerges at densities where repulsive interactions begin to dominate in the hadronic sector. Attractive interactions also play an important role, with nontrivial effects on the width, location, and height of the speed of sound peak (CITE).
+
+We use the real gas excluded-volume formalisms of van der Waals, Carnahan-Starling, and Trivirial model, which can be formulated as: 
+\begin{equation}
+\label{eq:prot_nuc}
+    x_i = \sum_j b_{ij}n_j
+\end{equation}
+\begin{equation}
+\label{eq:EV_VDW}
+    f_{vdW}(x_i) = 1 - x_i
+\end{equation}
+\begin{equation}
+\label{eq:EV_CS}
+    f_{CS}(x_i) = \exp\left[-\frac{3 x_i}{4 - x_i}-\frac{4 x_i}{(4 - x_i)^2}\right]
+\end{equation}
+\begin{equation}
+\label{eq:EV_TVM}
+    f_{TVM}(x_i) =  \exp\left[-x_i-\frac{x_i^2}{2}\right]
+\end{equation}
+\begin{equation}
+    n_i = f(x_i)n_i^{id}
+\label{eq:den}
+\end{equation}
+\\
+where the quantity $n_i^{id}$ signifies the particle density of an ideal Fermi gas, and the LHS of Eq.~\ref{eq:den} signifies the real particle density after interactions.
+
+We also adjust our energy densities according to both the available volume fraction and a mean-field contribution from attractive interactions. For our density dependent single particle potentials we use the van der Waals, Dieterici, and Clausius formalisms within the multiparticle QvdW framework:
+
+\begin{equation}
+\label{eq:MF_VDW}
+    v_i^{vdW} = -\sum_j a_{ij}n_j 
+\end{equation}
+\begin{equation}
+\label{eq:MF_D}
+    v_i^{D} = -\sum_j a_{ij}\frac{n_j^{\alpha - 1}}{\alpha - 1} 
+\end{equation}
+\begin{equation}
+\label{MF_c}
+    v_i^{C} = -\sum_j a_{ij}\frac{n_j}{1 +cn_B} 
+\end{equation}
+\begin{equation}
+    \epsilon_i = f(x_i)\epsilon_i^{id} + v_in_i
+\end{equation}
+\\
+where again $\epsilon_i^{id}$ signifies the energy density for an ideal Fermi gas and $\epsilon_i$ is the real energy density contribution for particle species $i$. Note that both Dieterici and Clausius formalisms contain an extra parameter, $\alpha$ and $c$ respectively, which can be fit to an additional constraint. In our previous works it was shown that van der Waals attraction overestimates ground state incompressibility by a factor of $2\sim3$ for all relevant excluded-volume constructions (CITE). Therefore we use the extra parameter in Clausius and Dieterici potentials to fit directly to nuclear incompressibility in the wide empirical range of $220~ MeV\sim300~MeV$. 
+
+The scope of this work is restricted to a system of protons, neutrons, up quarks, and down quarks. Therefore we utilize the two-component QvdW formalism and fit our interaction parameters to reproduce nuclear ground-state properties, as was done in reference (CITE). Using the constraints of saturation density $n_0 = 0.16~fm^{-3}$, binding energy per baryon $E/A - m_N = -16~MeV$, symmetry energy $S_0 = 32.5~MeV$, and symmetry energy slope parameter $L = 58.9~MeV$, we find the following values for interaction parameters and nuclear incompressibility: \textbf{(MM: Show table)}
+\\
+\\
+
+We use the same constraints to fit our Clausius and Dieterici interaction parameters, with the addition of ground-state incompressibility $K_0 = 9(\partial P / \partial n_B)_{T=0}$. Our parameter values for each combination of excluded-volume and mean-field attraction are shown below for the given range of $K_0$:
+
+\textbf{(MM: Insert table with our chosen parameters.)}
+
+
+~
+~
+\subsection{Implementing Thermodynamic Constraints}
+\label{subsec:minimization}
+
+In order to apply our model to the neutron star equation of state, we begin by making a few reasonable physical assertions. First, we conduct our analysis at zero temperature: an excellent approximation for neutron star matter whose compact nature makes thermal excitations small relative to the characteristic Fermi energy. Secondly, we make the assumption that the system remains in equilibrium throughout a thermodynamic trajectory. This is essentially the adiabatic approximation that relaxation time scales are much smaller than the time scales of external thermodynamic changes. Lastly, we include leptonic states (electrons and muons) along with the corresponding constraints of charge neutrality and beta decay equilibrium. This fixes the isospin content of the system, allowing isospin asymmetry to evolve dynamically with density.
+
+We assume our leptons to be an ideal Fermi gas, with number density, energy density, and pressure given by:
+
+\begin{equation}
+    n_{e,\mu} = g_{e,\mu}
+\int_{0}^{k_{e,\mu}}
+\frac{d^3 k}{(2\pi)^3}
+k^2
+\end{equation}
+\begin{equation}
+    \epsilon_{e,\mu} = g_{e,\mu}
+\int_{0}^{k_{e,\mu}}
+\frac{d^3 k}{(2\pi)^3}
+k^2\sqrt{k^2+m_{e,\mu}^2}
+\end{equation}
+\begin{equation}
+    p_{e,\mu} = 
+    \mu_{e,\mu}n_{e,\mu} - \epsilon_{e,\mu}
+\end{equation}
+\begin{equation}
+    \mu_e = \mu_\mu = \sqrt{m_e^2 + k_e^2}
+\end{equation}
+\begin{equation}    k_{\mu}=\Theta\left[k_e^2+m_e^2-m_\mu^2\right]\sqrt{k_e^2+m_e^2-m_\mu^2}
+\end{equation}
+\\
+where $g_{e,\mu}=2$ captures only spin degeneracy. Note that the equality between muon and electron chemical potentials implies a relationship between their Fermi momenta, and creates a natural threshold for muon appearance when $\mu_e = m_\mu$. Additionally, we assume that neutrinos are diffuse in the system and can escape a given thermodynamic volume. Therefore, neutrino states do not affect our equilibrium conditions and have been excluded from the analysis.
+
+In order to quantify the isospin asymmetry of the system, we must establish an appropriate order parameter. For this purpose we use the charge fraction, given by:
+\begin{equation}
+    Y = \frac{\rho_Q}{\rho_B}
+\end{equation}
+and require this charge fraction to hold in both the hadronic sector and the quark sector. This gives a relationship between particle densities of different isospin:
+\begin{equation}
+    n_p = \frac{Y}{1-Y}n_n
+\end{equation}
+\begin{equation}
+    n_u = \frac{1+Y}{2-Y}n_d
+\end{equation}
+
+A given charge fraction $Y$ will determine the relationship between neutron and proton Fermi momenta. We assume that quarks share the same Fermi surface as in Ref. (CITE), and the up-quark integrals simply pick up an extra prefactor. We can now fix the value of $Y$ at a given baryon density using leptonic constraints, given by:
+
+\begin{equation}
+    n_e + n_\mu = n_p + 2n_u - n_d
+\end{equation}
+\begin{equation}
+    \mu_e = -\mu_Q
+\end{equation}
+\begin{equation}
+    \mu_Q = \left(\frac{\partial \varepsilon_{\rm qy} }{\partial \rho_Q} \right)_{\rho_B}
+\end{equation}
+\\
+Once our charge fraction is fixed for a given baryon density, we then find the quark fraction~$\xi(k_n,k_{u/d},Y_{eq})$ which minimizes the energy density of the system. More explicitly:
+\begin{equation}
+    \xi(k_n,k_{u/d},Y)_{eq} = \argmin_{\xi}[\epsilon(k_n,k_{u/d},Y)]
+\end{equation}
+\\
+This final minimization fully determines our system configuration at equilibrium $(Y_{eq},\xi_{eq})$, and all other thermodynamic quantites can then be straightforwardly calculated.
+~
+~
+
+
+\section{Results}
+\label{sec:results}
+
+\vv{Results structure: 
+\begin{itemize}
+\item Show speed of sound for single configuration, e.g. Clausius for $K_0 = 300$~MeV comparing vdW, CS, and TVM. Discuss vdW having generally pathological behavior, while CS and TVM generally similar.
+Focus on TVM.
+\item Show Clausis-vs-Dieterici for different $K_0$ within TVM model only. Maybe mention where relevant notable differences between TVM and CS, e.g. the proton fraction.
+\item Neutron star plots. Put observational constraints on all relevant plots~($P$ vs $\varepsilon$, $M$-$R$, tidal properties). 
+\end{itemize}
+}
+
+We are now in a position to calculate our quarkyonic equation of state, and the resulting neutron star properties. Our procedure is to scan through a fixed grid of baryon densities, first finding the charge fraction $Y$ which satisfies leptonic constraints and subsequently the quark fraction $\xi$ which minimizes the energy density. This uniquely fixes $k_n$ and $k_{u/d}$, allowing us to calculate all other thermodynamic properties. In particular, we define the physical pressure by means of Euler's relation:
+\begin{equation}
+    \varepsilon + p = \mu_B \rho_B + \mu_Q \rho_Q + \mu_e n_e + \mu_\mu n_\mu
+\end{equation}
+where the baryon chemical potential is given by $\mu_B = \frac{\partial\epsilon_{qy}}{\partial n_B}$ evaluated along the equilibrium path. We also calculate the equilibrium speed of sound as $c_s^2 = \frac{\partial P}{\partial\epsilon}\big|_{\mathrm{eq}}$ and take the peak in the speed of sound curve as an indicator that we have transitioned to the quarkyonic phase. 
+
+In Fig.~\ref{fig:comparison} we show a comparison of $c_s^2$ for each excluded-volume type within our empirical range of incompressibility. Carnahan-Starling and Trivirial Model give qualitatively similar results, with a well-behaved speed of sound that shows mild sensitivity to $K_0$. Conversely, van der Waals excluded-volume displays a sharply acausal peak in the speed of sound and a relatively early onset of the quarkyonic phase. This behaviois a direct consequence of the small limiting-density of vdW-EV, as the quarkyonic transition occurs very close to the maximum packing fraction of the system. 
+
+In Fig.~\ref{fig:sound} we show our results for quark fraction and $c_s^2$ as a function of baryon density for each excluded-volume formalism. Dieterici and Clausius mean-field attraction are both fit to the lower and upper limits of our empirical range for incompressibility, $K_0 = 220~MeV$ and $300~ MeV$. The van der Waals limit is also shown, corresponding to notably higher values of $K_0$. We find that softer equations of state give a much more gradual onset of the quarkyonic sea and feature a later, broader, and higher peak in the speed of sound. Additionally, we note that Dieterici mean-field attraction gives a systematically faster onset of the quark sea compared to the Clausius formalism. Lastly, we find that van der Waals excluded-volume stiffens rapidly at the quarkyonic transition point. This gives a steep onset of the quarkyonic sea and sharply acausal peaks in the speed of sound for all mean-field interaction formalisms, and is a direct consequence of the relatively low limiting density for van der Waals EV. 
+
+In Fig.~\ref{fig:charge} we show the evolution of isospin asymmetry under leptonic constraints, and the corresponding Fermi momentum of electrons. We find that $K_0$ is inversely correlated to the overall isospin content of the system, with softer equations of state resulting in higher peaks of charge fraction and higher residual charge fraction at high densities. The isospin content produced using the Clausius formalism is highly sensitive to $K_0$ within our given empirical range, while the Dieterici formalism demonstrates only a mild dependence. 
+
+\textbf{(MM: Write here, hopefully graphs align. Possibly put all figures in Appendix B?)}
+
+\begin{figure*}
+    \centering
+    \includegraphics[width = .85\textwidth,
+    height = 0.3\textheight]{Speed_comparison.png}
+    \caption{Add caption}
+    \label{fig:comparison}
+\end{figure*}
+
+\begin{figure*}
+    \centering
+    \includegraphics[width = .85\textwidth,
+    height = 0.3\textheight]{TVM_fract_speed.png}
+    \vspace{0.15cm}
+    \caption{Add caption}
+    \label{fig:sound}
+\end{figure*}
+
+\begin{figure*}
+\centering
+    \includegraphics[width = .85\textwidth,
+    height = 0.3\textheight]{TVM_qfract_fermi.png}
+
+    \vspace{0.15cm}
+    \caption{write something here}
+    \label{fig:charge}
+\end{figure*}
+
+\begin{figure*}
+\centering
+    \includegraphics[width = .85\textwidth,
+    height = 0.3\textheight]{TVM_MR.png}
+
+    \vspace{0.15cm}
+
+    \caption{write something here}
+    \label{fig:eos}
+\end{figure*}
+
+\begin{figure*}
+\centering
+    \includegraphics[width = .85\textwidth,
+    height = 0.3\textheight]{TVM_central_fract.png}
+
+    \vspace{0.15cm}
+
+    \caption{write something here}
+    \label{fig:cenfract}
+\end{figure*}
+
+\begin{figure*}
+\centering
+    \includegraphics[width = .85\textwidth,
+    height = 0.55\textheight]{TVM_tidal.png}
+
+    \vspace{0.15cm}
+
+    \caption{write something here}
+    \label{fig:tidal}
+\end{figure*}
+
+
+
+
+\begin{figure*}
+\centering
+    \includegraphics[width = .85\textwidth,
+    height = 0.25\textheight]{TVM_MR.png}
+
+    \vspace{0.15cm}
+
+    \includegraphics[width = .85\textwidth,
+    height = 0.25\textheight]{CS_MR.png}
+
+    \vspace{0.15cm}
+    
+    \includegraphics[width = .85\textwidth,
+    height = 0.25\textheight]{vdW_MR.png}
+    \caption{write something here}
+    \label{fig:eos}
+\end{figure*}
+
+\begin{figure*}
+\centering
+    \includegraphics[width = .85\textwidth]{TVM_tidal.png}
+
+    \vspace{0.15cm}
+
+    \includegraphics[width = .85\textwidth]{CS_tidal.png}
+
+    \vspace{0.15cm}
+    
+    \includegraphics[width = .85\textwidth]{vdW_tidal.png}
+    \caption{write something here}
+    \label{fig:tidal}
+\end{figure*}
+
+\section{Conclusions}
+\label{sec:conclusions}
+
+\textbf{FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL FILL }
+
+% \appendix
+% \section{Numerical Procedure}
+% \label{app:numerics}
+% % We begin by selecting a real gas model, specifying the excluded volume contribution $f_{EV}(x_i)$ trough either Eq.~\ref{eq:EV_CS} or Eq.~\ref{eq:EV_TVM}, and the mean field potential using either Dietereci Eq.~\ref{eq:MF_D} or Clausius Eq.~\ref{MF_c}
+% We begin by selecting a real-gas model, specifying the excluded-volume contribution \(f_{\mathrm{EV}}(x_i)\) through the van der Waals Eq.~\ref{eq:EV_VDW}, Carnahan–Starling Eq.~\ref{eq:EV_CS}, or trivirial model Eq.~\ref{eq:EV_TVM}, and the mean-field potential $v_i^{MF}$ using the van der Waals Eq.~\ref{eq:MF_VDW}, Dieterici Eq.~\ref{eq:MF_D}, or Clausius Eq.~\ref{MF_c}. For the Dieterici and Clausius models, the additional parameter
+% $\alpha$ or $c$, respectively, is fixed prior to the calculation. The symmetric nuclear matter constraints are first imposed to determine the parameters $a$ and $b$.  For a trial value of $b$, the zero-pressure condition determines $a$,
+% while the binding-energy condition is solved for $b$ using a bisection
+% root-finding algorithm. The incompressibility is then computed as
+% $K_0=9\left.\frac{dP}{dn_B}\right|_{n_0}$ using a second-order
+% centered finite-difference scheme.
+
+% For each model, the liquid--gas critical point is determined from
+% \begin{equation}
+% \left.\frac{\partial P}{\partial n_B}\right|{T_c,n_c}=0,
+% \qquad
+% \left.\frac{\partial^2P}{\partial n_B^2}\right|{T_c,n_c}=0.
+% \end{equation}
+
+
+% The isospin asymmetry extension is constructed from the symmetric parameters $a$ and $b$ by introducing like-nucleon and proton--neutron interaction
+% parameters,
+% \begin{align}
+%     a_n &= a-\Delta a, & a_{pn} &= a+\Delta a, \\
+%     b_n &= b-\Delta b, & b_{pn} &= b+\Delta b .
+% \end{align}
+% This parametrization preserves the symmetric-matter limit, since
+% \begin{equation}
+%     \frac{a_n+a_{pn}}{2}=a,
+%     \qquad
+%     \frac{b_n+b_{pn}}{2}=b.
+% \end{equation}
+% For a given baryon density $n_B$ and proton fraction $Y$, the
+% species-dependent excluded-volume arguments are evaluated using Eq.~\ref{eq:prot_nuc},
+% % \begin{align}
+% %     x_p &= b_n n_p+b_{pn}n_n, \\
+% %     x_n &= b_{pn}n_p+b_n n_n,
+% % \end{align}
+% where $n_p=Y n_B$ and $n_n=(1-Y)n_B$. The corresponding proton and
+% neutron available-volume fractions are obtained by applying the chosen
+% excluded-volume prescription to $x_p$ and $x_n$, respectively.
+% The attraction is determined by the composition-dependent coefficient
+% \begin{equation}
+%     a_{\mathrm{eff}}(Y)
+%     =
+%     a_n\left[Y^2+(1-Y)^2\right]
+%     +2a_{pn}Y(1-Y).
+% \end{equation}
+% The asymmetric energy density is then evaluated from the separate
+% proton and neutron kinetic contributions, modified by their respective
+% available-volume fractions, together with the interaction term defined
+% by $a_{\mathrm{eff}}(Y)$.
+
+% The parameter $\Delta a$ is determined by requiring that the symmetry
+% energy at saturation reproduce the empirical value $J$,
+% \begin{equation}
+%     S(n_0)=J,
+% \end{equation}
+% where the symmetry energy is evaluated as
+% \begin{equation}
+%     S(n)
+%     =
+%     \left.\frac{E}{A}\right|_{Y=0}
+%     -
+%     \left.\frac{E}{A}\right|_{Y=1/2}.
+% \end{equation}
+
+% For the equal-$b$ branch, we impose $\Delta b=0$, such that
+% $b_n=b_{pn}$, and solve only for $\Delta a$. For the unequal-$b$
+% branch, $\Delta b$ is varied and $\Delta a$ is recalculated for each
+% trial value to preserve $S(n_0)=J$. The value of $\Delta b$ is then
+% obtained by imposing the symmetry-energy slope,
+% \begin{equation}
+%     L=3n_0\left.\frac{dS}{dn_B}\right|_{n_B=n_0}.
+% \end{equation}
+% This coupled asymmetric fit is solved using nested bisection
+% root-finding.
+
+% After determining the asymmetric couplings
+% $(a_n,a_{pn},b_n,b_{pn})$, the finite-temperature critical point is calculated at fixed proton fraction $Y$. The critical temperature $T_c(Y)$ and critical density $n_c(Y)$ are obtained from
+% \begin{equation}
+% \left.\frac{\partial P}{\partial n_B}\right|_{T_c,n_c,Y}=0,
+% \qquad
+% \left.\frac{\partial^2P}{\partial n_B^2}\right|_{T_c,n_c,Y}=0.
+% \end{equation}
+% A coarse grid in temperature and baryon density is first used to estimate $(T_c,n_c)$. At each trial point, the effective proton and neutron chemical potentials are determined self-consistently from the excluded-volume-corrected densities using damped Newton iterations. The pressure derivatives are evaluated by centered finite differences. The coupled critical-point conditions are then solved through damped iterative updates of $T$ and $n_B$, with backtracking to retain steps that decrease the total residual. Following the formalism developed in Sec~\ref{subsec:quasi}, we then construct the quarkyonic matter eos. The momentum integrals entering baryon density and energy densities are evaluated using Simpson's rule. At each baryon density,
+
+\appendix
+\section{Numerical Procedure}
+\label{app:numerics}
+
+For each calculation, we choose an excluded-volume function
+\(f_{\mathrm{EV}}(x_i)\), given by the van der Waals
+[Eq.~\ref{eq:EV_VDW}], Carnahan--Starling [Eq.~\ref{eq:EV_CS}], or
+trivirial [Eq.~\ref{eq:EV_TVM}] form, together with a mean-field
+potential \(v_i^{\mathrm{MF}}\), given by the van der Waals
+[Eq.~\ref{eq:MF_VDW}], Dieterici [Eq.~\ref{eq:MF_D}], or Clausius
+[Eq.~\ref{MF_c}] form. The parameters \(\alpha\) and \(c\), when
+applicable, are fixed before imposing the nuclear-matter constraints.
+
+We first determine the symmetric-matter parameters \(a\) and \(b\).
+For a trial value of \(b\), the condition \(P(n_0)=0\) determines \(a\).
+The binding-energy constraint is then solved for \(b\) by bisection.
+The incompressibility is calculated from $K_0 = 9(\partial P / \partial n_B)_{T=0}$ where the derivative is evaluated with a second-order centered
+finite-difference formula.
+
+The symmetric-matter critical point is obtained from
+\begin{equation}
+    \left.\frac{\partial P}{\partial n_B}\right|_{T_c,n_c}=0,
+    \qquad
+    \left.\frac{\partial^2P}{\partial n_B^2}\right|_{T_c,n_c}=0.
+\end{equation}
+We use a coarse \((T,n_B)\) grid to locate an initial point. The
+effective chemical potential is found self-consistently at each grid
+point, and the critical-point equations are refined by damped
+iterations in \(T\) and \(n_B\).
+
+The asymmetric interaction parameters are written as
+\begin{align}
+    a_n &= a-\Delta a, & a_{pn} &= a+\Delta a, \\
+    b_n &= b-\Delta b, & b_{pn} &= b+\Delta b .
+\end{align}
+This choice recovers the symmetric-matter parameters through
+\begin{equation}
+    \frac{a_n+a_{pn}}{2}=a,
+    \qquad
+    \frac{b_n+b_{pn}}{2}=b.
+\end{equation}
+For the hadronic sector, \(Y\) is the proton fraction,
+\begin{equation}
+    n_p=Y n_B,
+    \qquad
+    n_n=(1-Y)n_B,
+\end{equation}
+and the excluded-volume arguments are calculated from
+Eq.~\ref{eq:prot_nuc}. The attractive contribution is determined by
+\begin{equation}
+    a_{\mathrm{eff}}(Y)
+    =
+    a_n\left[Y^2+(1-Y)^2\right]
+    +2a_{pn}Y(1-Y).
+\end{equation}
+
+For a fixed \(\Delta b\), we determine \(\Delta a\) by imposing
+\begin{equation}
+    S(n_0)=J,
+\end{equation}
+with
+\begin{equation}
+    S(n_B)
+    =
+    \left.\frac{E}{A}\right|_{Y=0}
+    -
+    \left.\frac{E}{A}\right|_{Y=1/2}.
+\end{equation}
+The equal-\(b\) case is obtained by setting \(\Delta b=0\). For the
+unequal-\(b\) case, \(\Delta b\) is varied until the slope parameter
+\begin{equation}
+    L=3n_0\left.\frac{dS}{dn_B}\right|_{n_B=n_0}
+\end{equation}
+is reproduced. This procedure uses an outer bisection in \(\Delta b\)
+and an inner bisection in \(\Delta a\).
+
+The critical point of asymmetric matter is calculated at fixed \(Y\),
+after the asymmetric couplings have been determined:
+\begin{equation}
+    \left.\frac{\partial P}{\partial n_B}\right|_{T_c,n_c,Y}=0,
+    \qquad
+    \left.\frac{\partial^2P}{\partial n_B^2}\right|_{T_c,n_c,Y}=0.
+\end{equation}
+The same numerical procedure used for symmetric matter is applied, now
+solving for the effective proton and neutron chemical potentials
+separately.
+
+We then construct the quarkyonic EoS following
+Sec.~\ref{subsec:quasi}. Momentum integrals are evaluated with
+Simpson's rule. At fixed baryon density, charge neutrality and beta
+equilibrium determine the charge fraction,
+\begin{equation}
+    n_p+\frac{2}{3}n_u-\frac{1}{3}n_d-n_e-n_\mu=0,
+\end{equation}
+\begin{equation}
+    \mu_e=\mu_\mu=-\mu_Q.
+\end{equation}
+The equilibrium quark fraction is found by minimizing the total energy
+density with a golden-section search.
+
+Finally, the pressure and squared speed of sound are obtained from
+\begin{equation}
+    P=n_B^2\frac{d}{dn_B}
+    \left(\frac{\epsilon}{n_B}\right),
+    \qquad
+    c_s^2=\frac{dP}{d\epsilon}.
+\end{equation}
+The beta-equilibrated EoS is then used to solve the
+Tolman--Oppenheimer--Volkoff equations and obtain the mass--radius
+relation and maximum mass.
+
+\bibliography{main}
+
+
+
+\end{document}
+

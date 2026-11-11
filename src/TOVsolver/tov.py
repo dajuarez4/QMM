@@ -19,7 +19,7 @@
 __author__ = "Anton Motornenko (FIAS)"
 __copyright__ = "Copyright 2019-2020 Anton Motornenko (FIAS), GNU GPL 3"
 
-from scipy.interpolate import interp1d
+from scipy.interpolate import interp1d, CubicSpline, PchipInterpolator
 from scipy.integrate import odeint
 from scipy.optimize import root
 import matplotlib.pyplot as plt
@@ -70,6 +70,7 @@ class TOV:
 
     sort_ind = np.argsort(p_arr)
     self.en_dens = interp1d(p_arr[sort_ind], en_arr[sort_ind], kind='cubic')
+    self._density_derivative = CubicSpline(p_arr[sort_ind], en_arr[sort_ind], extrapolate=False).derivative()
 
     sort_ind = np.argsort(en_arr)
     self.press = interp1d(en_arr[sort_ind], p_arr[sort_ind], kind='cubic')
@@ -158,6 +159,7 @@ class TOV:
     self.min_p = min(p_arr)
 
     self.en_dens = interp1d(p_arr, en_arr, kind='cubic')
+    self._density_derivative = CubicSpline(p_arr, en_arr, extrapolate=False).derivative()
     self.press = interp1d(en_arr, p_arr, kind='cubic')
 
     self.__en_arr = en_arr
@@ -169,17 +171,13 @@ class TOV:
     e_R, p_R, m_R = R_dep
 
     p = p_R(r)
-    dp = p * 0.005
-
-    el_3 = self.en_dens(p - 3 * dp)
-    el_2 = self.en_dens(p - 2 * dp)
-    el_1 = self.en_dens(p - 1 * dp)
-    er_3 = self.en_dens(p + 3 * dp)
-    er_2 = self.en_dens(p + 2 * dp)
-    er_1 = self.en_dens(p + 1 * dp)
-    de_dp = (-1 / 60 * el_3 + 3 / 20 * el_2 - 3 / 4 * el_1 + 3 / 4 * er_1 - 3 / 20 * er_2 + 1 / 60 * er_3) / dp
-
-    return de_dp
+    # Differentiate the same interpolating EOS directly. The old +/-1.5%
+    # finite-difference stencil left the table near the surface and center.
+    # Monotone radial interpolation can miss an endpoint by one rounding ulp.
+    tolerance = 1e-12 * max(abs(float(p)), self.min_p)
+    if p < self.min_p-tolerance or p > self.max_p+tolerance:
+      raise ValueError('Tidal pressure is outside the tabulated EOS.')
+    return float(self._density_derivative(np.clip(p, self.min_p, self.max_p)))
 
   def love_eq(self, param, r, R_dep):
     beta, H = param
@@ -207,10 +205,14 @@ class TOV:
   def tov_eq(self, y, r):
     P, m = y
 
-    if P < self.min_p or P > self.max_p:
+    if P > self.max_p:
       return [0., 0.]
 
-    eden = self.en_dens(P)
+    # Continue the trial RHS smoothly through the tabulated surface. The
+    # returned solution is cut at P=min_p in solve(). A jump to [0,0] here
+    # made LSODA stall at the surface and leave uninitialized output rows.
+    eden = self.en_dens(max(P, self.min_p))
+    P = max(P, 0.)
 
     dPdr = -G * (eden + P / c ** 2) * (m + 4.0 * pi * r ** 3 * P / c ** 2)
     dPdr = dPdr / (r * (r - 2.0 * G * m / c ** 2))
@@ -243,7 +245,7 @@ class TOV:
     rtol : float, optional
       Relative accuracy of ODE solver.
     dmrel : float, optional
-      Relative mass increase by which star boundary is estimated.
+      Retained for API compatibility. The boundary is located at P=min_p.
     dr : float, cm, optinal
       Stepsize for ODE solver.
 
@@ -272,28 +274,25 @@ class TOV:
 
     P = self.press(c_dens)
     eden = self.en_dens(P)
-    m = 4.0 * pi * r[0] ** 3 * eden
+    m = 4.0 / 3.0 * pi * r[0] ** 3 * eden
 
     psol = odeint(self.tov_eq, [P, m], r, rtol=rtol)
 
     p_R, m_R = psol[:,0], psol[:,1]
 
-    # find the boundary of the star by finding point
-    # where the mass stops to increase
-
-    diff = (m_R[1:] - m_R[:-1])/m_R[1:]
-    ind = -1
-    for i, dm in enumerate(diff):
-      if dm < dmrel and m_R[i] != 0:
-        ind = i
-        break
-
-    M = m_R[ind - 1]
-    R = r[ind - 1]
-
-    r   = r[:ind]
-    p_R = p_R[:ind]
-    m_R = m_R[:ind]
+    # Locate the pressure crossing instead of inferring a mass plateau from
+    # post-surface trial steps. Interpolate the final short radial interval.
+    crossing = np.flatnonzero(p_R <= self.min_p)
+    if len(crossing) and crossing[0] > 0:
+      ind = int(crossing[0])
+      weight = (p_R[ind-1]-self.min_p)/(p_R[ind-1]-p_R[ind])
+      R = r[ind-1]+weight*(r[ind]-r[ind-1])
+      M = m_R[ind-1]+weight*(m_R[ind]-m_R[ind-1])
+      r = np.append(r[:ind], R)
+      p_R = np.append(p_R[:ind], self.min_p)
+      m_R = np.append(m_R[:ind], M)
+    else:
+      R, M = r[-1], m_R[-1]
 
     # The ODE stops evolving below min_p, but its last step can overshoot
     # the tabulated surface pressure. Bound only the returned surface profile;
@@ -343,9 +342,17 @@ class TOV:
     R *= 1e5
     M *= Msun
 
-    e_R = interp1d(r, e_R, kind='cubic')
-    p_R = interp1d(r, p_R, kind='cubic')
-    m_R = interp1d(r, m_R, kind='cubic')
+    # Preserve monotonic radial profiles and their EOS bounds near the surface.
+    e_interp = PchipInterpolator(r, e_R, extrapolate=False)
+    p_interp = PchipInterpolator(r, p_R, extrapolate=False)
+    m_interp = PchipInterpolator(r, m_R, extrapolate=False)
+    # LSODA can evaluate its RHS beyond the requested final radius while
+    # interpolating back to it. Hold the boundary fields there, keeping the
+    # EOS derivative inside its tabulated domain during those trial stages.
+    r_min, r_max = r[0], r[-1]
+    e_R = lambda radius: e_interp(np.clip(radius, r_min, r_max))
+    p_R = lambda radius: np.clip(p_interp(np.clip(radius, r_min, r_max)), self.min_p, self.max_p)
+    m_R = lambda radius: m_interp(np.clip(radius, r_min, r_max))
 
     beta0 = 2 * r[0]
     H0 = r[0] ** 2

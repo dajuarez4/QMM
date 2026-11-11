@@ -611,6 +611,10 @@ class AsymmetricQuarkyonicEOS:
         f_n = 1.0 if f_n is None else f_n
 
         hadronic_shell = f_p * e_p + f_n * e_n
+        if n_h == 0.0:
+            # The pure-quark endpoint has no hadronic interaction. Dieterici's
+            # U(n) is defined only for n>0, but n*U(n) tends to zero for alpha>1.
+            return e_u + e_d
         U_value = self.model.U(n_h, 0.0, self.fit_result.parameter_value)
         if U_value is None:
             return math.nan
